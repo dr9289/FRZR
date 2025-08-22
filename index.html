@@ -7,7 +7,7 @@
     
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#4F46E5">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="FRZR">
     <meta name="description" content="Smart freezer inventory management app">
@@ -16,23 +16,25 @@
     <link rel="icon" type="image/png" sizes="192x192" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❄️</text></svg>">
     <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❄️</text></svg>">
     
-    <!-- Manifest -->
-    <link rel="manifest" href="data:application/json,{
-        'name': 'FRZR - Freezer Management',
-        'short_name': 'FRZR',
-        'description': 'Smart freezer inventory management',
-        'start_url': '/',
-        'display': 'standalone',
-        'background_color': '#ffffff',
-        'theme_color': '#4F46E5',
-        'icons': [
+    <!-- Manifest with fixed JSON -->
+    <script id="manifest-data" type="application/json">
+    {
+        "name": "FRZR - Freezer Management",
+        "short_name": "FRZR",
+        "description": "Smart freezer inventory management",
+        "start_url": "/",
+        "display": "standalone",
+        "background_color": "#ffffff",
+        "theme_color": "#4F46E5",
+        "icons": [
             {
-                'src': 'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><text y=\'.9em\' font-size=\'90\'>❄️</text></svg>',
-                'sizes': '192x192',
-                'type': 'image/svg+xml'
+                "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E❄️%3C/text%3E%3C/svg%3E",
+                "sizes": "192x192",
+                "type": "image/svg+xml"
             }
         ]
-    }">
+    }
+    </script>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -58,7 +60,8 @@
                         setTimeout(() => {
                             // Simulate finding a barcode occasionally for demo
                             if (Math.random() > 0.95) {
-                                resolve({ text: Math.floor(Math.random() * 1000000000000).toString().padStart(12, '0') });
+                                const mockBarcode = Math.floor(Math.random() * 1000000000000).toString().padStart(12, '0');
+                                resolve({ text: mockBarcode });
                             } else {
                                 reject(new Error('No barcode found'));
                             }
@@ -71,6 +74,11 @@
                 }
             }
         };
+        
+        // Ensure ZXing is available
+        if (typeof ZXing === 'undefined') {
+            window.ZXing = window.ZXingFallback;
+        }
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/zxing-library/0.20.0/umd/index.min.js" 
             onerror="window.ZXing = window.ZXingFallback; console.log('Using ZXing fallback');"></script>
@@ -642,6 +650,16 @@
             }
             
             setupPWA() {
+                // Create and register manifest
+                const manifestData = JSON.parse(document.getElementById('manifest-data').textContent);
+                const manifestBlob = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
+                const manifestURL = URL.createObjectURL(manifestBlob);
+                
+                const link = document.createElement('link');
+                link.rel = 'manifest';
+                link.href = manifestURL;
+                document.head.appendChild(link);
+                
                 // Service Worker registration
                 if ('serviceWorker' in navigator) {
                     navigator.serviceWorker.register('/sw.js').catch(console.error);
@@ -1428,39 +1446,32 @@
             }
         }, 100);
         
-        // Service Worker for PWA functionality
-        const swCode = `
-            const CACHE_NAME = 'frzr-v1';
-            const urlsToCache = [
-                '/',
-                '/manifest.json'
-            ];
-            
-            self.addEventListener('install', (event) => {
-                event.waitUntil(
-                    caches.open(CACHE_NAME)
-                        .then((cache) => cache.addAll(urlsToCache))
-                );
-            });
-            
-            self.addEventListener('fetch', (event) => {
-                event.respondWith(
-                    caches.match(event.request)
-                        .then((response) => {
-                            if (response) {
-                                return response;
-                            }
-                            return fetch(event.request);
-                        })
-                );
-            });
-        `;
-        
-        // Register service worker
+        // Service Worker for PWA functionality (simplified)
         if ('serviceWorker' in navigator) {
-            const blob = new Blob([swCode], { type: 'application/javascript' });
-            const swUrl = URL.createObjectURL(blob);
-            navigator.serviceWorker.register(swUrl);
+            const swCode = `
+                const CACHE_NAME = 'frzr-v1';
+                
+                self.addEventListener('install', (event) => {
+                    console.log('Service worker installing');
+                });
+                
+                self.addEventListener('fetch', (event) => {
+                    // Let network handle all requests for now
+                    event.respondWith(fetch(event.request));
+                });
+            `;
+            
+            try {
+                const blob = new Blob([swCode], { type: 'application/javascript' });
+                const swUrl = URL.createObjectURL(blob);
+                navigator.serviceWorker.register(swUrl).then(() => {
+                    console.log('Service worker registered successfully');
+                }).catch((error) => {
+                    console.log('Service worker registration failed:', error);
+                });
+            } catch (error) {
+                console.log('Service worker setup failed:', error);
+            }
         }
         
         // Keyboard shortcuts
@@ -1483,37 +1494,22 @@
             }
         });
         
-        // Add some sample data for demo
-        if (app.items.length === 2) {
-            // Add more sample items for better demo
-            const sampleItems = [
-                {
-                    id: 3,
-                    name: "Frozen Pizza",
-                    quantity: 3,
-                    dateAdded: "2025-08-20",
-                    expirationDate: "2025-09-20",
-                    category: "Prepared Meals",
-                    favorite: false,
-                    barcode: "345678901234"
-                },
-                {
-                    id: 4,
-                    name: "Ice Cream Sandwiches",
-                    quantity: 1,
-                    dateAdded: "2025-08-18",
-                    expirationDate: "2026-01-18",
-                    category: "Desserts",
-                    favorite: true,
-                    barcode: null
-                }
-            ];
+        // Initialize app debugging
+        console.log('FRZR App initialized successfully');
+        console.log('Items loaded:', app.items.length);
+        console.log('Debug mode:', app.debugMode);
+        
+        // Test if buttons exist
+        setTimeout(() => {
+            const scanBtn = document.getElementById('scan-btn');
+            const manualBtn = document.getElementById('manual-add-btn');
+            console.log('Scan button exists:', !!scanBtn);
+            console.log('Manual button exists:', !!manualBtn);
             
-            app.items.push(...sampleItems);
-            app.saveItems();
-            app.renderItems();
-            app.updateExpirationAlert();
-        }
+            if (scanBtn) {
+                console.log('Scan button is clickable');
+            }
+        }, 100);
     </script>
 </body>
 </html>
