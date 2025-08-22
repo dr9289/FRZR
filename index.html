@@ -206,6 +206,9 @@
                     <button id="settings-btn" class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center hover:bg-opacity-30 transition-all">
                         <span class="material-icons text-xl">settings</span>
                     </button>
+                    <button id="test-btn" class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center hover:bg-opacity-30 transition-all">
+                        <span class="material-icons text-xl">bug_report</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -471,7 +474,21 @@
         // FRZR Web App JavaScript
         class FRZRApp {
             constructor() {
-                this.items = JSON.parse(localStorage.getItem('frzr-items')) || [
+                // Load items from localStorage with better error handling
+                let savedItems = [];
+                try {
+                    const stored = localStorage.getItem('frzr-items');
+                    if (stored) {
+                        savedItems = JSON.parse(stored);
+                        console.log('Loaded items from storage:', savedItems.length);
+                    }
+                } catch (error) {
+                    console.error('Error loading saved items:', error);
+                    localStorage.removeItem('frzr-items'); // Clear corrupted data
+                }
+                
+                // Use saved items or default sample data
+                this.items = savedItems.length > 0 ? savedItems : [
                     {
                         id: 1,
                         name: "Ground Beef",
@@ -516,41 +533,112 @@
             }
             
             setupEventListeners() {
+                console.log('Setting up event listeners...');
+                
                 // FAB buttons
-                document.getElementById('scan-btn').addEventListener('click', () => this.startScanning());
-                document.getElementById('manual-add-btn').addEventListener('click', () => this.showAddModal());
+                const scanBtn = document.getElementById('scan-btn');
+                const manualBtn = document.getElementById('manual-add-btn');
+                
+                if (scanBtn) {
+                    scanBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        console.log('Scan button clicked');
+                        this.startScanning();
+                    });
+                    console.log('Scan button listener added');
+                } else {
+                    console.error('Scan button not found!');
+                }
+                
+                if (manualBtn) {
+                    manualBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        console.log('Manual add button clicked');
+                        this.showAddModal(true);
+                    });
+                    console.log('Manual button listener added');
+                } else {
+                    console.error('Manual button not found!');
+                }
                 
                 // Modal controls
-                document.getElementById('close-scanner').addEventListener('click', () => this.stopScanning());
-                document.getElementById('debug-mode-btn').addEventListener('click', () => this.toggleDebugMode());
-                document.getElementById('manual-barcode-btn').addEventListener('click', () => {
-                    this.stopScanning();
-                    this.showAddModal(true);
-                    document.getElementById('manual-barcode-section').classList.remove('hidden');
-                });
-                document.getElementById('cancel-add').addEventListener('click', () => this.hideAddModal());
-                document.getElementById('add-item-form').addEventListener('submit', (e) => this.addItem(e));
-                document.getElementById('lookup-barcode-btn').addEventListener('click', () => this.lookupManualBarcode());
+                const closeScanner = document.getElementById('close-scanner');
+                const debugBtn = document.getElementById('debug-mode-btn');
+                const manualBarcodeBtn = document.getElementById('manual-barcode-btn');
+                const cancelAdd = document.getElementById('cancel-add');
+                const addForm = document.getElementById('add-item-form');
+                const lookupBtn = document.getElementById('lookup-barcode-btn');
+                
+                if (closeScanner) {
+                    closeScanner.addEventListener('click', () => this.stopScanning());
+                }
+                if (debugBtn) {
+                    debugBtn.addEventListener('click', () => this.toggleDebugMode());
+                }
+                if (manualBarcodeBtn) {
+                    manualBarcodeBtn.addEventListener('click', () => {
+                        this.stopScanning();
+                        this.showAddModal(true);
+                        document.getElementById('manual-barcode-section').classList.remove('hidden');
+                    });
+                }
+                if (cancelAdd) {
+                    cancelAdd.addEventListener('click', () => this.hideAddModal());
+                }
+                if (addForm) {
+                    addForm.addEventListener('submit', (e) => this.addItem(e));
+                }
+                if (lookupBtn) {
+                    lookupBtn.addEventListener('click', () => this.lookupManualBarcode());
+                }
                 
                 // Stats modal
-                document.getElementById('stats-btn').addEventListener('click', () => this.showStatsModal());
-                document.getElementById('close-stats').addEventListener('click', () => this.hideStatsModal());
+                const statsBtn = document.getElementById('stats-btn');
+                const closeStats = document.getElementById('close-stats');
+                
+                if (statsBtn) {
+                    statsBtn.addEventListener('click', () => this.showStatsModal());
+                }
+                if (closeStats) {
+                    closeStats.addEventListener('click', () => this.hideStatsModal());
+                }
+                
+                // Test button for debugging
+                const testBtn = document.getElementById('test-btn');
+                if (testBtn) {
+                    testBtn.addEventListener('click', () => {
+                        console.log('Test button clicked - app is responsive');
+                        alert('App is working! Scan button should work now.');
+                    });
+                }
                 
                 // Search and filters
-                document.getElementById('search-input').addEventListener('input', (e) => {
-                    this.searchTerm = e.target.value;
-                    this.renderItems();
-                });
+                const searchInput = document.getElementById('search-input');
+                const categoryFilter = document.getElementById('category-filter');
+                const sortSelect = document.getElementById('sort-select');
                 
-                document.getElementById('category-filter').addEventListener('change', (e) => {
-                    this.categoryFilter = e.target.value;
-                    this.renderItems();
-                });
+                if (searchInput) {
+                    searchInput.addEventListener('input', (e) => {
+                        this.searchTerm = e.target.value;
+                        this.renderItems();
+                    });
+                }
                 
-                document.getElementById('sort-select').addEventListener('change', (e) => {
-                    this.sortBy = e.target.value;
-                    this.renderItems();
-                });
+                if (categoryFilter) {
+                    categoryFilter.addEventListener('change', (e) => {
+                        this.categoryFilter = e.target.value;
+                        this.renderItems();
+                    });
+                }
+                
+                if (sortSelect) {
+                    sortSelect.addEventListener('change', (e) => {
+                        this.sortBy = e.target.value;
+                        this.renderItems();
+                    });
+                }
+                
+                console.log('All event listeners set up');
             }
             
             setupPWA() {
@@ -584,7 +672,18 @@
             }
             
             async startScanning() {
+                console.log('Starting barcode scanning...');
+                
+                // Check if camera is supported
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    alert('Camera not supported in this browser. Please use manual entry.');
+                    this.showAddModal(true);
+                    return;
+                }
+                
                 try {
+                    console.log('Requesting camera permission...');
+                    
                     // Check if we already have permission
                     let stream;
                     try {
@@ -595,7 +694,9 @@
                                 height: { ideal: 1080 }
                             } 
                         });
+                        console.log('Got rear camera');
                     } catch (err) {
+                        console.log('Rear camera failed, trying any camera:', err.message);
                         // Fallback to any camera if rear camera fails
                         stream = await navigator.mediaDevices.getUserMedia({ 
                             video: { 
@@ -603,38 +704,57 @@
                                 height: { ideal: 1080 }
                             } 
                         });
+                        console.log('Got front/default camera');
                     }
                     
                     const video = document.getElementById('scanner-video');
+                    if (!video) {
+                        console.error('Video element not found!');
+                        return;
+                    }
+                    
                     video.srcObject = stream;
                     
                     // Wait for video to be ready
-                    await new Promise((resolve) => {
+                    await new Promise((resolve, reject) => {
                         video.onloadedmetadata = () => {
-                            video.play();
-                            resolve();
+                            console.log('Video metadata loaded');
+                            video.play().then(resolve).catch(reject);
                         };
+                        video.onerror = reject;
+                        // Timeout after 5 seconds
+                        setTimeout(() => reject(new Error('Video load timeout')), 5000);
                     });
                     
+                    console.log('Video is playing, showing scanner modal');
                     document.getElementById('scanner-modal').classList.remove('hidden');
                     
                     // Initialize ZXing scanner with better error handling
                     let codeReader;
                     try {
-                        codeReader = new ZXing.BrowserMultiFormatReader();
+                        if (window.ZXing && window.ZXing.BrowserMultiFormatReader) {
+                            codeReader = new ZXing.BrowserMultiFormatReader();
+                            console.log('ZXing library loaded successfully');
+                        } else {
+                            throw new Error('ZXing not available');
+                        }
                     } catch (error) {
                         console.error('ZXing initialization failed:', error);
                         // Use fallback
                         codeReader = new window.ZXingFallback.BrowserMultiFormatReader();
+                        console.log('Using ZXing fallback');
                     }
                     
                     this.scanner = codeReader;
                     this.isScanning = true;
+                    this.scanAttempts = {}; // Reset scan attempts
+                    this.lastScannedCode = null;
                     
                     // Add visual feedback that scanning is active
                     this.showScanningAnimation();
                     
                     // Start continuous scanning
+                    console.log('Starting continuous scanning...');
                     this.scanContinuously();
                     
                 } catch (error) {
@@ -648,7 +768,7 @@
                     } else if (error.name === 'NotSupportedError') {
                         errorMessage += 'Camera not supported in this browser.';
                     } else {
-                        errorMessage += 'Please try again or use manual entry.';
+                        errorMessage += `Error: ${error.message}. Please try again or use manual entry.`;
                     }
                     
                     alert(errorMessage);
@@ -1279,17 +1399,34 @@
             }
             
             saveItems() {
-                localStorage.setItem('frzr-items', JSON.stringify(this.items));
+                try {
+                    localStorage.setItem('frzr-items', JSON.stringify(this.items));
+                    console.log('Items saved to localStorage:', this.items.length);
+                } catch (error) {
+                    console.error('Failed to save items:', error);
+                    this.showToast('Warning: Could not save data to device');
+                }
             }
         }
         
         // Initialize app
         const app = new FRZRApp();
         
-        // Override manual add to show manual modal
-        document.getElementById('manual-add-btn').addEventListener('click', () => {
-            app.showAddModal(true);
-        });
+        // Add debugging info
+        console.log('FRZR App initialized');
+        console.log('Items loaded:', app.items.length);
+        
+        // Test if buttons exist
+        setTimeout(() => {
+            const scanBtn = document.getElementById('scan-btn');
+            const manualBtn = document.getElementById('manual-add-btn');
+            console.log('Scan button exists:', !!scanBtn);
+            console.log('Manual button exists:', !!manualBtn);
+            
+            if (scanBtn) {
+                console.log('Scan button click listeners:', scanBtn.onclick, scanBtn.addEventListener);
+            }
+        }, 100);
         
         // Service Worker for PWA functionality
         const swCode = `
