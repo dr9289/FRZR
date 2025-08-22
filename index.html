@@ -93,17 +93,53 @@
         .animate-fade-in { animation: fadeIn 0.3s ease-out; }
         .animate-pulse-custom { animation: pulse 2s infinite; }
         
-        /* Scanner overlay */
+        /* Scanner overlay with better visual feedback */
         .scanner-overlay {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 250px;
-            height: 250px;
-            border: 3px dashed #4F46E5;
+            width: 280px;
+            height: 180px;
+            border: 3px solid #4F46E5;
             border-radius: 12px;
             pointer-events: none;
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
+        }
+        
+        .scanner-overlay::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #4F46E5, transparent);
+            animation: scanLine 2s infinite;
+        }
+        
+        @keyframes scanLine {
+            0%, 100% { transform: translateY(-90px); opacity: 0; }
+            50% { transform: translateY(90px); opacity: 1; }
+        }
+        
+        .scanning-feedback {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(79, 70, 229, 0.9);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .scanning-feedback.show {
+            opacity: 1;
         }
         
         /* Floating action button */
@@ -251,6 +287,9 @@
         <div class="relative h-full">
             <video id="scanner-video" autoplay muted playsinline></video>
             <div class="scanner-overlay"></div>
+            <div id="scanning-feedback" class="scanning-feedback">
+                <span id="feedback-text">Position barcode in frame</span>
+            </div>
             
             <!-- Scanner Controls -->
             <div class="absolute top-0 left-0 right-0 p-6 bg-gradient-to-b from-black to-transparent">
@@ -611,9 +650,34 @@
             }
             
             showScanningAnimation() {
-                const overlay = document.querySelector('.scanner-overlay');
-                if (overlay) {
-                    overlay.style.animation = 'pulse 2s infinite';
+                const feedback = document.getElementById('scanning-feedback');
+                const feedbackText = document.getElementById('feedback-text');
+                
+                if (feedback) {
+                    feedback.classList.add('show');
+                    feedbackText.textContent = 'Scanning for barcodes...';
+                    
+                    // Hide feedback after 3 seconds
+                    setTimeout(() => {
+                        if (this.isScanning) {
+                            feedback.classList.remove('show');
+                        }
+                    }, 3000);
+                }
+            }
+            
+            showScanningFeedback(message, isSuccess = false) {
+                const feedback = document.getElementById('scanning-feedback');
+                const feedbackText = document.getElementById('feedback-text');
+                
+                if (feedback && feedbackText) {
+                    feedbackText.textContent = message;
+                    feedback.style.background = isSuccess ? 'rgba(34, 197, 94, 0.9)' : 'rgba(79, 70, 229, 0.9)';
+                    feedback.classList.add('show');
+                    
+                    setTimeout(() => {
+                        feedback.classList.remove('show');
+                    }, 2000);
                 }
             }
             
@@ -625,15 +689,30 @@
                     if (video && video.readyState === video.HAVE_ENOUGH_DATA && video.videoWidth > 0) {
                         const result = await this.scanner.decodeFromVideoElement(video);
                         if (result && result.text) {
-                            // Vibrate if supported
-                            if (navigator.vibrate) {
-                                navigator.vibrate(200);
-                            }
+                            const barcode = result.text.trim();
                             
-                            this.currentBarcode = result.text;
-                            this.stopScanning();
-                            this.lookupProduct(result.text);
-                            return;
+                            // Validate barcode format
+                            if (this.isValidBarcode(barcode)) {
+                                console.log('Valid barcode detected:', barcode);
+                                this.showScanningFeedback('Barcode found!', true);
+                                
+                                // Vibrate if supported
+                                if (navigator.vibrate) {
+                                    navigator.vibrate(200);
+                                }
+                                
+                                // Small delay to show success message
+                                setTimeout(() => {
+                                    this.currentBarcode = barcode;
+                                    this.stopScanning();
+                                    this.lookupProduct(barcode);
+                                }, 500);
+                                return;
+                            } else {
+                                console.log('Invalid barcode format detected:', barcode);
+                                this.showScanningFeedback('Invalid barcode, keep scanning...');
+                                // Continue scanning for valid barcode
+                            }
                         }
                     }
                 } catch (error) {
@@ -642,8 +721,77 @@
                 
                 // Continue scanning with a slight delay to prevent overwhelming the CPU
                 if (this.isScanning) {
-                    setTimeout(() => this.scanContinuously(), 250);
+                    setTimeout(() => this.scanContinuously(), 100);
                 }
+            }
+            
+            isValidBarcode(barcode) {
+                // Remove any non-digit characters
+                const cleanBarcode = barcode.replace(/\D/g, '');
+                
+                // Check common barcode lengths
+                const validLengths = [8, 12, 13, 14]; // EAN-8, UPC-A, EAN-13, ITF-14
+                
+                if (!validLengths.includes(cleanBarcode.length)) {
+                    return false;
+                }
+                
+                // Validate UPC-A (12 digits) checksum
+                if (cleanBarcode.length === 12) {
+                    return this.validateUPCA(cleanBarcode);
+                }
+                
+                // Validate EAN-13 (13 digits) checksum
+                if (cleanBarcode.length === 13) {
+                    return this.validateEAN13(cleanBarcode);
+                }
+                
+                // Validate EAN-8 (8 digits) checksum
+                if (cleanBarcode.length === 8) {
+                    return this.validateEAN8(cleanBarcode);
+                }
+                
+                // For other lengths, just check if it's all digits
+                return /^\d+$/.test(cleanBarcode);
+            }
+            
+            validateUPCA(barcode) {
+                if (barcode.length !== 12) return false;
+                
+                let sum = 0;
+                for (let i = 0; i < 11; i++) {
+                    const digit = parseInt(barcode[i]);
+                    sum += (i % 2 === 0) ? digit : digit * 3;
+                }
+                
+                const checkDigit = (10 - (sum % 10)) % 10;
+                return checkDigit === parseInt(barcode[11]);
+            }
+            
+            validateEAN13(barcode) {
+                if (barcode.length !== 13) return false;
+                
+                let sum = 0;
+                for (let i = 0; i < 12; i++) {
+                    const digit = parseInt(barcode[i]);
+                    sum += (i % 2 === 0) ? digit : digit * 3;
+                }
+                
+                const checkDigit = (10 - (sum % 10)) % 10;
+                return checkDigit === parseInt(barcode[12]);
+            }
+            
+            validateEAN8(barcode) {
+                if (barcode.length !== 8) return false;
+                
+                let sum = 0;
+                for (let i = 0; i < 7; i++) {
+                    const digit = parseInt(barcode[i]);
+                    sum += (i % 2 === 0) ? digit : digit * 3;
+                }
+                
+                const checkDigit = (10 - (sum % 10)) % 10;
+                return checkDigit === parseInt(barcode[7]);
             }
             
             stopScanning() {
@@ -673,30 +821,125 @@
             lookupManualBarcode() {
                 const barcode = document.getElementById('manual-barcode-input').value.trim();
                 if (barcode) {
-                    this.currentBarcode = barcode;
-                    this.lookupProduct(barcode);
+                    // Validate the manually entered barcode
+                    if (this.isValidBarcode(barcode)) {
+                        const cleanBarcode = barcode.replace(/\D/g, '');
+                        this.currentBarcode = cleanBarcode;
+                        this.lookupProduct(cleanBarcode);
+                        document.getElementById('manual-barcode-section').classList.add('hidden');
+                    } else {
+                        alert('Please enter a valid barcode (8, 12, 13, or 14 digits)');
+                        document.getElementById('manual-barcode-input').focus();
+                    }
                 }
             }
             
             async lookupProduct(barcode) {
-                // Mock product database - replace with real API in production
-                const products = {
-                    "123456789012": { name: "Organic Ground Turkey", category: "Meat" },
-                    "234567890123": { name: "Frozen Mixed Vegetables", category: "Vegetables" },
-                    "345678901234": { name: "Premium Ice Cream", category: "Desserts" }
-                };
+                // Clean the barcode
+                const cleanBarcode = barcode.replace(/\D/g, '');
                 
-                const product = products[barcode];
+                console.log('Looking up product for barcode:', cleanBarcode);
                 
-                // Pre-fill form
-                document.getElementById('item-name').value = product?.name || '';
-                document.getElementById('item-category').value = product?.category || 'Other';
-                document.getElementById('barcode-text').textContent = `Barcode: ${barcode}`;
+                // Show loading state
+                document.getElementById('item-name').value = 'Looking up product...';
+                document.getElementById('item-name').disabled = true;
+                
+                try {
+                    // Try real API first - Open Food Facts
+                    const response = await fetch(`https://world.openfoodfacts.org/api/v0/product/${cleanBarcode}.json`);
+                    const data = await response.json();
+                    
+                    if (data.status === 1 && data.product) {
+                        const product = data.product;
+                        
+                        // Extract product information
+                        const productName = product.product_name || product.product_name_en || 'Unknown Product';
+                        const category = this.mapCategory(product.categories || '');
+                        
+                        console.log('Product found:', productName, category);
+                        
+                        // Pre-fill form with real data
+                        document.getElementById('item-name').value = productName;
+                        document.getElementById('item-category').value = category;
+                        document.getElementById('item-name').disabled = false;
+                        
+                    } else {
+                        // Fall back to mock database
+                        console.log('Product not found in Open Food Facts, using mock data');
+                        const mockProduct = this.getMockProduct(cleanBarcode);
+                        
+                        document.getElementById('item-name').value = mockProduct.name;
+                        document.getElementById('item-category').value = mockProduct.category;
+                        document.getElementById('item-name').disabled = false;
+                    }
+                } catch (error) {
+                    console.error('API lookup failed:', error);
+                    
+                    // Fall back to mock database
+                    const mockProduct = this.getMockProduct(cleanBarcode);
+                    document.getElementById('item-name').value = mockProduct.name;
+                    document.getElementById('item-category').value = mockProduct.category;
+                    document.getElementById('item-name').disabled = false;
+                }
+                
+                // Show barcode info
+                document.getElementById('barcode-text').textContent = `Barcode: ${cleanBarcode}`;
                 document.getElementById('barcode-info').classList.remove('hidden');
                 document.getElementById('add-modal-title').textContent = 'Scanned Item';
                 document.getElementById('add-modal-icon').textContent = 'qr_code_scanner';
                 
                 this.showAddModal();
+            }
+            
+            mapCategory(categories) {
+                const categoryMap = {
+                    'meat': 'Meat',
+                    'poultry': 'Meat', 
+                    'beef': 'Meat',
+                    'pork': 'Meat',
+                    'fish': 'Meat',
+                    'seafood': 'Meat',
+                    'vegetable': 'Vegetables',
+                    'fruit': 'Fruits',
+                    'dairy': 'Dairy',
+                    'milk': 'Dairy',
+                    'cheese': 'Dairy',
+                    'yogurt': 'Dairy',
+                    'ice-cream': 'Desserts',
+                    'dessert': 'Desserts',
+                    'frozen-meal': 'Prepared Meals',
+                    'pizza': 'Prepared Meals',
+                    'ready-meal': 'Prepared Meals'
+                };
+                
+                const lowerCategories = categories.toLowerCase();
+                
+                for (const [key, value] of Object.entries(categoryMap)) {
+                    if (lowerCategories.includes(key)) {
+                        return value;
+                    }
+                }
+                
+                return 'Other';
+            }
+            
+            getMockProduct(barcode) {
+                // Enhanced mock database with real-looking products
+                const mockDatabase = {
+                    "123456789012": { name: "Organic Ground Turkey", category: "Meat" },
+                    "234567890123": { name: "Frozen Mixed Vegetables", category: "Vegetables" },
+                    "345678901234": { name: "Premium Ice Cream", category: "Desserts" },
+                    "456789012345": { name: "Chicken Breast", category: "Meat" },
+                    "567890123456": { name: "Frozen Berries", category: "Fruits" },
+                    "678901234567": { name: "Cheese Slices", category: "Dairy" },
+                    "789012345678": { name: "Frozen Pizza", category: "Prepared Meals" }
+                };
+                
+                // Return specific product if exists, otherwise generate generic
+                return mockDatabase[barcode] || {
+                    name: `Product ${barcode.slice(-4)}`,
+                    category: 'Other'
+                };
             }
             
             showAddModal(isManual = false) {
