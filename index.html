@@ -299,6 +299,9 @@
                         <span>Cancel</span>
                     </button>
                     <div class="flex space-x-2">
+                        <button id="debug-mode-btn" class="bg-black bg-opacity-50 px-3 py-2 rounded-lg text-xs font-medium">
+                            Debug: OFF
+                        </button>
                         <button id="manual-barcode-btn" class="bg-black bg-opacity-50 px-4 py-2 rounded-lg text-sm font-medium">
                             Manual Entry
                         </button>
@@ -497,6 +500,9 @@
                 this.categoryFilter = 'All';
                 this.sortBy = 'expiration';
                 this.isScanning = false;
+                this.scanAttempts = {};  // Track multiple scans of same barcode
+                this.lastScannedCode = null;
+                this.debugMode = false;
                 
                 this.init();
             }
@@ -516,6 +522,7 @@
                 
                 // Modal controls
                 document.getElementById('close-scanner').addEventListener('click', () => this.stopScanning());
+                document.getElementById('debug-mode-btn').addEventListener('click', () => this.toggleDebugMode());
                 document.getElementById('manual-barcode-btn').addEventListener('click', () => {
                     this.stopScanning();
                     this.showAddModal(true);
@@ -689,73 +696,107 @@
                     if (video && video.readyState === video.HAVE_ENOUGH_DATA && video.videoWidth > 0) {
                         const result = await this.scanner.decodeFromVideoElement(video);
                         if (result && result.text) {
-                            const barcode = result.text.trim();
+                            let barcode = result.text.trim();
                             
-                            // Validate barcode format
-                            if (this.isValidBarcode(barcode)) {
-                                console.log('Valid barcode detected:', barcode);
-                                this.showScanningFeedback('Barcode found!', true);
-                                
-                                // Vibrate if supported
-                                if (navigator.vibrate) {
-                                    navigator.vibrate(200);
+                            // Log raw barcode for debugging
+                            const barcodeType = this.getBarcodeType(cleanBarcode, result.format);
+                            console.log(`Raw barcode: ${barcode} | Clean: ${cleanBarcode} | Type: ${barcodeType} | Format: ${result.format || 'unknown'}`);
+                            
+                            // Show debug info if enabled
+                            if (this.debugMode) {
+                                this.showScanningFeedback(`${barcodeType}: ${cleanBarcode.slice(-6)}`);
+                            }
+                            
+                            // Clean the barcode
+                            const cleanBarcode = barcode.replace(/\D/g, '');
+                            
+                            // Validate barcode format (more permissive now)
+                            if (this.isValidBarcode(cleanBarcode)) {
+                                // Skip books for food app unless in debug mode
+                                const barcodeType = this.getBarcodeType(cleanBarcode);
+                                if (barcodeType.includes('Book') && !this.debugMode) {
+                                    console.log('Skipping book barcode:', cleanBarcode);
+                                    this.showScanningFeedback('Book detected, scanning for food items...');
+                                    // Continue scanning
+                                } else {
+                                    // Track multiple scans of the same barcode for confidence
+                                    if (!this.scanAttempts[cleanBarcode]) {
+                                        this.scanAttempts[cleanBarcode] = 0;
+                                    }
+                                    this.scanAttempts[cleanBarcode]++;
+                                    
+                                    console.log(`Valid barcode: ${cleanBarcode} | Type: ${barcodeType} | Attempt: ${this.scanAttempts[cleanBarcode]}`);
+                                    
+                                    // Require 2 consecutive scans of the same barcode for confidence (unless debug mode)
+                                    const requiredScans = this.debugMode ? 1 : 2;
+                                    if (this.scanAttempts[cleanBarcode] >= requiredScans || cleanBarcode === this.lastScannedCode) {
+                                        this.showScanningFeedback(`${barcodeType} confirmed!`, true);
+                                        
+                                        // Vibrate if supported
+                                        if (navigator.vibrate) {
+                                            navigator.vibrate([100, 50, 100]); // Double vibration for confirmation
+                                        }
+                                        
+                                        // Small delay to show success message
+                                        setTimeout(() => {
+                                            this.currentBarcode = cleanBarcode;
+                                            this.stopScanning();
+                                            this.lookupProduct(cleanBarcode);
+                                        }, 800);
+                                        return;
+                                    } else {
+                                        this.lastScannedCode = cleanBarcode;
+                                        this.showScanningFeedback(`${barcodeType}: ${cleanBarcode.slice(-4)}... (confirming...)`);
+                                    }
                                 }
-                                
-                                // Small delay to show success message
-                                setTimeout(() => {
-                                    this.currentBarcode = barcode;
-                                    this.stopScanning();
-                                    this.lookupProduct(barcode);
-                                }, 500);
-                                return;
                             } else {
-                                console.log('Invalid barcode format detected:', barcode);
-                                this.showScanningFeedback('Invalid barcode, keep scanning...');
-                                // Continue scanning for valid barcode
+                                if (this.debugMode) {
+                                    console.log('Invalid barcode format:', cleanBarcode, 'Length:', cleanBarcode.length);
+                                    this.showScanningFeedback(`Invalid: ${cleanBarcode} (${cleanBarcode.length} digits)`);
+                                }
                             }
                         }
                     }
                 } catch (error) {
                     // Continue scanning even if decode fails
+                    console.log('Scan decode error (normal):', error.message);
                 }
                 
-                // Continue scanning with a slight delay to prevent overwhelming the CPU
+                // Continue scanning with a slight delay
                 if (this.isScanning) {
-                    setTimeout(() => this.scanContinuously(), 100);
+                    setTimeout(() => this.scanContinuously(), 150);
                 }
             }
             
             isValidBarcode(barcode) {
-                // Remove any non-digit characters
-                const cleanBarcode = barcode.replace(/\D/g, '');
+                // Remove any non-digit characters and trim whitespace
+                const cleanBarcode = barcode.replace(/\D/g, '').trim();
                 
-                // Check common barcode lengths
-                const validLengths = [8, 12, 13, 14]; // EAN-8, UPC-A, EAN-13, ITF-14
-                
-                if (!validLengths.includes(cleanBarcode.length)) {
+                // Check if it's just digits
+                if (!/^\d+$/.test(cleanBarcode)) {
                     return false;
                 }
                 
-                // Validate UPC-A (12 digits) checksum
-                if (cleanBarcode.length === 12) {
-                    return this.validateUPCA(cleanBarcode);
+                // Check common barcode lengths (be more permissive)
+                const validLengths = [6, 8, 10, 12, 13, 14, 17]; // Added more formats
+                
+                if (!validLengths.includes(cleanBarcode.length)) {
+                    console.log(`Barcode length ${cleanBarcode.length} not in valid lengths:`, validLengths);
+                    return false;
                 }
                 
-                // Validate EAN-13 (13 digits) checksum
-                if (cleanBarcode.length === 13) {
-                    return this.validateEAN13(cleanBarcode);
+                // For now, be more permissive - just check length and digits
+                // We can add specific validation later if needed
+                if (cleanBarcode.length >= 6 && cleanBarcode.length <= 17) {
+                    console.log(`Accepting barcode: ${cleanBarcode} (length: ${cleanBarcode.length})`);
+                    return true;
                 }
                 
-                // Validate EAN-8 (8 digits) checksum
-                if (cleanBarcode.length === 8) {
-                    return this.validateEAN8(cleanBarcode);
-                }
-                
-                // For other lengths, just check if it's all digits
-                return /^\d+$/.test(cleanBarcode);
+                return false;
             }
             
-            validateUPCA(barcode) {
+            // Keep the validation functions but make them optional
+            isValidUPCA(barcode) {
                 if (barcode.length !== 12) return false;
                 
                 let sum = 0;
@@ -765,10 +806,12 @@
                 }
                 
                 const checkDigit = (10 - (sum % 10)) % 10;
-                return checkDigit === parseInt(barcode[11]);
+                const isValid = checkDigit === parseInt(barcode[11]);
+                console.log(`UPC-A validation for ${barcode}: ${isValid}`);
+                return isValid;
             }
             
-            validateEAN13(barcode) {
+            isValidEAN13(barcode) {
                 if (barcode.length !== 13) return false;
                 
                 let sum = 0;
@@ -778,10 +821,12 @@
                 }
                 
                 const checkDigit = (10 - (sum % 10)) % 10;
-                return checkDigit === parseInt(barcode[12]);
+                const isValid = checkDigit === parseInt(barcode[12]);
+                console.log(`EAN-13 validation for ${barcode}: ${isValid}`);
+                return isValid;
             }
             
-            validateEAN8(barcode) {
+            isValidEAN8(barcode) {
                 if (barcode.length !== 8) return false;
                 
                 let sum = 0;
@@ -791,11 +836,15 @@
                 }
                 
                 const checkDigit = (10 - (sum % 10)) % 10;
-                return checkDigit === parseInt(barcode[7]);
+                const isValid = checkDigit === parseInt(barcode[7]);
+                console.log(`EAN-8 validation for ${barcode}: ${isValid}`);
+                return isValid;
             }
             
             stopScanning() {
                 this.isScanning = false;
+                this.scanAttempts = {}; // Reset scan attempts
+                this.lastScannedCode = null;
                 
                 if (this.scanner) {
                     try {
@@ -815,10 +864,37 @@
                     video.srcObject = null;
                 }
                 
+                const feedback = document.getElementById('scanning-feedback');
+                if (feedback) {
+                    feedback.classList.remove('show');
+                }
+                
                 document.getElementById('scanner-modal').classList.add('hidden');
             }
             
-            lookupManualBarcode() {
+            toggleDebugMode() {
+                this.debugMode = !this.debugMode;
+                const btn = document.getElementById('debug-mode-btn');
+                btn.textContent = `Debug: ${this.debugMode ? 'ON' : 'OFF'}`;
+                
+                if (this.debugMode) {
+                    console.log('Debug mode enabled - will show all barcode scans');
+                }
+            }
+            
+            getBarcodeType(barcode, format) {
+                const length = barcode.length;
+                
+                if (length === 13 && barcode.startsWith('978')) return 'ISBN-13 (Book)';
+                if (length === 13 && barcode.startsWith('979')) return 'ISBN-13 (Book)';
+                if (length === 10) return 'ISBN-10 (Book)';
+                if (length === 13) return 'EAN-13 (Food/Product)';
+                if (length === 12) return 'UPC-A (Food/Product)';
+                if (length === 8) return 'EAN-8 (Small Product)';
+                if (length === 14) return 'ITF-14 (Case/Shipping)';
+                
+                return `Unknown (${length} digits)`;
+            }
                 const barcode = document.getElementById('manual-barcode-input').value.trim();
                 if (barcode) {
                     // Validate the manually entered barcode
