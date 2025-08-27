@@ -757,11 +757,17 @@
                     frequency: 10,
                     decoder: {
                         readers: [
-                            "code_128_reader",
                             "ean_reader",
-                            "ean_8_reader",
+                            "ean_8_reader", 
+                            "code_128_reader",
                             "code_39_reader"
-                        ]
+                        ],
+                        debug: {
+                            drawBoundingBox: true,
+                            showFrequency: false,
+                            drawScanline: true,
+                            showPattern: false
+                        }
                     },
                     locate: true
                 }, function(err) {
@@ -792,12 +798,28 @@
 
             Quagga.onDetected(function(data) {
                 const code = data.codeResult.code;
-                console.log('Barcode detected:', code);
+                const format = data.codeResult.format;
+                
+                console.log('Barcode detected:', code, 'Format:', format, 'Quality:', data.codeResult.quality);
+                
+                // Validate barcode format and length
+                if (!isValidBarcode(code, format)) {
+                    console.log('Invalid barcode detected, ignoring:', code);
+                    return;
+                }
+                
+                // Add a brief delay to prevent multiple rapid scans of the same code
+                if (window.lastScannedCode === code && Date.now() - window.lastScanTime < 2000) {
+                    return;
+                }
+                
+                window.lastScannedCode = code;
+                window.lastScanTime = Date.now();
                 
                 if (isBatchMode) {
                     // In batch mode, add to queue and keep scanning
                     addToBatchQueue(code);
-                    showLookupStatus(`Added ${code} to batch queue`, 'success');
+                    showLookupStatus(`Scanned: ${code} (${format})`, 'success');
                 } else {
                     // In single mode, stop scanning and look up
                     stopScanner();
@@ -909,6 +931,27 @@
             }
             
             return null;
+        }
+
+        function isValidBarcode(code, format) {
+            // Remove any non-digit characters for validation
+            const cleanCode = code.replace(/\D/g, '');
+            
+            switch(format) {
+                case 'ean_13':
+                case 'ean_reader':
+                    return cleanCode.length === 13 && /^\d{13}$/.test(cleanCode);
+                case 'ean_8':
+                    return cleanCode.length === 8 && /^\d{8}$/.test(cleanCode);
+                case 'code_128':
+                    // UPC-A codes are often read as Code 128
+                    return cleanCode.length >= 8 && cleanCode.length <= 14 && /^\d+$/.test(cleanCode);
+                case 'code_39':
+                    return code.length >= 3 && code.length <= 25;
+                default:
+                    // For unknown formats, require at least 8 digits
+                    return cleanCode.length >= 8 && /^\d+$/.test(cleanCode);
+            }
         }
 
         function showLookupStatus(message, type) {
