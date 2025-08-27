@@ -25,20 +25,30 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             touch-action: manipulation;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         .container {
             max-width: 935px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 16px;
         }
 
         .header {
             text-align: center;
-            padding: 30px 0;
+            padding: 20px 0 16px;
             background: white;
             border-bottom: 1px solid #dbdbdb;
             margin-bottom: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.06);
         }
 
         .header h1 {
@@ -256,63 +266,112 @@
             background: #1a1a1a;
         }
 
-        .scan-btn {
-            width: 100%;
-            padding: 12px;
-            background: #0095f6;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            min-height: 44px;
-            touch-action: manipulation;
-            font-family: 'Inter', inherit;
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #0095f6;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(0, 149, 246, 0.1);
         }
 
-        .scan-btn:hover {
+        .scan-btn:hover, .add-btn:hover {
             background: #1877f2;
             transform: translateY(-1px);
         }
 
-        .scan-btn:disabled {
-            background: #8e8e8e;
-            cursor: not-allowed;
-            transform: none;
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 16px 0;
+            padding: 0 16px;
+            overflow-x: hidden;
         }
 
-        #scannerContainer {
+        .stat-card {
+            background: white;
+            padding: 16px 12px;
+            border-radius: 16px;
             text-align: center;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid #dbdbdb;
+            transition: all 0.2s ease;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
-        .lookup-success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+        .stat-card:active {
+            transform: scale(0.98);
         }
 
-        .lookup-error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+        .stat-number {
+            font-size: 28px;
+            font-weight: 800;
+            color: #262626;
+            margin-bottom: 2px;
+            line-height: 1;
         }
 
-        .lookup-loading {
-            background: #d1ecf1;
-            color: #0c5460;
-            border: 1px solid #bee5eb;
+        .stat-label {
+            color: #8e8e8e;
+            font-weight: 500;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .empty-state {
-            text-align: center;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 1.2em;
-            padding: 60px 20px;
+        .items-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            padding: 0 16px 60px;
+        }
+
+        .item-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid #dbdbdb;
+            transition: all 0.2s ease;
+        }
+
+        .item-card:active {
+            transform: scale(0.98);
+        }
+
+        .item-header {
+            padding: 16px 16px 8px;
+        }
+
+        .item-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #262626;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .delete-btn {
+            width: 100%;
+            padding: 16px;
+            background: #262626;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            font-size: 16px;
+            touch-action: manipulation;
+            font-family: 'Inter', inherit;
+            min-height: 48px;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .delete-btn:active {
+            background: #1a1a1a;
+            transform: scale(0.98);
         }
 
         .storage-tabs {
@@ -341,15 +400,299 @@
             border-color: #0095f6;
         }
 
+        .add-btn {
+            padding: 16px 24px;
+            background: #0095f6;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            height: fit-content;
+            min-height: 48px;
+            touch-action: manipulation;
+            font-family: 'Inter', inherit;
+            -webkit-tap-highlight-color: transparent;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid #0095f6;
+        }
+
+        .add-btn:hover {
+            background: #1877f2;
+            border-color: #1877f2;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .add-btn:active {
+            transform: scale(0.98);
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #dbdbdb;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.2s ease;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #fafafa;
+            font-family: 'Inter', inherit;
+            min-height: 48px;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #0095f6;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(0, 149, 246, 0.1);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 16px 0;
+            padding: 0 16px;
+            overflow-x: hidden;
+        }
+
+        .scan-btn:disabled {
+            background: linear-gradient(135deg, #e0e0e0 0%, #bdbdbd 100%) !important;
+            cursor: not-allowed;
+            transform: none;
+            opacity: 0.7;
+        }
+
+        #scannerContainer {
+            text-align: center;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 16px;
+            margin: 8px 0;
+        }
+
+        .lookup-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .lookup-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .lookup-loading {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #8e8e8e;
+            font-size: 16px;
+            padding: 40px 20px;
+            background: white;
+            border-radius: 16px;
+            margin: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .storage-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 16px 0;
+            padding: 0 16px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .storage-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            padding: 12px 18px;
+            background: white;
+            border: 2px solid #dbdbdb;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Inter', inherit;
+            white-space: nowrap;
+            min-width: fit-content;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .tab-btn:active {
+            transform: scale(0.95);
+        }
+
+        .search-sort-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 16px;
+            align-items: stretch;
+        }
+
+        .search-box {
+            padding: 16px;
+            border: 2px solid #dbdbdb;
+            border-radius: 25px;
+            font-size: 16px;
+            font-family: 'Inter', inherit;
+            background: white;
+            transition: all 0.2s ease;
+            min-height: 48px;
+            box-sizing: border-box;
+        }
+
+        .sort-select {
+            padding: 16px;
+            border: 2px solid #dbdbdb;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: 'Inter', inherit;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-height: 48px;
+            box-sizing: border-box;
+        }
+
+        .clear-search {
+            padding: 16px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-height: 48px;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .clear-search:active {
+            background: #5a6268;
+            transform: scale(0.98);
+        }
+
+        .batch-remove {
+            padding: 8px 12px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            min-height: 36px;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         .tab-btn:hover:not(.active) {
             background: #f8f9fa;
             border-color: #8e8e8e;
         }
 
+        .tab-btn.pantry-tab.active {
+            background: #28a745;
+            border-color: #28a745;
+            color: white;
+        }
+
+        .tab-btn.fridge-tab.active {
+            background: #007bff;
+            border-color: #007bff;
+            color: white;
+        }
+
+        .tab-btn.freezer-tab.active {
+            background: #17a2b8;
+            border-color: #17a2b8;
+            color: white;
+        }
+
         .storage-location {
-            margin: 4px 0;
+            margin: 8px 0 4px 0;
             font-size: 14px;
             font-weight: 500;
+            padding: 6px 10px;
+            border-radius: 16px;
+            display: inline-block;
+        }
+
+        .location-pantry {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .location-fridge {
+            background: #cce7ff;
+            color: #004085;
+            border: 1px solid #99d6ff;
+        }
+
+        .location-freezer {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .item-details {
+            padding: 0 16px;
+            color: #8e8e8e;
+            font-size: 14px;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .days-left {
+            margin: 12px 16px;
+            padding: 14px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .fresh { 
+            background: #e8f5e8; 
+            color: #2e7d2e; 
+            border: 1px solid #c3e6c3;
+        }
+        .warning { 
+            background: #fff3cd; 
+            color: #856404; 
+            border: 1px solid #ffeaa7;
+        }
+        .expired { 
+            background: #f8d7da; 
+            color: #721c24; 
+            border: 1px solid #f5c6cb;
         }
 
         .batch-item {
@@ -397,9 +740,82 @@
             .header h1 {
                 font-size: 2em;
             }
+        }
 
-            .storage-tabs {
-                flex-wrap: wrap;
+        @media (min-width: 769px) {
+            .stats {
+                grid-template-columns: repeat(5, 1fr);
+                gap: 16px;
+                margin: 20px 0;
+                padding: 0 20px;
+            }
+
+            .items-grid {
+                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+                gap: 16px;
+                padding: 0 20px 40px;
+            }
+
+            .container {
+                padding: 0 20px;
+            }
+
+            .search-sort-container {
+                flex-direction: row;
+                gap: 15px;
+                margin: 20px;
+                align-items: center;
+            }
+
+            .search-box {
+                flex: 1;
+                min-width: 200px;
+            }
+
+            .primary-scan:hover {
+                background: #1877f2;
+                border-color: #1877f2;
+            }
+
+            .secondary-scan:hover {
+                background: #e8690b;
+                border-color: #e8690b;
+            }
+
+            .tertiary-scan:hover {
+                background: #5a3499;
+                border-color: #5a3499;
+            }
+
+            .scan-tab:hover:not(:disabled) {
+                transform: scale(1.02);
+            }
+
+            .tab-btn:hover:not(.active) {
+                background: #f8f9fa;
+                border-color: #8e8e8e;
+            }
+
+            .stat-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            }
+
+            .item-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            }
+
+            .clear-search:hover {
+                background: #5a6268;
+            }
+
+            .scan-btn:hover, .add-btn:hover {
+                transform: translateY(-1px);
+            }
+
+            .delete-btn:hover {
+                background: #1a1a1a;
             }
         }
     </style>
@@ -413,14 +829,14 @@
 
         <div class="add-form">
             <div class="scan-section" style="margin-bottom: 20px;">
-                <div class="scan-buttons" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px;">
-                    <button class="scan-btn" id="scanBtn" onclick="toggleScanner()">
+                <div class="scan-buttons" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px;">
+                    <button class="tab-btn scan-tab primary-scan" id="scanBtn" onclick="toggleScanner()">
                         📱 Scan Barcode
                     </button>
-                    <button class="scan-btn" id="batchBtn" onclick="toggleBatchMode()" style="background: #fd7e14;">
+                    <button class="tab-btn scan-tab secondary-scan" id="batchBtn" onclick="toggleBatchMode()">
                         📦 Batch Scan
                     </button>
-                    <button class="scan-btn" onclick="toggleManualEntry()" style="background: #6f42c1;">
+                    <button class="tab-btn scan-tab tertiary-scan" onclick="toggleManualEntry()">
                         ⌨️ Manual Entry
                     </button>
                 </div>
@@ -521,9 +937,21 @@
 
         <div class="storage-tabs">
             <button class="tab-btn active" onclick="switchTab('all')" id="allTab">All Items</button>
-            <button class="tab-btn" onclick="switchTab('pantry')" id="pantryTab">🏠 Pantry</button>
-            <button class="tab-btn" onclick="switchTab('fridge')" id="fridgeTab">❄️ Fridge</button>
-            <button class="tab-btn" onclick="switchTab('freezer')" id="freezerTab">🧊 Freezer</button>
+            <button class="tab-btn pantry-tab" onclick="switchTab('pantry')" id="pantryTab">🏠 Pantry</button>
+            <button class="tab-btn fridge-tab" onclick="switchTab('fridge')" id="fridgeTab">❄️ Fridge</button>
+            <button class="tab-btn freezer-tab" onclick="switchTab('freezer')" id="freezerTab">🧊 Freezer</button>
+        </div>
+
+        <div class="search-sort-container">
+            <input type="text" class="search-box" id="searchBox" placeholder="🔍 Search items by name..." onkeyup="handleSearch()">
+            <select class="sort-select" id="sortSelect" onchange="handleSort()">
+                <option value="expiration">Sort by Expiration</option>
+                <option value="name">Sort by Name</option>
+                <option value="date-added">Sort by Date Added</option>
+                <option value="location">Sort by Location</option>
+                <option value="category">Sort by Category</option>
+            </select>
+            <button class="clear-search" onclick="clearSearch()">Clear</button>
         </div>
 
         <div class="items-grid" id="itemsGrid">
@@ -540,6 +968,8 @@
         let isBatchMode = false;
         let batchQueue = [];
         let currentTab = 'all';
+        let searchTerm = '';
+        let sortBy = 'expiration';
 
         // Storage guidelines (months) - varies by location
         const storageGuidelines = {
@@ -650,6 +1080,65 @@
             updateDisplay();
         }
 
+        function handleSearch() {
+            searchTerm = document.getElementById('searchBox').value.toLowerCase();
+            updateDisplay();
+        }
+
+        function handleSort() {
+            sortBy = document.getElementById('sortSelect').value;
+            updateDisplay();
+        }
+
+        function clearSearch() {
+            document.getElementById('searchBox').value = '';
+            document.getElementById('sortSelect').value = 'expiration';
+            searchTerm = '';
+            sortBy = 'expiration';
+            updateDisplay();
+        }
+
+        function filterAndSortItems(items) {
+            let filteredItems = items;
+
+            // Filter by search term
+            if (searchTerm) {
+                filteredItems = filteredItems.filter(item => 
+                    item.name.toLowerCase().includes(searchTerm) ||
+                    item.category.toLowerCase().includes(searchTerm)
+                );
+            }
+
+            // Filter by current tab
+            if (currentTab !== 'all') {
+                filteredItems = filteredItems.filter(item => 
+                    item.location.toLowerCase() === currentTab
+                );
+            }
+
+            // Sort items
+            filteredItems.sort((a, b) => {
+                switch(sortBy) {
+                    case 'name':
+                        return a.name.localeCompare(b.name);
+                    case 'date-added':
+                        return b.addedDate - a.addedDate;
+                    case 'location':
+                        return a.location.localeCompare(b.location);
+                    case 'category':
+                        return a.category.localeCompare(b.category);
+                    case 'expiration':
+                    default:
+                        const statusA = getItemStatus(a);
+                        const statusB = getItemStatus(b);
+                        const statusOrder = { expired: 0, warning: 1, fresh: 2 };
+                        return statusOrder[statusA.status] - statusOrder[statusB.status];
+                }
+            });
+
+            return filteredItems;
+        }
+
         function getDaysInStorage(storedDate) {
             const now = new Date();
             const diffTime = Math.abs(now - storedDate);
@@ -699,28 +1188,25 @@
         function updateDisplay() {
             const grid = document.getElementById('itemsGrid');
             
-            let itemsToShow = foodItems;
-            if (currentTab !== 'all') {
-                itemsToShow = foodItems.filter(item => item.location.toLowerCase() === currentTab);
-            }
+            const itemsToShow = filterAndSortItems(foodItems);
             
             if (itemsToShow.length === 0) {
-                const emptyMessage = currentTab === 'all' ? 
-                    'Your storage is empty! Add some items to get started.' :
-                    `Your ${currentTab} is empty! Add some items to get started.`;
+                let emptyMessage = 'No items found.';
+                
+                if (searchTerm) {
+                    emptyMessage = `No items found matching "${searchTerm}".`;
+                } else if (currentTab === 'all') {
+                    emptyMessage = 'Your storage is empty! Add some items to get started.';
+                } else {
+                    emptyMessage = `Your ${currentTab} is empty! Add some items to get started.`;
+                }
+                
                 grid.innerHTML = `<div class="empty-state">${emptyMessage}</div>`;
                 updateStats();
                 return;
             }
 
-            const sortedItems = [...itemsToShow].sort((a, b) => {
-                const statusA = getItemStatus(a);
-                const statusB = getItemStatus(b);
-                const statusOrder = { expired: 0, warning: 1, fresh: 2 };
-                return statusOrder[statusA.status] - statusOrder[statusB.status];
-            });
-
-            grid.innerHTML = sortedItems.map(item => {
+            grid.innerHTML = itemsToShow.map(item => {
                 const status = getItemStatus(item);
                 const daysInStorage = getDaysInStorage(item.storedDate);
                 const locationClass = `location-${item.location.toLowerCase()}`;
