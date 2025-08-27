@@ -2,8 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FRZZR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#667eea">
+    <title>STOKD</title>
     <style>
         * {
             margin: 0;
@@ -16,6 +19,9 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            touch-action: manipulation;
         }
 
         .container {
@@ -51,7 +57,7 @@
 
         .form-row {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr auto;
+            grid-template-columns: 2fr 1fr 1fr 1fr auto;
             gap: 15px;
             align-items: end;
         }
@@ -70,6 +76,9 @@
             border-radius: 8px;
             font-size: 16px;
             transition: border-color 0.3s ease;
+            -webkit-appearance: none;
+            appearance: none;
+            background: white;
         }
 
         .form-group input:focus, .form-group select:focus {
@@ -86,8 +95,10 @@
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: all 0.3s ease;
             height: fit-content;
+            min-height: 48px;
+            touch-action: manipulation;
         }
 
         .add-btn:hover {
@@ -190,7 +201,9 @@
             border-radius: 6px;
             cursor: pointer;
             font-weight: 500;
-            transition: background 0.3s ease;
+            transition: all 0.3s ease;
+            min-height: 44px;
+            touch-action: manipulation;
         }
 
         .delete-btn:hover {
@@ -207,7 +220,9 @@
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: all 0.3s ease;
+            min-height: 48px;
+            touch-action: manipulation;
         }
 
         .scan-btn:hover {
@@ -265,8 +280,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🧊 FRZZR</h1>
-            <p>Keep track of what's in your freezer and never waste food again!</p>
+            <h1>📦 STOKD</h1>
+            <p>Track everything in your pantry, fridge, and freezer - never waste food again!</p>
         </div>
 
         <div class="add-form">
@@ -320,7 +335,15 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="itemName">Item Name</label>
-                    <input type="text" id="itemName" placeholder="e.g., Ground beef, Ice cream... or scan barcode above" required>
+                    <input type="text" id="itemName" placeholder="e.g., Ground beef, Rice, Milk... or scan barcode above" required>
+                </div>
+                <div class="form-group">
+                    <label for="storageLocation">Storage Location</label>
+                    <select id="storageLocation" onchange="toggleDateField()">
+                        <option value="Pantry">🏠 Pantry</option>
+                        <option value="Fridge">❄️ Fridge</option>
+                        <option value="Freezer">🧊 Freezer</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="category">Category</label>
@@ -328,14 +351,19 @@
                         <option value="Meat">Meat</option>
                         <option value="Vegetables">Vegetables</option>
                         <option value="Dairy">Dairy</option>
+                        <option value="Grains">Grains</option>
+                        <option value="Canned">Canned Goods</option>
+                        <option value="Snacks">Snacks</option>
+                        <option value="Condiments">Condiments</option>
+                        <option value="Beverages">Beverages</option>
                         <option value="Desserts">Desserts</option>
                         <option value="Prepared">Prepared Foods</option>
                         <option value="Other">Other</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="frozenDate">Date Frozen</label>
-                    <input type="date" id="frozenDate" required>
+                <div class="form-group" id="dateGroup">
+                    <label for="storedDate" id="dateLabel">Date Added</label>
+                    <input type="date" id="storedDate" required>
                 </div>
                 <button class="add-btn" onclick="addItem()">Add Item</button>
             </div>
@@ -347,130 +375,218 @@
                 <div class="stat-label">Total Items</div>
             </div>
             <div class="stat-card">
+                <div class="stat-number" id="pantryItems">0</div>
+                <div class="stat-label">Pantry</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="fridgeItems">0</div>
+                <div class="stat-label">Fridge</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="freezerItems">0</div>
+                <div class="stat-label">Freezer</div>
+            </div>
+            <div class="stat-card">
                 <div class="stat-number" id="expiringSoon">0</div>
                 <div class="stat-label">Use Soon</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-number" id="oldestDays">0</div>
-                <div class="stat-label">Oldest Item (days)</div>
-            </div>
+        </div>
+
+        <div class="storage-tabs">
+            <button class="tab-btn active" onclick="switchTab('all')" id="allTab">All Items</button>
+            <button class="tab-btn" onclick="switchTab('pantry')" id="pantryTab">🏠 Pantry</button>
+            <button class="tab-btn" onclick="switchTab('fridge')" id="fridgeTab">❄️ Fridge</button>
+            <button class="tab-btn" onclick="switchTab('freezer')" id="freezerTab">🧊 Freezer</button>
         </div>
 
         <div class="items-grid" id="itemsGrid">
             <div class="empty-state">
-                Your freezer is empty! Add some items to get started.
+                Your storage is empty! Add some items to get started.
             </div>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
     <script>
-        let freezerItems = [];
+        let foodItems = [];
         let isScanning = false;
         let isBatchMode = false;
         let batchQueue = [];
+        let currentTab = 'all';
 
         // Set today's date as default
-        document.getElementById('frozenDate').valueAsDate = new Date();
+        document.getElementById('storedDate').valueAsDate = new Date();
 
-        // Freezer storage guidelines (months)
+        // Storage guidelines (months) - varies by location
         const storageGuidelines = {
-            'Meat': 6,
-            'Vegetables': 12,
-            'Dairy': 3,
-            'Desserts': 4,
-            'Prepared': 3,
-            'Other': 6
+            'Pantry': {
+                'Meat': 0, // No meat in pantry
+                'Vegetables': 12, // Canned/dried
+                'Dairy': 0, // No dairy in pantry
+                'Grains': 24,
+                'Canned': 36,
+                'Snacks': 12,
+                'Condiments': 24,
+                'Beverages': 12,
+                'Desserts': 12,
+                'Prepared': 6, // Shelf-stable
+                'Other': 12
+            },
+            'Fridge': {
+                'Meat': 0.25, // 1 week
+                'Vegetables': 2,
+                'Dairy': 1,
+                'Grains': 1, // Cooked grains
+                'Canned': 0.5, // Once opened
+                'Snacks': 3,
+                'Condiments': 6, // Once opened
+                'Beverages': 1,
+                'Desserts': 1,
+                'Prepared': 0.25, // 1 week
+                'Other': 1
+            },
+            'Freezer': {
+                'Meat': 6,
+                'Vegetables': 12,
+                'Dairy': 3,
+                'Grains': 6,
+                'Canned': 0, // Don't freeze cans
+                'Snacks': 6,
+                'Condiments': 12,
+                'Beverages': 6,
+                'Desserts': 4,
+                'Prepared': 3,
+                'Other': 6
+            }
         };
+
+        function toggleDateField() {
+            const location = document.getElementById('storageLocation').value;
+            const dateLabel = document.getElementById('dateLabel');
+            
+            if (location === 'Freezer') {
+                dateLabel.textContent = 'Date Frozen';
+            } else {
+                dateLabel.textContent = 'Date Added';
+            }
+        }
 
         function addItem() {
             const name = document.getElementById('itemName').value.trim();
             const category = document.getElementById('category').value;
-            const frozenDate = document.getElementById('frozenDate').value;
+            const location = document.getElementById('storageLocation').value;
+            const storedDate = document.getElementById('storedDate').value;
 
-            if (!name || !frozenDate) {
+            if (!name || !storedDate) {
                 alert('Please fill in all fields!');
                 return;
             }
 
             // Fix timezone issue by creating date in local timezone
-            const dateParts = frozenDate.split('-');
+            const dateParts = storedDate.split('-');
             const localDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
 
             const item = {
                 id: Date.now(),
                 name: name,
                 category: category,
-                frozenDate: localDate,
+                location: location,
+                storedDate: localDate,
                 addedDate: new Date()
             };
 
-            freezerItems.push(item);
+            foodItems.push(item);
             
             // Clear form
             document.getElementById('itemName').value = '';
-            document.getElementById('frozenDate').valueAsDate = new Date();
+            document.getElementById('storedDate').valueAsDate = new Date();
 
             updateDisplay();
         }
 
         function deleteItem(id) {
-            freezerItems = freezerItems.filter(item => item.id !== id);
+            foodItems = foodItems.filter(item => item.id !== id);
             updateDisplay();
         }
 
-        function getDaysInFreezer(frozenDate) {
+        function switchTab(tab) {
+            currentTab = tab;
+            
+            // Update tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tab + 'Tab').classList.add('active');
+            
+            updateDisplay();
+        }
+
+        function getDaysInStorage(storedDate) {
             const now = new Date();
-            const diffTime = Math.abs(now - frozenDate);
+            const diffTime = Math.abs(now - storedDate);
             return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         }
 
         function getItemStatus(item) {
-            const daysInFreezer = getDaysInFreezer(item.frozenDate);
-            const maxDays = storageGuidelines[item.category] * 30; // Convert months to days
+            const daysInStorage = getDaysInStorage(item.storedDate);
+            const maxDays = storageGuidelines[item.location][item.category] * 30; // Convert months to days
+            
+            // If storage time is 0 (not recommended for this location), mark as warning
+            if (maxDays === 0) {
+                return { status: 'warning', daysLeft: 0, message: 'Not recommended for this location!' };
+            }
+            
             const warningDays = maxDays * 0.8; // 80% of max storage time
 
-            if (daysInFreezer >= maxDays) {
+            if (daysInStorage >= maxDays) {
                 return { status: 'expired', daysLeft: 0, message: 'Use immediately!' };
-            } else if (daysInFreezer >= warningDays) {
-                return { status: 'warning', daysLeft: maxDays - daysInFreezer, message: `Use within ${maxDays - daysInFreezer} days` };
+            } else if (daysInStorage >= warningDays) {
+                return { status: 'warning', daysLeft: maxDays - daysInStorage, message: `Use within ${maxDays - daysInStorage} days` };
             } else {
-                return { status: 'fresh', daysLeft: maxDays - daysInFreezer, message: `Good for ${maxDays - daysInFreezer} more days` };
+                return { status: 'fresh', daysLeft: maxDays - daysInStorage, message: `Good for ${maxDays - daysInStorage} more days` };
             }
         }
 
         function updateStats() {
-            const total = freezerItems.length;
+            const total = foodItems.length;
+            const pantryCount = foodItems.filter(item => item.location === 'Pantry').length;
+            const fridgeCount = foodItems.filter(item => item.location === 'Fridge').length;
+            const freezerCount = foodItems.filter(item => item.location === 'Freezer').length;
+            
             let expiringSoon = 0;
-            let oldestDays = 0;
 
-            freezerItems.forEach(item => {
+            foodItems.forEach(item => {
                 const status = getItemStatus(item);
                 if (status.status === 'warning' || status.status === 'expired') {
                     expiringSoon++;
                 }
-                const daysInFreezer = getDaysInFreezer(item.frozenDate);
-                if (daysInFreezer > oldestDays) {
-                    oldestDays = daysInFreezer;
-                }
             });
 
             document.getElementById('totalItems').textContent = total;
+            document.getElementById('pantryItems').textContent = pantryCount;
+            document.getElementById('fridgeItems').textContent = fridgeCount;
+            document.getElementById('freezerItems').textContent = freezerCount;
             document.getElementById('expiringSoon').textContent = expiringSoon;
-            document.getElementById('oldestDays').textContent = oldestDays;
         }
 
         function updateDisplay() {
             const grid = document.getElementById('itemsGrid');
             
-            if (freezerItems.length === 0) {
-                grid.innerHTML = '<div class="empty-state">Your freezer is empty! Add some items to get started.</div>';
+            // Filter items based on current tab
+            let itemsToShow = foodItems;
+            if (currentTab !== 'all') {
+                itemsToShow = foodItems.filter(item => item.location.toLowerCase() === currentTab);
+            }
+            
+            if (itemsToShow.length === 0) {
+                const emptyMessage = currentTab === 'all' ? 
+                    'Your storage is empty! Add some items to get started.' :
+                    `Your ${currentTab} is empty! Add some items to get started.`;
+                grid.innerHTML = `<div class="empty-state">${emptyMessage}</div>`;
                 updateStats();
                 return;
             }
 
             // Sort by status (expired first, then warning, then fresh)
-            const sortedItems = [...freezerItems].sort((a, b) => {
+            const sortedItems = [...itemsToShow].sort((a, b) => {
                 const statusA = getItemStatus(a);
                 const statusB = getItemStatus(b);
                 const statusOrder = { expired: 0, warning: 1, fresh: 2 };
@@ -479,19 +595,21 @@
 
             grid.innerHTML = sortedItems.map(item => {
                 const status = getItemStatus(item);
-                const daysInFreezer = getDaysInFreezer(item.frozenDate);
+                const daysInStorage = getDaysInStorage(item.storedDate);
+                const locationClass = `location-${item.location.toLowerCase()}`;
                 
                 return `
                     <div class="item-card">
                         <div class="item-header">
                             <div>
                                 <div class="item-name">${item.name}</div>
+                                <div class="storage-location ${locationClass}">${getLocationIcon(item.location)} ${item.location}</div>
                                 <div class="item-category">${item.category}</div>
                             </div>
                         </div>
                         <div class="item-details">
-                            Frozen: ${item.frozenDate.toLocaleDateString()}<br>
-                            In freezer: ${daysInFreezer} days
+                            ${item.location === 'Freezer' ? 'Frozen' : 'Added'}: ${item.storedDate.toLocaleDateString()}<br>
+                            In ${item.location.toLowerCase()}: ${daysInStorage} days
                         </div>
                         <div class="days-left ${status.status}">
                             ${status.message}
@@ -502,6 +620,15 @@
             }).join('');
 
             updateStats();
+        }
+
+        function getLocationIcon(location) {
+            switch(location) {
+                case 'Pantry': return '🏠';
+                case 'Fridge': return '❄️';
+                case 'Freezer': return '🧊';
+                default: return '📦';
+            }
         }
 
         // Handle Enter key in item name input
@@ -629,16 +756,18 @@
                 return;
             }
 
-            // Get the frozen date from form or use today
-            const frozenDateInput = document.getElementById('frozenDate').value;
-            let frozenDate;
+            // Get values from form
+            const storedDateInput = document.getElementById('storedDate').value;
+            const location = document.getElementById('storageLocation').value;
             
-            if (frozenDateInput) {
+            let storedDate;
+            
+            if (storedDateInput) {
                 // Fix timezone issue by creating date in local timezone
-                const dateParts = frozenDateInput.split('-');
-                frozenDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+                const dateParts = storedDateInput.split('-');
+                storedDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
             } else {
-                frozenDate = new Date();
+                storedDate = new Date();
             }
 
             let addedCount = 0;
@@ -648,17 +777,24 @@
                     id: Date.now() + Math.random(), // Ensure unique IDs
                     name: batchItem.name,
                     category: batchItem.category,
-                    frozenDate: frozenDate,
+                    location: location,
+                    storedDate: storedDate,
                     addedDate: new Date()
                 };
                 
-                freezerItems.push(item);
+                foodItems.push(item);
                 addedCount++;
             });
 
             clearBatchQueue();
             updateDisplay();
-            showLookupStatus(`Added ${addedCount} items to freezer!`, 'success');
+            showLookupStatus(`Added ${addedCount} items to ${location.toLowerCase()}!`, 'success');
+            
+            // Hide batch queue if not in batch mode
+            if (!isBatchMode) {
+                document.getElementById('batchQueue').style.display = 'none';
+            }
+        }er!`, 'success');
             
             // Hide batch queue if not in batch mode
             if (!isBatchMode) {
@@ -920,6 +1056,11 @@
                 'Meat': ['meat', 'beef', 'chicken', 'pork', 'turkey', 'fish', 'salmon', 'tuna', 'bacon', 'sausage'],
                 'Vegetables': ['vegetables', 'broccoli', 'spinach', 'carrots', 'peas', 'corn', 'beans', 'potato'],
                 'Dairy': ['milk', 'cheese', 'yogurt', 'butter', 'cream', 'dairy'],
+                'Grains': ['rice', 'pasta', 'bread', 'cereal', 'oats', 'quinoa', 'flour', 'wheat'],
+                'Canned': ['canned', 'soup', 'sauce', 'tomato', 'beans'],
+                'Snacks': ['chips', 'crackers', 'nuts', 'cookies', 'popcorn'],
+                'Condiments': ['ketchup', 'mustard', 'mayo', 'dressing', 'oil', 'vinegar'],
+                'Beverages': ['juice', 'soda', 'water', 'coffee', 'tea'],
                 'Desserts': ['ice cream', 'frozen yogurt', 'dessert', 'cake', 'cookie', 'chocolate'],
                 'Prepared': ['pizza', 'meal', 'dinner', 'lunch', 'prepared', 'frozen meal', 'burrito', 'sandwich']
             };
