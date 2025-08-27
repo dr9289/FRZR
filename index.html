@@ -6,6 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#667eea">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Pacifico&display=swap" rel="stylesheet">
     <title>FreshKeep</title>
     <style>
         * {
@@ -15,48 +16,57 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #fafafa;
             min-height: 100vh;
-            padding: 20px;
+            padding: 0;
+            margin: 0;
+            color: #262626;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             touch-action: manipulation;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 935px;
             margin: 0 auto;
+            padding: 0 20px;
         }
 
         .header {
             text-align: center;
-            color: white;
-            margin-bottom: 30px;
+            padding: 30px 0;
+            background: white;
+            border-bottom: 1px solid #dbdbdb;
+            margin-bottom: 0;
         }
 
         .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-            font-family: 'Proxima Nova', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-            font-weight: 700;
-            letter-spacing: -0.02em;
+            font-size: 2.2em;
+            margin-bottom: 8px;
+            font-family: 'Pacifico', cursive;
+            font-weight: 400;
+            letter-spacing: 0.5px;
             line-height: 1.1;
+            color: #262626;
+            text-shadow: none;
         }
 
         .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
+            font-size: 14px;
+            color: #8e8e8e;
+            font-weight: 400;
+            margin: 0;
+            opacity: 1;
         }
 
         .add-form {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            border: 1px solid #dbdbdb;
         }
 
         .form-row {
@@ -68,174 +78,209 @@
 
         .form-group label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
             font-weight: 600;
-            color: #333;
+            color: #262626;
+            font-size: 14px;
         }
 
         .form-group input, .form-group select {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #e1e5e9;
+            padding: 12px 16px;
+            border: 1.5px solid #dbdbdb;
             border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.3s ease;
+            font-size: 14px;
+            transition: all 0.2s ease;
             -webkit-appearance: none;
             appearance: none;
-            background: white;
+            background: #fafafa;
+            font-family: 'Inter', inherit;
         }
 
         .form-group input:focus, .form-group select:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #0095f6;
+            background: white;
         }
 
         .add-btn {
             padding: 12px 24px;
-            background: #667eea;
+            background: #0095f6;
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             height: fit-content;
-            min-height: 48px;
+            min-height: 44px;
             touch-action: manipulation;
+            font-family: 'Inter', inherit;
         }
 
         .add-btn:hover {
-            background: #5a67d8;
+            background: #1877f2;
+            transform: translateY(-1px);
         }
 
         .stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+            padding: 0 20px;
         }
 
         .stat-card {
-            background: rgba(255, 255, 255, 0.9);
+            background: white;
             padding: 20px;
             border-radius: 12px;
             text-align: center;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+            border: 1px solid #dbdbdb;
+            transition: all 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
         .stat-number {
-            font-size: 2em;
-            font-weight: bold;
-            color: #667eea;
-            margin-bottom: 5px;
+            font-size: 24px;
+            font-weight: 800;
+            color: #262626;
+            margin-bottom: 4px;
         }
 
         .stat-label {
-            color: #666;
+            color: #8e8e8e;
             font-weight: 500;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .items-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+            padding: 0 20px 40px;
         }
 
         .item-card {
-            background: rgba(255, 255, 255, 0.95);
+            background: white;
             border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+            border: 1px solid #dbdbdb;
+            transition: all 0.2s ease;
         }
 
         .item-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
         }
 
         .item-header {
-            display: flex;
-            justify-content: between;
-            align-items: flex-start;
-            margin-bottom: 15px;
+            padding: 16px 16px 12px;
         }
 
         .item-name {
-            font-size: 1.2em;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 5px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #262626;
+            margin-bottom: 6px;
+            line-height: 1.3;
         }
 
         .item-category {
-            background: #667eea;
-            color: white;
+            background: #f1f3f4;
+            color: #5f6368;
             padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.8em;
+            border-radius: 12px;
+            font-size: 12px;
             font-weight: 500;
+            display: inline-block;
         }
 
         .item-details {
-            color: #666;
-            margin-bottom: 15px;
+            padding: 0 16px;
+            color: #8e8e8e;
+            font-size: 14px;
+            margin-bottom: 12px;
+            line-height: 1.4;
         }
 
         .days-left {
-            font-weight: 600;
-            padding: 8px 12px;
-            border-radius: 6px;
+            margin: 12px 16px;
+            padding: 12px;
+            border-radius: 8px;
             text-align: center;
-            margin-bottom: 15px;
+            font-weight: 600;
+            font-size: 14px;
         }
 
-        .fresh { background: #d4edda; color: #155724; }
-        .warning { background: #fff3cd; color: #856404; }
-        .expired { background: #f8d7da; color: #721c24; }
+        .fresh { 
+            background: #e8f5e8; 
+            color: #2e7d2e; 
+            border: 1px solid #c3e6c3;
+        }
+        .warning { 
+            background: #fff3cd; 
+            color: #856404; 
+            border: 1px solid #ffeaa7;
+        }
+        .expired { 
+            background: #f8d7da; 
+            color: #721c24; 
+            border: 1px solid #f5c6cb;
+        }
 
         .delete-btn {
             width: 100%;
-            padding: 10px;
-            background: #dc3545;
+            padding: 12px;
+            background: #262626;
             color: white;
             border: none;
-            border-radius: 6px;
             cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            min-height: 44px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            font-size: 14px;
             touch-action: manipulation;
+            font-family: 'Inter', inherit;
         }
 
         .delete-btn:hover {
-            background: #c82333;
+            background: #1a1a1a;
         }
 
         .scan-btn {
             width: 100%;
-            padding: 15px;
-            background: #28a745;
+            padding: 12px;
+            background: #0095f6;
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            min-height: 48px;
+            transition: all 0.2s ease;
+            min-height: 44px;
             touch-action: manipulation;
+            font-family: 'Inter', inherit;
         }
 
         .scan-btn:hover {
-            background: #218838;
+            background: #1877f2;
+            transform: translateY(-1px);
         }
 
         .scan-btn:disabled {
-            background: #6c757d;
+            background: #8e8e8e;
             cursor: not-allowed;
+            transform: none;
         }
 
         #scannerContainer {
@@ -270,6 +315,80 @@
             padding: 60px 20px;
         }
 
+        .storage-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            padding: 0 20px;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid #dbdbdb;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Inter', inherit;
+        }
+
+        .tab-btn.active {
+            background: #0095f6;
+            color: white;
+            border-color: #0095f6;
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: #f8f9fa;
+            border-color: #8e8e8e;
+        }
+
+        .storage-location {
+            margin: 4px 0;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .batch-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            border: 1px solid #e1e5e9;
+        }
+
+        .batch-item-info {
+            flex: 1;
+        }
+
+        .batch-item-name {
+            font-weight: 600;
+            color: #262626;
+            font-size: 14px;
+        }
+
+        .batch-item-details {
+            color: #8e8e8e;
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+        .batch-remove {
+            padding: 4px 8px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
         @media (max-width: 768px) {
             .form-row {
                 grid-template-columns: 1fr;
@@ -277,6 +396,10 @@
             
             .header h1 {
                 font-size: 2em;
+            }
+
+            .storage-tabs {
+                flex-wrap: wrap;
             }
         }
     </style>
@@ -290,14 +413,14 @@
 
         <div class="add-form">
             <div class="scan-section" style="margin-bottom: 20px;">
-                <div class="scan-buttons" style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; margin-bottom: 15px;">
+                <div class="scan-buttons" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px;">
                     <button class="scan-btn" id="scanBtn" onclick="toggleScanner()">
                         📱 Scan Barcode
                     </button>
                     <button class="scan-btn" id="batchBtn" onclick="toggleBatchMode()" style="background: #fd7e14;">
                         📦 Batch Scan
                     </button>
-                    <button class="scan-btn" onclick="toggleManualEntry()" style="background: #6f42c1; min-width: 120px;">
+                    <button class="scan-btn" onclick="toggleManualEntry()" style="background: #6f42c1;">
                         ⌨️ Manual Entry
                     </button>
                 </div>
@@ -418,51 +541,58 @@
         let batchQueue = [];
         let currentTab = 'all';
 
-        // Set today's date as default
-        document.getElementById('storedDate').valueAsDate = new Date();
-
         // Storage guidelines (months) - varies by location
         const storageGuidelines = {
             'Pantry': {
-                'Meat': 0, // No meat in pantry
-                'Vegetables': 12, // Canned/dried
-                'Dairy': 0, // No dairy in pantry
-                'Grains': 24,
-                'Canned': 36,
-                'Snacks': 12,
-                'Condiments': 24,
-                'Beverages': 12,
-                'Desserts': 12,
-                'Prepared': 6, // Shelf-stable
-                'Other': 12
+                'Meat': 0, 'Vegetables': 12, 'Dairy': 0, 'Grains': 24, 'Canned': 36, 
+                'Snacks': 12, 'Condiments': 24, 'Beverages': 12, 'Desserts': 12, 
+                'Prepared': 6, 'Other': 12
             },
             'Fridge': {
-                'Meat': 0.25, // 1 week
-                'Vegetables': 2,
-                'Dairy': 1,
-                'Grains': 1, // Cooked grains
-                'Canned': 0.5, // Once opened
-                'Snacks': 3,
-                'Condiments': 6, // Once opened
-                'Beverages': 1,
-                'Desserts': 1,
-                'Prepared': 0.25, // 1 week
-                'Other': 1
+                'Meat': 0.25, 'Vegetables': 2, 'Dairy': 1, 'Grains': 1, 'Canned': 0.5,
+                'Snacks': 3, 'Condiments': 6, 'Beverages': 1, 'Desserts': 1, 
+                'Prepared': 0.25, 'Other': 1
             },
             'Freezer': {
-                'Meat': 6,
-                'Vegetables': 12,
-                'Dairy': 3,
-                'Grains': 6,
-                'Canned': 0, // Don't freeze cans
-                'Snacks': 6,
-                'Condiments': 12,
-                'Beverages': 6,
-                'Desserts': 4,
-                'Prepared': 3,
-                'Other': 6
+                'Meat': 6, 'Vegetables': 12, 'Dairy': 3, 'Grains': 6, 'Canned': 0,
+                'Snacks': 6, 'Condiments': 12, 'Beverages': 6, 'Desserts': 4, 
+                'Prepared': 3, 'Other': 6
             }
         };
+
+        // Initialize date field after DOM loads
+        window.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('storedDate').valueAsDate = new Date();
+        });
+
+        function toggleScanner() {
+            if (isScanning) {
+                stopScanner();
+            } else {
+                isBatchMode = false;
+                startScanner();
+            }
+        }
+
+        function toggleBatchMode() {
+            if (isScanning && isBatchMode) {
+                stopScanner();
+            } else {
+                isBatchMode = true;
+                document.getElementById('batchQueue').style.display = 'block';
+                startScanner();
+            }
+        }
+
+        function toggleManualEntry() {
+            const manualEntry = document.getElementById('manualEntry');
+            const isVisible = manualEntry.style.display !== 'none';
+            manualEntry.style.display = isVisible ? 'none' : 'block';
+            
+            if (!isVisible) {
+                document.getElementById('manualBarcode').focus();
+            }
+        }
 
         function toggleDateField() {
             const location = document.getElementById('storageLocation').value;
@@ -486,7 +616,6 @@
                 return;
             }
 
-            // Fix timezone issue by creating date in local timezone
             const dateParts = storedDate.split('-');
             const localDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
 
@@ -501,7 +630,6 @@
 
             foodItems.push(item);
             
-            // Clear form
             document.getElementById('itemName').value = '';
             document.getElementById('storedDate').valueAsDate = new Date();
 
@@ -516,7 +644,6 @@
         function switchTab(tab) {
             currentTab = tab;
             
-            // Update tab buttons
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(tab + 'Tab').classList.add('active');
             
@@ -531,14 +658,13 @@
 
         function getItemStatus(item) {
             const daysInStorage = getDaysInStorage(item.storedDate);
-            const maxDays = storageGuidelines[item.location][item.category] * 30; // Convert months to days
+            const maxDays = storageGuidelines[item.location][item.category] * 30;
             
-            // If storage time is 0 (not recommended for this location), mark as warning
             if (maxDays === 0) {
                 return { status: 'warning', daysLeft: 0, message: 'Not recommended for this location!' };
             }
             
-            const warningDays = maxDays * 0.8; // 80% of max storage time
+            const warningDays = maxDays * 0.8;
 
             if (daysInStorage >= maxDays) {
                 return { status: 'expired', daysLeft: 0, message: 'Use immediately!' };
@@ -556,7 +682,6 @@
             const freezerCount = foodItems.filter(item => item.location === 'Freezer').length;
             
             let expiringSoon = 0;
-
             foodItems.forEach(item => {
                 const status = getItemStatus(item);
                 if (status.status === 'warning' || status.status === 'expired') {
@@ -574,7 +699,6 @@
         function updateDisplay() {
             const grid = document.getElementById('itemsGrid');
             
-            // Filter items based on current tab
             let itemsToShow = foodItems;
             if (currentTab !== 'all') {
                 itemsToShow = foodItems.filter(item => item.location.toLowerCase() === currentTab);
@@ -589,7 +713,6 @@
                 return;
             }
 
-            // Sort by status (expired first, then warning, then fresh)
             const sortedItems = [...itemsToShow].sort((a, b) => {
                 const statusA = getItemStatus(a);
                 const statusB = getItemStatus(b);
@@ -635,52 +758,397 @@
             }
         }
 
-        // Handle Enter key in item name input
-        document.getElementById('itemName').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                addItem();
+        function lookupManualBarcode() {
+            const barcode = document.getElementById('manualBarcode').value.trim();
+            if (!barcode) {
+                showLookupStatus('Please enter a barcode', 'error');
+                return;
             }
-        });
-
-        // Handle Enter key in manual barcode input
-        document.getElementById('manualBarcode').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                lookupManualBarcode();
-            }
-        });
-
-        // Initial display update
-        updateDisplay();
-
-        // Barcode scanning functions
-        function toggleScanner() {
-            if (isScanning) {
-                stopScanner();
-            } else {
-                isBatchMode = false;
-                startScanner();
-            }
-        }
-
-        function toggleBatchMode() {
-            if (isScanning && isBatchMode) {
-                stopScanner();
-            } else {
-                isBatchMode = true;
-                document.getElementById('batchQueue').style.display = 'block';
-                startScanner();
-            }
-        }
-
-        function toggleManualEntry() {
-            const manualEntry = document.getElementById('manualEntry');
-            const isVisible = manualEntry.style.display !== 'none';
-            manualEntry.style.display = isVisible ? 'none' : 'block';
             
-            if (!isVisible) {
-                document.getElementById('manualBarcode').focus();
+            if (isBatchMode) {
+                addToBatchQueue(barcode, 'Manual Entry');
+                document.getElementById('manualBarcode').value = '';
+            } else {
+                lookupProduct(barcode);
+                document.getElementById('manualBarcode').value = '';
             }
         }
+
+        function addToBatchQueue(barcode, productName = null, category = null) {
+            if (batchQueue.find(item => item.barcode === barcode)) {
+                showLookupStatus('Item already in batch queue', 'error');
+                return;
+            }
+
+            const batchItem = {
+                id: Date.now(),
+                barcode: barcode,
+                name: productName || `Product ${barcode}`,
+                category: category || 'Other',
+                status: 'pending'
+            };
+
+            batchQueue.push(batchItem);
+            updateBatchDisplay();
+            
+            if (!productName) {
+                lookupProductForBatch(barcode, batchItem.id);
+            }
+        }
+
+        function updateBatchDisplay() {
+            const batchCount = document.getElementById('batchCount');
+            const batchItems = document.getElementById('batchItems');
+            
+            batchCount.textContent = batchQueue.length;
+            
+            if (batchQueue.length === 0) {
+                batchItems.innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">No items in queue</div>';
+                return;
+            }
+
+            batchItems.innerHTML = batchQueue.map(item => `
+                <div class="batch-item">
+                    <div class="batch-item-info">
+                        <div class="batch-item-name">${item.name}</div>
+                        <div class="batch-item-details">${item.category} • ${item.barcode} ${item.status === 'loading' ? '(looking up...)' : ''}</div>
+                    </div>
+                    <button class="batch-remove" onclick="removeFromBatch(${item.id})">Remove</button>
+                </div>
+            `).join('');
+        }
+
+        function removeFromBatch(id) {
+            batchQueue = batchQueue.filter(item => item.id !== id);
+            updateBatchDisplay();
+        }
+
+        function clearBatchQueue() {
+            batchQueue = [];
+            updateBatchDisplay();
+        }
+
+        function addAllBatchItems() {
+            if (batchQueue.length === 0) {
+                showLookupStatus('No items in batch queue', 'error');
+                return;
+            }
+
+            const storedDateInput = document.getElementById('storedDate').value;
+            const location = document.getElementById('storageLocation').value;
+            
+            let storedDate;
+            if (storedDateInput) {
+                const dateParts = storedDateInput.split('-');
+                storedDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+            } else {
+                storedDate = new Date();
+            }
+
+            let addedCount = 0;
+            batchQueue.forEach(batchItem => {
+                const item = {
+                    id: Date.now() + Math.random(),
+                    name: batchItem.name,
+                    category: batchItem.category,
+                    location: location,
+                    storedDate: storedDate,
+                    addedDate: new Date()
+                };
+                
+                foodItems.push(item);
+                addedCount++;
+            });
+
+            clearBatchQueue();
+            updateDisplay();
+            showLookupStatus(`Added ${addedCount} items to ${location.toLowerCase()}!`, 'success');
+            
+            if (!isBatchMode) {
+                document.getElementById('batchQueue').style.display = 'none';
+            }
+        }
+
+        async function lookupProductForBatch(barcode, batchId) {
+            const batchItem = batchQueue.find(item => item.id === batchId);
+            if (batchItem) {
+                batchItem.status = 'loading';
+                updateBatchDisplay();
+            }
+
+            try {
+                const productInfo = await lookupProductInfo(barcode);
+                
+                const batchItemIndex = batchQueue.findIndex(item => item.id === batchId);
+                if (batchItemIndex !== -1 && productInfo) {
+                    batchQueue[batchItemIndex].name = productInfo.name;
+                    batchQueue[batchItemIndex].category = productInfo.category;
+                    batchQueue[batchItemIndex].status = 'found';
+                } else if (batchItemIndex !== -1) {
+                    batchQueue[batchItemIndex].status = 'not_found';
+                }
+                
+                updateBatchDisplay();
+            } catch (error) {
+                const batchItemIndex = batchQueue.findIndex(item => item.id === batchId);
+                if (batchItemIndex !== -1) {
+                    batchQueue[batchItemIndex].status = 'error';
+                    updateBatchDisplay();
+                }
+            }
+        }
+
+        function startScanner() {
+            const scanBtn = document.getElementById('scanBtn');
+            const batchBtn = document.getElementById('batchBtn');
+            const scannerContainer = document.getElementById('scannerContainer');
+            const scanMode = document.getElementById('scanMode');
+            const video = document.getElementById('video');
+            
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                showLookupStatus('Camera not supported on this device', 'error');
+                return;
+            }
+
+            scanBtn.textContent = 'Starting camera...';
+            scanBtn.disabled = true;
+            batchBtn.disabled = true;
+            scannerContainer.style.display = 'block';
+            isScanning = true;
+
+            scanMode.textContent = isBatchMode ? 'Batch Mode: Keep scanning items' : 'Single Mode: Will stop after first scan';
+            
+            if (isBatchMode) {
+                document.getElementById('batchQueue').style.display = 'block';
+            }
+
+            navigator.mediaDevices.getUserMedia({
+                video: { width: { ideal: 640 }, height: { ideal: 480 }, facingMode: "environment" }
+            }).then(function(stream) {
+                video.srcObject = stream;
+                video.setAttribute('playsinline', true);
+                video.play();
+                
+                showLookupStatus('Camera connected, starting barcode scanner...', 'loading');
+                
+                Quagga.init({
+                    inputStream: {
+                        name: "Live", type: "LiveStream", target: video,
+                        constraints: { width: { ideal: 640 }, height: { ideal: 480 }, facingMode: "environment" }
+                    },
+                    locator: { patchSize: "medium", halfSample: true },
+                    numOfWorkers: 2, frequency: 10,
+                    decoder: {
+                        readers: ["ean_reader", "ean_8_reader", "code_128_reader", "code_39_reader"],
+                        debug: { drawBoundingBox: true, showFrequency: false, drawScanline: true, showPattern: false }
+                    },
+                    locate: true
+                }, function(err) {
+                    if (err) {
+                        console.log('Quagga init error:', err);
+                        showLookupStatus('Scanner initialization failed: ' + err.message, 'error');
+                        
+                        if (stream) {
+                            stream.getTracks().forEach(track => track.stop());
+                        }
+                        stopScanner();
+                        return;
+                    }
+                    
+                    scanBtn.textContent = isBatchMode ? '🛑 Stop Batch' : '🛑 Stop Scan';
+                    batchBtn.textContent = isBatchMode ? '📦 Batch Mode' : '📦 Batch Scan';
+                    showLookupStatus('Ready to scan! Point camera at barcode', 'success');
+                    
+                    Quagga.start();
+                });
+
+            }).catch(function(err) {
+                console.log('Camera access error:', err);
+                showLookupStatus('Camera access denied: ' + err.message, 'error');
+                stopScanner();
+            });
+
+            Quagga.onDetected(function(data) {
+                const code = data.codeResult.code;
+                const format = data.codeResult.format;
+                
+                console.log('Barcode detected:', code, 'Format:', format, 'Quality:', data.codeResult.quality);
+                
+                if (!isValidBarcode(code, format)) {
+                    console.log('Invalid barcode detected, ignoring:', code);
+                    return;
+                }
+                
+                if (window.lastScannedCode === code && Date.now() - window.lastScanTime < 2000) {
+                    return;
+                }
+                
+                window.lastScannedCode = code;
+                window.lastScanTime = Date.now();
+                
+                if (isBatchMode) {
+                    addToBatchQueue(code);
+                    showLookupStatus(`Scanned: ${code} (${format})`, 'success');
+                } else {
+                    stopScanner();
+                    lookupProduct(code);
+                }
+            });
+        }
+
+        function stopScanner() {
+            if (isScanning) {
+                Quagga.stop();
+                
+                const video = document.getElementById('video');
+                if (video.srcObject) {
+                    video.srcObject.getTracks().forEach(track => track.stop());
+                    video.srcObject = null;
+                }
+                
+                isScanning = false;
+                isBatchMode = false;
+            }
+            
+            const scanBtn = document.getElementById('scanBtn');
+            const batchBtn = document.getElementById('batchBtn');
+            const scannerContainer = document.getElementById('scannerContainer');
+            
+            scanBtn.textContent = '📱 Scan Barcode';
+            scanBtn.disabled = false;
+            batchBtn.textContent = '📦 Batch Scan';
+            batchBtn.disabled = false;
+            scannerContainer.style.display = 'none';
+        }
+
+        async function lookupProduct(barcode) {
+            showLookupStatus('Looking up product...', 'loading');
+            
+            const productInfo = await lookupProductInfo(barcode);
+            
+            if (productInfo) {
+                document.getElementById('itemName').value = productInfo.name;
+                document.getElementById('category').value = productInfo.category;
+                showLookupStatus(`Found: ${productInfo.name}`, 'success');
+            } else {
+                document.getElementById('itemName').value = `Product ${barcode}`;
+                showLookupStatus('Product not found in database, but barcode captured', 'error');
+            }
+        }
+
+        async function lookupProductInfo(barcode) {
+            try {
+                let response = await fetch(`https://world.openfoodfacts.org/api/v0/product/${barcode}.json`);
+                let data = await response.json();
+                
+                if (data.status === 1 && data.product) {
+                    const product = data.product;
+                    const productName = product.product_name || product.product_name_en || 'Unknown Product';
+                    
+                    let category = 'Other';
+                    if (product.categories) {
+                        category = guessCategory(product.categories.toLowerCase()) || 'Other';
+                    }
+                    
+                    return { name: productName, category: category };
+                }
+                
+                response = await fetch(`https://api.upcitemdb.com/prod/trial/lookup?upc=${barcode}`);
+                data = await response.json();
+                
+                if (data.code === 'OK' && data.items && data.items.length > 0) {
+                    const item = data.items[0];
+                    const productName = item.title || 'Unknown Product';
+                    
+                    let category = 'Other';
+                    if (item.category) {
+                        category = guessCategory(item.category.toLowerCase()) || 'Other';
+                    }
+                    
+                    return { name: productName, category: category };
+                }
+                
+                return null;
+                
+            } catch (error) {
+                console.error('Lookup error:', error);
+                return null;
+            }
+        }
+
+        function guessCategory(text) {
+            const categoryKeywords = {
+                'Meat': ['meat', 'beef', 'chicken', 'pork', 'turkey', 'fish', 'salmon', 'tuna', 'bacon', 'sausage'],
+                'Vegetables': ['vegetables', 'broccoli', 'spinach', 'carrots', 'peas', 'corn', 'beans', 'potato'],
+                'Dairy': ['milk', 'cheese', 'yogurt', 'butter', 'cream', 'dairy'],
+                'Grains': ['rice', 'pasta', 'bread', 'cereal', 'oats', 'quinoa', 'flour', 'wheat'],
+                'Canned': ['canned', 'soup', 'sauce', 'tomato', 'beans'],
+                'Snacks': ['chips', 'crackers', 'nuts', 'cookies', 'popcorn'],
+                'Condiments': ['ketchup', 'mustard', 'mayo', 'dressing', 'oil', 'vinegar'],
+                'Beverages': ['juice', 'soda', 'water', 'coffee', 'tea'],
+                'Desserts': ['ice cream', 'frozen yogurt', 'dessert', 'cake', 'cookie', 'chocolate'],
+                'Prepared': ['pizza', 'meal', 'dinner', 'lunch', 'prepared', 'frozen meal', 'burrito', 'sandwich']
+            };
+            
+            for (const [category, keywords] of Object.entries(categoryKeywords)) {
+                if (keywords.some(keyword => text.includes(keyword))) {
+                    return category;
+                }
+            }
+            
+            return null;
+        }
+
+        function isValidBarcode(code, format) {
+            const cleanCode = code.replace(/\D/g, '');
+            
+            switch(format) {
+                case 'ean_13':
+                case 'ean_reader':
+                    return cleanCode.length === 13 && /^\d{13}$/.test(cleanCode);
+                case 'ean_8':
+                    return cleanCode.length === 8 && /^\d{8}$/.test(cleanCode);
+                case 'code_128':
+                    return cleanCode.length >= 8 && cleanCode.length <= 14 && /^\d+$/.test(cleanCode);
+                case 'code_39':
+                    return code.length >= 3 && code.length <= 25;
+                default:
+                    return cleanCode.length >= 8 && /^\d+$/.test(cleanCode);
+            }
+        }
+
+        function showLookupStatus(message, type) {
+            const statusDiv = document.getElementById('lookupStatus');
+            statusDiv.textContent = message;
+            statusDiv.className = `lookup-${type}`;
+            statusDiv.style.display = 'block';
+            
+            if (type !== 'error') {
+                setTimeout(() => {
+                    statusDiv.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('itemName').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addItem();
+                }
+            });
+
+            const manualBarcodeInput = document.getElementById('manualBarcode');
+            if (manualBarcodeInput) {
+                manualBarcodeInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        lookupManualBarcode();
+                    }
+                });
+            }
+
+            updateDisplay();
+        });
 
         function lookupManualBarcode() {
             const barcode = document.getElementById('manualBarcode').value.trim();
@@ -793,12 +1261,6 @@
             clearBatchQueue();
             updateDisplay();
             showLookupStatus(`Added ${addedCount} items to ${location.toLowerCase()}!`, 'success');
-            
-            // Hide batch queue if not in batch mode
-            if (!isBatchMode) {
-                document.getElementById('batchQueue').style.display = 'none';
-            }
-        }er!`, 'success');
             
             // Hide batch queue if not in batch mode
             if (!isBatchMode) {
@@ -1112,6 +1574,28 @@
                 }, 5000);
             }
         }
+
+        // Handle Enter key in item name input
+        document.getElementById('itemName').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addItem();
+            }
+        });
+
+        // Handle Enter key in manual barcode input - wait for DOM
+        document.addEventListener('DOMContentLoaded', function() {
+            const manualBarcodeInput = document.getElementById('manualBarcode');
+            if (manualBarcodeInput) {
+                manualBarcodeInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        lookupManualBarcode();
+                    }
+                });
+            }
+        });
+
+        // Initial display update
+        updateDisplay();
     </script>
 </body>
 </html>
