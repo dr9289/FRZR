@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#667eea">
+    <title>Add Item - FreshKeep</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+
+    <!-- Shared Styles -->
+    <link rel="stylesheet" href="shared.css">
+
+    <style>
+        .page-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .coming-soon-icon {
+            font-size: 64px;
+            margin-bottom: 24px;
+        }
+
+        .coming-soon-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--on-surface);
+            margin-bottom: 12px;
+        }
+
+        .coming-soon-text {
+            color: var(--on-surface-variant);
+            margin-bottom: 32px;
+            max-width: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-main">
+                <div class="app-branding">
+                    <h1>🥬 FreshKeep</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="theme-toggle" aria-label="Toggle dark mode">
+                        <span class="theme-icon">🌙</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="page-content">
+            <div class="coming-soon-icon">➕</div>
+            <h1 class="coming-soon-title">Add Item</h1>
+            <p class="coming-soon-text">
+                The manual item entry form is being moved to this dedicated page for a cleaner experience.
+                Coming in Phase 2 of the redesign!
+            </p>
+            <a href="dashboard.html" class="btn btn-primary">← Back to Dashboard</a>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="dashboard.html" class="nav-item" data-page="dashboard">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-label">Home</span>
+            </a>
+            <a href="pantry.html" class="nav-item" data-page="pantry">
+                <span class="nav-icon">🍎</span>
+                <span class="nav-label">Pantry</span>
+            </a>
+            <a href="scan.html" class="nav-item" data-page="scan">
+                <span class="nav-icon">📱</span>
+                <span class="nav-label">Scan</span>
+            </a>
+            <a href="family.html" class="nav-item" data-page="family">
+                <span class="nav-icon">👥</span>
+                <span class="nav-label">Family</span>
+            </a>
+            <a href="settings.html" class="nav-item" data-page="settings">
+                <span class="nav-icon">⚙️</span>
+                <span class="nav-label">More</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Shared JavaScript -->
+    <script src="shared.js"></script>
+</body>
+</html>
