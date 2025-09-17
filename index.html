@@ -491,7 +491,7 @@
             position: absolute;
             left: 0;
             background: var(--surface-variant);
-            border: 1px solid var(--outline-variant);
+            border: 2px solid var(--primary);
             border-radius: 50%;
             width: 44px;
             height: 44px;
@@ -502,12 +502,18 @@
             transition: all 0.3s ease;
             color: var(--on-surface-variant);
             font-size: 18px;
+            z-index: 100;
         }
 
         .user-profile-btn:hover {
             background: var(--primary);
             color: var(--on-primary);
             transform: scale(1.1);
+        }
+
+        .user-profile-btn:active {
+            transform: scale(0.95);
+            background: var(--primary-variant);
         }
 
         /* Responsive Design - Tablet and Desktop */
@@ -1670,8 +1676,15 @@
             // Hide auth modal
             document.getElementById('authModal').style.display = 'none';
 
-            // Show user profile button
-            document.getElementById('userProfileBtn').style.display = 'flex';
+            // Show user profile button immediately and make it prominent
+            const userProfileBtn = document.getElementById('userProfileBtn');
+            if (userProfileBtn) {
+                userProfileBtn.style.display = 'flex';
+                userProfileBtn.style.border = '2px solid var(--primary)';
+                console.log('User profile button shown');
+            } else {
+                console.error('User profile button not found');
+            }
 
             // Check for pending invitation
             const pendingInvite = localStorage.getItem('pendingInvite');
@@ -1848,8 +1861,22 @@
 
         // User Menu Functions
         function toggleUserMenu() {
+            console.log('toggleUserMenu called'); // Debug log
             const userMenu = document.getElementById('userMenu');
-            userMenu.classList.toggle('show');
+            const userProfileBtn = document.getElementById('userProfileBtn');
+
+            if (!userMenu) {
+                console.error('User menu not found');
+                return;
+            }
+
+            if (userMenu.classList.contains('show')) {
+                userMenu.classList.remove('show');
+                console.log('User menu hidden');
+            } else {
+                userMenu.classList.add('show');
+                console.log('User menu shown');
+            }
         }
 
         // Close user menu when clicking outside (mobile-friendly)
