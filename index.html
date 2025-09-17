@@ -722,6 +722,149 @@
             border-color: var(--primary);
         }
 
+        /* Fix manual barcode and other inline styled inputs */
+        .manual-barcode-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1.5px solid var(--outline-variant);
+            border-radius: 8px;
+            font-size: 16px;
+            background: var(--surface);
+            color: var(--on-surface);
+            transition: all 0.2s ease;
+        }
+        .manual-barcode-input:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 1px;
+            border-color: var(--primary);
+        }
+        .manual-barcode-input::placeholder {
+            color: var(--on-surface-variant);
+            opacity: 0.7;
+        }
+
+        /* Fix search box and sort select theming */
+        .search-box, .sort-select {
+            background: var(--surface) !important;
+            color: var(--on-surface) !important;
+            border: 1.5px solid var(--outline-variant) !important;
+        }
+        .search-box:focus, .sort-select:focus {
+            border-color: var(--primary) !important;
+            outline: 2px solid var(--primary);
+            outline-offset: 1px;
+        }
+        .search-box::placeholder {
+            color: var(--on-surface-variant) !important;
+            opacity: 0.7;
+        }
+
+        /* Fix category and location inputs */
+        .category-input, .location-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1.5px solid var(--outline-variant);
+            border-radius: 8px;
+            font-size: 14px;
+            background: var(--surface);
+            color: var(--on-surface);
+            transition: all 0.2s ease;
+        }
+        .category-input:focus, .location-input:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 1px;
+            border-color: var(--primary);
+        }
+        .category-input::placeholder, .location-input::placeholder {
+            color: var(--on-surface-variant);
+            opacity: 0.7;
+        }
+
+        /* Fix checkbox styling for dark theme compatibility */
+        input[type="checkbox"] {
+            accent-color: var(--primary);
+            background: var(--surface);
+            border: 1.5px solid var(--outline-variant);
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+        }
+
+        /* Comprehensive form control theming to override browser defaults */
+        input, select, textarea {
+            background: var(--surface) !important;
+            color: var(--on-surface) !important;
+            border: 1.5px solid var(--outline-variant) !important;
+            border-radius: 8px !important;
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            appearance: none !important;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary) !important;
+            outline: 2px solid var(--primary) !important;
+            outline-offset: 1px !important;
+        }
+        input::placeholder, textarea::placeholder {
+            color: var(--on-surface-variant) !important;
+            opacity: 0.7 !important;
+        }
+
+        /* Exception for checkboxes and radio buttons */
+        input[type="checkbox"], input[type="radio"] {
+            width: 18px !important;
+            height: 18px !important;
+            border-radius: 4px !important;
+        }
+        input[type="radio"] {
+            border-radius: 50% !important;
+        }
+
+        /* Button classes for inline styled elements */
+        .lookup-btn, .batch-add-all-btn, .batch-clear-btn, .stop-scanner-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            min-height: 40px;
+            touch-action: manipulation;
+        }
+
+        .lookup-btn, .batch-add-all-btn {
+            background: var(--primary);
+            color: var(--on-primary);
+        }
+        .lookup-btn:hover, .batch-add-all-btn:hover {
+            background: var(--primary-variant);
+            transform: translateY(-1px);
+        }
+
+        .batch-clear-btn, .stop-scanner-btn {
+            background: var(--error-container);
+            color: var(--on-error-container);
+        }
+        .batch-clear-btn:hover, .stop-scanner-btn:hover {
+            background: var(--error);
+            color: var(--on-error);
+        }
+
+        /* Fix existing batch-remove button styling */
+        .batch-remove {
+            padding: 8px 12px;
+            background: var(--error-container) !important;
+            color: var(--on-error-container) !important;
+            border: none !important;
+            border-radius: 4px !important;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .batch-remove:hover {
+            background: var(--error) !important;
+            color: var(--on-error) !important;
+        }
+
         .settings-content {
             padding: 16px 24px;
             flex: 1;
@@ -1463,9 +1606,9 @@
         }
 
         .tab-btn.pantry-tab.active {
-            background: #28a745;
-            border-color: #28a745;
-            color: white;
+            background: var(--success-container);
+            border-color: var(--success-container);
+            color: var(--on-success-container);
         }
 
         .tab-btn.fridge-tab.active {
@@ -1697,8 +1840,8 @@
                 
                 <div id="manualEntry" style="display: none; margin-bottom: 15px;">
                     <div style="display: flex; gap: 10px;">
-                        <input type="text" id="manualBarcode" placeholder="Enter barcode number..." style="flex: 1; padding: 10px; border: 2px solid #e1e5e9; border-radius: 6px; font-size: 16px;">
-                        <button onclick="lookupManualBarcode()" style="padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 500;">Lookup</button>
+                        <input type="text" id="manualBarcode" placeholder="Enter barcode number..." class="manual-barcode-input">
+                        <button onclick="lookupManualBarcode()" class="lookup-btn">Lookup</button>
                     </div>
                 </div>
 
@@ -1707,8 +1850,8 @@
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                             <strong>Batch Mode - Items in Queue: <span id="batchCount">0</span></strong>
                             <div>
-                                <button onclick="addAllBatchItems()" style="padding: 6px 12px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; margin-right: 5px;">Add All</button>
-                                <button onclick="clearBatchQueue()" style="padding: 6px 12px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">Clear Queue</button>
+                                <button onclick="addAllBatchItems()" class="batch-add-all-btn">Add All</button>
+                                <button onclick="clearBatchQueue()" class="batch-clear-btn">Clear Queue</button>
                             </div>
                         </div>
                         <div id="batchItems" style="max-height: 200px; overflow-y: auto;"></div>
@@ -1722,7 +1865,7 @@
                         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 2px solid #ff0000; width: 200px; height: 100px; border-radius: 8px; pointer-events: none; box-shadow: 0 0 0 9999px rgba(0,0,0,0.3);"></div>
                     </div>
                     <div style="margin-top: 10px; text-align: center;">
-                        <button onclick="stopScanner()" style="padding: 8px 16px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">Stop Scanning</button>
+                        <button onclick="stopScanner()" class="stop-scanner-btn">Stop Scanning</button>
                         <span id="scanMode" style="margin-left: 15px; font-weight: 500;"></span>
                     </div>
                 </div>
@@ -2164,7 +2307,7 @@
                         <h4>Custom Categories</h4>
                         <div id="customCategoriesList"></div>
                         <div style="display: flex; gap: 10px; margin-top: 10px;">
-                            <input type="text" id="newCategoryName" placeholder="Category name" style="flex: 1;">
+                            <input type="text" id="newCategoryName" placeholder="Category name" class="category-input">
                             <button class="settings-btn primary" onclick="addCustomCategory()">Add Category</button>
                         </div>
                     </div>
@@ -2173,7 +2316,7 @@
                         <h4>Storage Locations</h4>
                         <div id="customLocationsList"></div>
                         <div style="display: flex; gap: 10px; margin-top: 10px;">
-                            <input type="text" id="newLocationName" placeholder="Location name" style="flex: 1;">
+                            <input type="text" id="newLocationName" placeholder="Location name" class="location-input">
                             <button class="settings-btn primary" onclick="addCustomLocation()">Add Location</button>
                         </div>
                     </div>
