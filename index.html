@@ -58,10 +58,10 @@
             --on-background: #e6e1e5;
             --primary: #3d9dff;
             --primary-variant: #5da9ff;
-            --on-primary: #003258;
-            --secondary: #ccc2dc;
-            --on-secondary: #332d41;
-            --outline: #938f99;
+            --on-primary: #000000;
+            --secondary: #3f3f3f;
+            --on-secondary: #ffffff;
+            --outline: #ffffff;
             --outline-variant: #49454f;
             --shadow: rgba(0, 0, 0, 0.3);
             --elevation-1: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.4);
@@ -232,6 +232,305 @@
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(61, 157, 255, 0.2);
+        }
+
+        .connection-status {
+            position: fixed;
+            bottom: 16px;
+            right: 16px;
+            font-size: 11px;
+            padding: 6px 10px;
+            border-radius: 6px;
+            background: var(--surface-variant);
+            color: var(--on-surface-variant);
+            border: 1px solid var(--outline-variant);
+            box-shadow: var(--elevation-1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            opacity: 0.8;
+        }
+
+        .connection-status:hover {
+            opacity: 1;
+            transform: translateY(-1px);
+        }
+
+        /* Authentication Modal - Mobile First */
+        .auth-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            box-sizing: border-box;
+        }
+
+        .auth-modal-content {
+            background: var(--surface);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 400px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--elevation-3);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .auth-header {
+            padding: 24px 24px 16px;
+            text-align: center;
+            border-bottom: 1px solid var(--outline-variant);
+        }
+
+        .auth-header h2 {
+            color: var(--on-surface);
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .auth-header p {
+            color: var(--on-surface-variant);
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .auth-form {
+            padding: 24px;
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 24px;
+            background: var(--surface-variant);
+            border-radius: 8px;
+            padding: 4px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 12px;
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--on-surface-variant);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            touch-action: manipulation;
+        }
+
+        .auth-tab.active {
+            background: var(--primary);
+            color: var(--on-primary);
+        }
+
+        .auth-submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary);
+            color: var(--on-primary);
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 16px;
+            touch-action: manipulation;
+        }
+
+        .auth-submit-btn:hover {
+            background: var(--primary-variant);
+            transform: translateY(-1px);
+        }
+
+        .auth-error {
+            background: var(--error-container);
+            color: var(--on-error-container);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 16px;
+            font-size: 14px;
+        }
+
+        .auth-footer {
+            padding: 16px 24px 24px;
+            text-align: center;
+            border-top: 1px solid var(--outline-variant);
+        }
+
+        .auth-skip-btn {
+            background: transparent;
+            color: var(--on-surface-variant);
+            border: none;
+            padding: 12px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            touch-action: manipulation;
+        }
+
+        .auth-skip-btn:hover {
+            background: var(--surface-variant);
+        }
+
+        /* User Menu - Mobile First */
+        .user-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            max-width: 320px;
+            height: 100%;
+            background: var(--surface);
+            z-index: 9999;
+            transition: right 0.3s ease;
+            box-shadow: var(--elevation-3);
+        }
+
+        .user-menu.show {
+            right: 0;
+        }
+
+        .user-menu-content {
+            padding: 24px;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--outline-variant);
+        }
+
+        .user-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: var(--on-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-right: 12px;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: var(--on-surface);
+            font-size: 16px;
+        }
+
+        .user-email {
+            color: var(--on-surface-variant);
+            font-size: 14px;
+            margin-top: 2px;
+        }
+
+        .household-info {
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--outline-variant);
+        }
+
+        .household-info h3 {
+            color: var(--on-surface);
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .user-action-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--surface-variant);
+            color: var(--on-surface);
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 8px;
+            text-align: left;
+            transition: all 0.2s ease;
+            touch-action: manipulation;
+        }
+
+        .user-action-btn:hover {
+            background: var(--outline-variant);
+        }
+
+        .user-action-btn.danger {
+            background: var(--error-container);
+            color: var(--on-error-container);
+        }
+
+        /* User Profile Button in Header */
+        .user-profile-btn {
+            position: absolute;
+            left: 0;
+            background: var(--surface-variant);
+            border: 1px solid var(--outline-variant);
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--on-surface-variant);
+            font-size: 18px;
+        }
+
+        .user-profile-btn:hover {
+            background: var(--primary);
+            color: var(--on-primary);
+            transform: scale(1.1);
+        }
+
+        /* Responsive Design - Tablet and Desktop */
+        @media (min-width: 768px) {
+            .auth-modal-content {
+                max-width: 480px;
+            }
+
+            .user-menu {
+                max-width: 380px;
+            }
+
+            .auth-header {
+                padding: 32px 32px 24px;
+            }
+
+            .auth-form {
+                padding: 32px;
+            }
+
+            .auth-footer {
+                padding: 24px 32px 32px;
+            }
         }
 
         .add-btn {
@@ -948,15 +1247,15 @@
     <div class="container">
         <div class="header">
             <div class="header-top">
+                <button class="user-profile-btn" onclick="toggleUserMenu()" id="userProfileBtn" aria-label="User profile" style="display: none;">
+                    <span id="userProfileIcon">👤</span>
+                </button>
                 <h1>🥬 FreshKeep</h1>
                 <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
                     <span class="theme-icon">🌙</span>
                 </button>
             </div>
             <p>Track everything in your pantry, fridge, and freezer - never waste food again!</p>
-            <div id="connectionStatus" style="font-size: 12px; margin-top: 5px; padding: 4px 8px; border-radius: 4px; display: inline-block;">
-                Connecting to database...
-            </div>
         </div>
 
         <div class="add-form">
@@ -1091,12 +1390,187 @@
                 Your storage is empty! Add some items to get started.
             </div>
         </div>
+
+        <!-- Firebase connection status -->
+        <div id="connectionStatus" class="connection-status">
+            Connecting to database...
+        </div>
+    </div>
+
+    <!-- Authentication Modal -->
+    <div id="authModal" class="auth-modal" style="display: none;">
+        <div class="auth-modal-content">
+            <div class="auth-header">
+                <h2 id="authTitle">Welcome to FreshKeep</h2>
+                <p id="authSubtitle">Sign in to sync your food inventory across all devices</p>
+            </div>
+
+            <form id="authForm" class="auth-form">
+                <div class="auth-tabs">
+                    <button type="button" class="auth-tab active" onclick="switchAuthTab('signin')">Sign In</button>
+                    <button type="button" class="auth-tab" onclick="switchAuthTab('signup')">Sign Up</button>
+                </div>
+
+                <div class="form-group">
+                    <label for="authEmail">Email</label>
+                    <input type="email" id="authEmail" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="authPassword">Password</label>
+                    <input type="password" id="authPassword" required>
+                </div>
+
+                <div id="signupFields" style="display: none;">
+                    <div class="form-group">
+                        <label for="authConfirmPassword">Confirm Password</label>
+                        <input type="password" id="authConfirmPassword">
+                    </div>
+                    <div class="form-group">
+                        <label for="authDisplayName">Display Name</label>
+                        <input type="text" id="authDisplayName" placeholder="Your name">
+                    </div>
+                </div>
+
+                <button type="submit" class="auth-submit-btn" id="authSubmitBtn">Sign In</button>
+
+                <div class="auth-error" id="authError" style="display: none;"></div>
+            </form>
+
+            <div class="auth-footer">
+                <button class="auth-skip-btn" onclick="skipAuth()">Continue without account</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Profile Menu -->
+    <div id="userMenu" class="user-menu" style="display: none;">
+        <div class="user-menu-content">
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">👤</div>
+                <div class="user-details">
+                    <div class="user-name" id="userName">Loading...</div>
+                    <div class="user-email" id="userEmail">Loading...</div>
+                </div>
+            </div>
+
+            <div class="household-info">
+                <h3>Household</h3>
+                <div id="householdName">Loading...</div>
+                <div class="household-members" id="householdMembers"></div>
+            </div>
+
+            <div class="user-actions">
+                <button class="user-action-btn" onclick="showInviteModal()">👥 Invite Family</button>
+                <button class="user-action-btn" onclick="showGuestShareModal()">🔗 Share with Guest</button>
+                <button class="user-action-btn" onclick="showHouseholdSettings()">⚙️ Household Settings</button>
+                <button class="user-action-btn danger" onclick="signOutUser()">🚪 Sign Out</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Family Invitation Modal -->
+    <div id="inviteModal" class="auth-modal" style="display: none;">
+        <div class="auth-modal-content">
+            <div class="auth-header">
+                <h2>Invite Family Member</h2>
+                <p>Send an invitation to join your household</p>
+            </div>
+
+            <form id="inviteForm" class="auth-form">
+                <div class="form-group">
+                    <label for="inviteEmail">Email Address</label>
+                    <input type="email" id="inviteEmail" placeholder="family@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="inviteMessage">Personal Message (Optional)</label>
+                    <textarea id="inviteMessage"
+                              placeholder="Join our family's FreshKeep household to share our food inventory!"
+                              style="width: 100%; padding: 12px; border: 1.5px solid var(--outline-variant); border-radius: 8px; font-family: inherit; resize: vertical; min-height: 80px; background: var(--surface-variant); color: var(--on-surface);"></textarea>
+                </div>
+
+                <button type="submit" class="auth-submit-btn">Send Invitation</button>
+
+                <div class="auth-error" id="inviteError" style="display: none;"></div>
+            </form>
+
+            <div class="auth-footer">
+                <button class="auth-skip-btn" onclick="closeInviteModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Guest Share Modal -->
+    <div id="guestShareModal" class="auth-modal" style="display: none;">
+        <div class="auth-modal-content">
+            <div class="auth-header">
+                <h2>Share with Guest</h2>
+                <p>Create a temporary view-only link for babysitters, friends, or helpers</p>
+            </div>
+
+            <form id="guestShareForm" class="auth-form">
+                <div class="form-group">
+                    <label for="guestName">Guest Name (Optional)</label>
+                    <input type="text" id="guestName" placeholder="e.g., Sarah the Babysitter">
+                </div>
+
+                <div class="form-group">
+                    <label for="guestDuration">Access Duration</label>
+                    <select id="guestDuration">
+                        <option value="1">1 hour</option>
+                        <option value="4">4 hours</option>
+                        <option value="12">12 hours</option>
+                        <option value="24" selected>24 hours</option>
+                        <option value="168">1 week</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Permissions</label>
+                    <div style="margin-top: 8px;">
+                        <label style="display: flex; align-items: center; margin-bottom: 8px; font-weight: normal;">
+                            <input type="checkbox" id="guestCanViewExpiry" checked style="margin-right: 8px;">
+                            View expiration dates
+                        </label>
+                        <label style="display: flex; align-items: center; margin-bottom: 8px; font-weight: normal;">
+                            <input type="checkbox" id="guestCanViewLocation" checked style="margin-right: 8px;">
+                            View storage locations
+                        </label>
+                        <label style="display: flex; align-items: center; font-weight: normal;">
+                            <input type="checkbox" id="guestCanViewDetails" style="margin-right: 8px;">
+                            View who added items
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="auth-submit-btn">Create Guest Link</button>
+
+                <div id="guestLinkResult" style="display: none; margin-top: 16px;">
+                    <div style="background: var(--success-container); color: var(--on-success-container); padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+                        <strong>Guest link created!</strong>
+                    </div>
+                    <div style="background: var(--surface-variant); padding: 12px; border-radius: 8px; font-family: monospace; font-size: 12px; word-break: break-all;" id="guestLinkUrl"></div>
+                    <div style="margin-top: 12px; display: flex; gap: 8px;">
+                        <button type="button" onclick="copyGuestLink()" style="flex: 1; padding: 8px; background: var(--primary); color: var(--on-primary); border: none; border-radius: 6px; cursor: pointer;">Copy Link</button>
+                        <button type="button" onclick="revokeGuestLink()" style="padding: 8px 12px; background: var(--error-container); color: var(--on-error-container); border: none; border-radius: 6px; cursor: pointer;">Revoke</button>
+                    </div>
+                </div>
+
+                <div class="auth-error" id="guestShareError" style="display: none;"></div>
+            </form>
+
+            <div class="auth-footer">
+                <button class="auth-skip-btn" onclick="closeGuestShareModal()">Cancel</button>
+            </div>
+        </div>
     </div>
 
     <!-- Firebase SDKs -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js';
-        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, onSnapshot, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js';
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, onSnapshot, query, orderBy, where, setDoc, getDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js';
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js';
 
         // Firebase configuration - Replace with your actual config
         // To get your config:
@@ -1105,6 +1579,7 @@
         // 3. Add a web app to your project
         // 4. Enable Firestore Database in your project
         // 5. Copy the config object from Firebase console
+        // 6. Set up Firestore Security Rules in Firebase Console > Firestore > Rules
         const firebaseConfig = {
             apiKey: "AIzaSyDlhIJzu9Ln_R2fAAgakKfFzzJgTDzautE",
             authDomain: "freshkeep-34a12.firebaseapp.com",
@@ -1119,13 +1594,16 @@
         try {
             window.firebaseApp = initializeApp(firebaseConfig);
             window.db = getFirestore(window.firebaseApp);
-            window.firestoreUtils = { collection, addDoc, getDocs, deleteDoc, doc, onSnapshot, query, orderBy };
+            window.auth = getAuth(window.firebaseApp);
+            window.firestoreUtils = { collection, addDoc, getDocs, deleteDoc, doc, onSnapshot, query, orderBy, where, setDoc, getDoc, updateDoc };
+            window.authUtils = { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile };
             console.log('Firebase initialized successfully');
             updateConnectionStatus('firebase');
         } catch (error) {
             console.error('Firebase initialization error:', error);
             // Fallback to local storage if Firebase fails
             window.db = null;
+            window.auth = null;
             updateConnectionStatus('local');
         }
 
@@ -1136,14 +1614,19 @@
 
             if (type === 'firebase') {
                 statusEl.textContent = '☁️ Connected to Firebase';
-                statusEl.style.background = '#d4edda';
-                statusEl.style.color = '#155724';
-                statusEl.style.border = '1px solid #c3e6cb';
+                statusEl.style.background = 'var(--success-container)';
+                statusEl.style.color = 'var(--on-success-container)';
+                statusEl.style.borderColor = 'var(--on-success-container)';
+            } else if (type === 'guest') {
+                statusEl.textContent = '🔗 Guest Mode';
+                statusEl.style.background = 'var(--primary)';
+                statusEl.style.color = 'var(--on-primary)';
+                statusEl.style.borderColor = 'var(--primary)';
             } else {
                 statusEl.textContent = '💾 Using Local Storage';
-                statusEl.style.background = '#fff3cd';
-                statusEl.style.color = '#856404';
-                statusEl.style.border = '1px solid #ffeaa7';
+                statusEl.style.background = 'var(--warning-container)';
+                statusEl.style.color = 'var(--on-warning-container)';
+                statusEl.style.borderColor = 'var(--on-warning-container)';
             }
         }
     </script>
@@ -1156,6 +1639,890 @@
         let currentTab = 'all';
         let searchTerm = '';
         let sortBy = 'expiration';
+
+        // User and household management
+        let currentUser = null;
+        let currentHousehold = null;
+        let isAuthenticated = false;
+        let authMode = 'signin'; // 'signin' or 'signup'
+
+        // Authentication Functions
+        function initializeAuth() {
+            if (!window.auth) return;
+
+            // Listen for auth state changes
+            window.authUtils.onAuthStateChanged(window.auth, async (user) => {
+                if (user) {
+                    currentUser = user;
+                    isAuthenticated = true;
+                    await handleUserSignedIn(user);
+                } else {
+                    currentUser = null;
+                    isAuthenticated = false;
+                    handleUserSignedOut();
+                }
+            });
+        }
+
+        async function handleUserSignedIn(user) {
+            console.log('User signed in:', user.email);
+
+            // Hide auth modal
+            document.getElementById('authModal').style.display = 'none';
+
+            // Show user profile button
+            document.getElementById('userProfileBtn').style.display = 'flex';
+
+            // Check for pending invitation
+            const pendingInvite = localStorage.getItem('pendingInvite');
+            if (pendingInvite) {
+                localStorage.removeItem('pendingInvite');
+                try {
+                    const inviteRef = window.firestoreUtils.doc(window.db, 'invitations', pendingInvite);
+                    const inviteDoc = await window.firestoreUtils.getDoc(inviteRef);
+                    if (inviteDoc.exists()) {
+                        await acceptInvitation(pendingInvite, inviteDoc.data());
+                        return; // acceptInvitation handles loading household
+                    }
+                } catch (error) {
+                    console.error('Error processing pending invitation:', error);
+                }
+            }
+
+            // Load or create household
+            await loadUserHousehold(user);
+
+            // Load food items for the household
+            await loadHouseholdFoodItems();
+
+            // Update UI
+            updateUserUI();
+        }
+
+        function handleUserSignedOut() {
+            console.log('User signed out');
+
+            // Hide user profile button
+            document.getElementById('userProfileBtn').style.display = 'none';
+
+            // Clear data
+            currentHousehold = null;
+            foodItems = [];
+
+            // Update display
+            updateDisplay();
+        }
+
+        function showAuthModal() {
+            document.getElementById('authModal').style.display = 'flex';
+            // Focus first input for accessibility
+            setTimeout(() => {
+                document.getElementById('authEmail').focus();
+            }, 300);
+        }
+
+        function skipAuth() {
+            document.getElementById('authModal').style.display = 'none';
+            // Load from localStorage as fallback
+            loadLocalStorageItems();
+        }
+
+        async function loadLocalStorageItems() {
+            try {
+                foodItems = await FirestoreService.loadFromLocalStorage();
+                updateDisplay();
+            } catch (error) {
+                console.error('Error loading local storage:', error);
+            }
+        }
+
+        function switchAuthTab(mode) {
+            authMode = mode;
+            const signupFields = document.getElementById('signupFields');
+            const submitBtn = document.getElementById('authSubmitBtn');
+            const tabs = document.querySelectorAll('.auth-tab');
+
+            // Update tabs
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+
+            if (mode === 'signup') {
+                signupFields.style.display = 'block';
+                submitBtn.textContent = 'Create Account';
+            } else {
+                signupFields.style.display = 'none';
+                submitBtn.textContent = 'Sign In';
+            }
+
+            // Clear error
+            hideAuthError();
+        }
+
+        // Handle auth form submission
+        document.addEventListener('DOMContentLoaded', () => {
+            const authForm = document.getElementById('authForm');
+            if (authForm) {
+                authForm.addEventListener('submit', handleAuthSubmit);
+            }
+        });
+
+        async function handleAuthSubmit(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+
+            if (authMode === 'signup') {
+                const confirmPassword = document.getElementById('authConfirmPassword').value;
+                const displayName = document.getElementById('authDisplayName').value;
+
+                if (password !== confirmPassword) {
+                    showAuthError('Passwords do not match');
+                    return;
+                }
+
+                await signUpUser(email, password, displayName);
+            } else {
+                await signInUser(email, password);
+            }
+        }
+
+        async function signInUser(email, password) {
+            if (!window.auth) {
+                showAuthError('Authentication not available');
+                return;
+            }
+
+            try {
+                await window.authUtils.signInWithEmailAndPassword(window.auth, email, password);
+            } catch (error) {
+                console.error('Sign in error:', error);
+                showAuthError(getAuthErrorMessage(error.code));
+            }
+        }
+
+        async function signUpUser(email, password, displayName) {
+            if (!window.auth) {
+                showAuthError('Authentication not available');
+                return;
+            }
+
+            try {
+                const userCredential = await window.authUtils.createUserWithEmailAndPassword(window.auth, email, password);
+
+                // Update display name
+                if (displayName) {
+                    await window.authUtils.updateProfile(userCredential.user, {
+                        displayName: displayName
+                    });
+                }
+
+            } catch (error) {
+                console.error('Sign up error:', error);
+                showAuthError(getAuthErrorMessage(error.code));
+            }
+        }
+
+        function getAuthErrorMessage(errorCode) {
+            const errorMessages = {
+                'auth/user-not-found': 'No account found with this email',
+                'auth/wrong-password': 'Incorrect password',
+                'auth/email-already-in-use': 'An account with this email already exists',
+                'auth/weak-password': 'Password should be at least 6 characters',
+                'auth/invalid-email': 'Please enter a valid email address',
+                'auth/too-many-requests': 'Too many failed attempts. Please try again later'
+            };
+
+            return errorMessages[errorCode] || 'An error occurred. Please try again.';
+        }
+
+        function showAuthError(message) {
+            const errorDiv = document.getElementById('authError');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+
+        function hideAuthError() {
+            document.getElementById('authError').style.display = 'none';
+        }
+
+        // User Menu Functions
+        function toggleUserMenu() {
+            const userMenu = document.getElementById('userMenu');
+            userMenu.classList.toggle('show');
+        }
+
+        // Close user menu when clicking outside (mobile-friendly)
+        document.addEventListener('click', (e) => {
+            const userMenu = document.getElementById('userMenu');
+            const userProfileBtn = document.getElementById('userProfileBtn');
+
+            if (userMenu && userProfileBtn &&
+                !userMenu.contains(e.target) &&
+                !userProfileBtn.contains(e.target)) {
+                userMenu.classList.remove('show');
+            }
+        });
+
+        async function signOutUser() {
+            if (!window.auth) return;
+
+            try {
+                await window.authUtils.signOut(window.auth);
+                // Close user menu
+                document.getElementById('userMenu').classList.remove('show');
+            } catch (error) {
+                console.error('Sign out error:', error);
+            }
+        }
+
+        // Household Management Functions
+        async function loadUserHousehold(user) {
+            if (!window.db) return;
+
+            try {
+                // First, check if user already belongs to a household
+                const userDocRef = window.firestoreUtils.doc(window.db, 'users', user.uid);
+                const userDoc = await window.firestoreUtils.getDoc(userDocRef);
+
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    if (userData.householdId) {
+                        // Load existing household
+                        await loadHousehold(userData.householdId);
+                        return;
+                    }
+                }
+
+                // Create new household for new user
+                await createNewHousehold(user);
+
+            } catch (error) {
+                console.error('Error loading user household:', error);
+            }
+        }
+
+        async function createNewHousehold(user) {
+            if (!window.db) return;
+
+            try {
+                const householdName = `${user.displayName || user.email.split('@')[0]}'s Household`;
+
+                // Create household document
+                const householdRef = window.firestoreUtils.collection(window.db, 'households');
+                const householdDoc = await window.firestoreUtils.addDoc(householdRef, {
+                    name: householdName,
+                    createdBy: user.uid,
+                    createdAt: new Date(),
+                    members: {
+                        [user.uid]: {
+                            role: 'admin',
+                            joinedAt: new Date(),
+                            displayName: user.displayName || user.email.split('@')[0],
+                            email: user.email
+                        }
+                    }
+                });
+
+                // Update user document with household ID
+                const userDocRef = window.firestoreUtils.doc(window.db, 'users', user.uid);
+                await window.firestoreUtils.setDoc(userDocRef, {
+                    householdId: householdDoc.id,
+                    email: user.email,
+                    displayName: user.displayName || user.email.split('@')[0],
+                    lastActive: new Date()
+                }, { merge: true });
+
+                // Set current household
+                currentHousehold = {
+                    id: householdDoc.id,
+                    name: householdName,
+                    createdBy: user.uid,
+                    members: {
+                        [user.uid]: {
+                            role: 'admin',
+                            joinedAt: new Date(),
+                            displayName: user.displayName || user.email.split('@')[0],
+                            email: user.email
+                        }
+                    }
+                };
+
+                console.log('Created new household:', householdDoc.id);
+
+            } catch (error) {
+                console.error('Error creating household:', error);
+            }
+        }
+
+        async function loadHousehold(householdId) {
+            if (!window.db) return;
+
+            try {
+                const householdRef = window.firestoreUtils.doc(window.db, 'households', householdId);
+                const householdDoc = await window.firestoreUtils.getDoc(householdRef);
+
+                if (householdDoc.exists()) {
+                    currentHousehold = {
+                        id: householdDoc.id,
+                        ...householdDoc.data()
+                    };
+
+                    // Setup real-time listener for household changes
+                    window.firestoreUtils.onSnapshot(householdRef, (doc) => {
+                        if (doc.exists()) {
+                            currentHousehold = {
+                                id: doc.id,
+                                ...doc.data()
+                            };
+                            updateUserUI();
+                        }
+                    });
+
+                    console.log('Loaded household:', currentHousehold.name);
+                } else {
+                    console.error('Household not found');
+                }
+
+            } catch (error) {
+                console.error('Error loading household:', error);
+            }
+        }
+
+        async function loadHouseholdFoodItems() {
+            if (!window.db || !currentHousehold) {
+                // Fallback to local storage
+                await loadLocalStorageItems();
+                return;
+            }
+
+            try {
+                // Query food items for this household
+                const foodItemsRef = window.firestoreUtils.collection(window.db, 'foodItems');
+                const q = window.firestoreUtils.query(
+                    foodItemsRef,
+                    window.firestoreUtils.where('householdId', '==', currentHousehold.id)
+                );
+
+                // Setup real-time listener for food items
+                window.firestoreUnsubscribe = window.firestoreUtils.onSnapshot(q, (snapshot) => {
+                    const items = [];
+                    snapshot.forEach((doc) => {
+                        const data = doc.data();
+                        const item = {
+                            ...data,
+                            firestoreId: doc.id,
+                            storedDate: new Date(data.storedDate),
+                            addedDate: new Date(data.addedDate)
+                        };
+                        items.push(item);
+                    });
+
+                    foodItems = items;
+                    updateDisplay();
+                    console.log('Loaded household food items:', items.length);
+                });
+
+            } catch (error) {
+                console.error('Error loading household food items:', error);
+                await loadLocalStorageItems();
+            }
+        }
+
+        function updateUserUI() {
+            if (!currentUser || !currentHousehold) return;
+
+            // Update user profile info
+            const userName = document.getElementById('userName');
+            const userEmail = document.getElementById('userEmail');
+            const householdName = document.getElementById('householdName');
+            const householdMembers = document.getElementById('householdMembers');
+
+            if (userName) userName.textContent = currentUser.displayName || currentUser.email.split('@')[0];
+            if (userEmail) userEmail.textContent = currentUser.email;
+            if (householdName) householdName.textContent = currentHousehold.name;
+
+            // Update household members
+            if (householdMembers && currentHousehold.members) {
+                const memberCount = Object.keys(currentHousehold.members).length;
+                householdMembers.innerHTML = `
+                    <div style="color: var(--on-surface-variant); font-size: 14px; margin-top: 4px;">
+                        ${memberCount} member${memberCount !== 1 ? 's' : ''}
+                    </div>
+                    <div style="margin-top: 8px;">
+                        ${Object.values(currentHousehold.members).map(member => `
+                            <div style="display: flex; align-items: center; margin-bottom: 4px;">
+                                <div style="width: 24px; height: 24px; border-radius: 50%; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; justify-content: center; font-size: 12px; margin-right: 8px;">
+                                    ${member.displayName.charAt(0).toUpperCase()}
+                                </div>
+                                <div style="flex: 1;">
+                                    <div style="font-size: 14px; color: var(--on-surface);">${member.displayName}</div>
+                                    <div style="font-size: 12px; color: var(--on-surface-variant);">${member.role}</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+        }
+
+        // Family Invitation System
+        function showInviteModal() {
+            if (!currentUser || !currentHousehold) {
+                alert('Please sign in first');
+                return;
+            }
+
+            // Check if user is admin
+            const userRole = currentHousehold.members[currentUser.uid]?.role;
+            if (userRole !== 'admin') {
+                alert('Only household admins can invite new members');
+                return;
+            }
+
+            document.getElementById('inviteModal').style.display = 'flex';
+            setTimeout(() => {
+                document.getElementById('inviteEmail').focus();
+            }, 300);
+        }
+
+        function closeInviteModal() {
+            document.getElementById('inviteModal').style.display = 'none';
+            document.getElementById('inviteForm').reset();
+            hideInviteError();
+        }
+
+        // Handle invite form submission
+        document.addEventListener('DOMContentLoaded', () => {
+            const inviteForm = document.getElementById('inviteForm');
+            if (inviteForm) {
+                inviteForm.addEventListener('submit', handleInviteSubmit);
+            }
+        });
+
+        async function handleInviteSubmit(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('inviteEmail').value.trim();
+            const message = document.getElementById('inviteMessage').value.trim();
+
+            if (!email) {
+                showInviteError('Please enter an email address');
+                return;
+            }
+
+            // Check if user is already in household
+            const members = Object.values(currentHousehold.members || {});
+            if (members.some(member => member.email === email)) {
+                showInviteError('This person is already a member of your household');
+                return;
+            }
+
+            await sendInvitation(email, message);
+        }
+
+        async function sendInvitation(email, message) {
+            if (!window.db || !currentUser || !currentHousehold) {
+                showInviteError('Unable to send invitation');
+                return;
+            }
+
+            try {
+                // Create invitation document
+                const invitationRef = window.firestoreUtils.collection(window.db, 'invitations');
+                const invitationDoc = await window.firestoreUtils.addDoc(invitationRef, {
+                    householdId: currentHousehold.id,
+                    householdName: currentHousehold.name,
+                    invitedBy: currentUser.uid,
+                    invitedByName: currentUser.displayName || currentUser.email.split('@')[0],
+                    invitedByEmail: currentUser.email,
+                    invitedEmail: email,
+                    message: message || `Join our family's FreshKeep household to share our food inventory!`,
+                    status: 'pending',
+                    createdAt: new Date(),
+                    expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 days
+                });
+
+                console.log('Invitation sent:', invitationDoc.id);
+
+                // Show success message
+                alert(`Invitation sent to ${email}! They will receive instructions via email.`);
+                closeInviteModal();
+
+                // In a real implementation, you would send an email here
+                // For now, we'll simulate this by showing the invitation link
+                const inviteLink = `${window.location.origin}${window.location.pathname}?invite=${invitationDoc.id}`;
+                console.log('Invitation link:', inviteLink);
+
+                // Show the invitation link to the user
+                setTimeout(() => {
+                    if (confirm('Copy invitation link to share manually?')) {
+                        navigator.clipboard.writeText(inviteLink).then(() => {
+                            alert('Invitation link copied to clipboard!');
+                        }).catch(() => {
+                            prompt('Copy this invitation link:', inviteLink);
+                        });
+                    }
+                }, 500);
+
+            } catch (error) {
+                console.error('Error sending invitation:', error);
+                showInviteError('Failed to send invitation. Please try again.');
+            }
+        }
+
+        function showInviteError(message) {
+            const errorDiv = document.getElementById('inviteError');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+
+        function hideInviteError() {
+            document.getElementById('inviteError').style.display = 'none';
+        }
+
+        // Handle invitation acceptance from URL
+        async function checkForInvitation() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const inviteId = urlParams.get('invite');
+
+            if (inviteId && window.db) {
+                try {
+                    const inviteRef = window.firestoreUtils.doc(window.db, 'invitations', inviteId);
+                    const inviteDoc = await window.firestoreUtils.getDoc(inviteRef);
+
+                    if (inviteDoc.exists()) {
+                        const invitation = inviteDoc.data();
+
+                        if (invitation.status === 'pending') {
+                            // Show invitation acceptance dialog
+                            const accept = confirm(
+                                `${invitation.invitedByName} has invited you to join "${invitation.householdName}".\n\n` +
+                                `Message: ${invitation.message}\n\n` +
+                                `Would you like to join this household?`
+                            );
+
+                            if (accept) {
+                                if (currentUser) {
+                                    await acceptInvitation(inviteId, invitation);
+                                } else {
+                                    // Store invitation to accept after sign in
+                                    localStorage.setItem('pendingInvite', inviteId);
+                                    showAuthModal();
+                                }
+                            }
+                        } else {
+                            alert('This invitation has already been used or has expired.');
+                        }
+                    } else {
+                        alert('Invalid invitation link.');
+                    }
+                } catch (error) {
+                    console.error('Error checking invitation:', error);
+                    alert('Error processing invitation.');
+                }
+
+                // Clean up URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        }
+
+        async function acceptInvitation(inviteId, invitation) {
+            if (!window.db || !currentUser) return;
+
+            try {
+                // Add user to household
+                const householdRef = window.firestoreUtils.doc(window.db, 'households', invitation.householdId);
+                await window.firestoreUtils.updateDoc(householdRef, {
+                    [`members.${currentUser.uid}`]: {
+                        role: 'member',
+                        joinedAt: new Date(),
+                        displayName: currentUser.displayName || currentUser.email.split('@')[0],
+                        email: currentUser.email
+                    }
+                });
+
+                // Update user document
+                const userDocRef = window.firestoreUtils.doc(window.db, 'users', currentUser.uid);
+                await window.firestoreUtils.setDoc(userDocRef, {
+                    householdId: invitation.householdId,
+                    email: currentUser.email,
+                    displayName: currentUser.displayName || currentUser.email.split('@')[0],
+                    lastActive: new Date()
+                }, { merge: true });
+
+                // Mark invitation as accepted
+                const inviteRef = window.firestoreUtils.doc(window.db, 'invitations', inviteId);
+                await window.firestoreUtils.updateDoc(inviteRef, {
+                    status: 'accepted',
+                    acceptedAt: new Date(),
+                    acceptedBy: currentUser.uid
+                });
+
+                // Load the new household
+                await loadHousehold(invitation.householdId);
+                await loadHouseholdFoodItems();
+
+                alert(`Welcome to ${invitation.householdName}!`);
+
+            } catch (error) {
+                console.error('Error accepting invitation:', error);
+                alert('Error joining household. Please try again.');
+            }
+        }
+
+        // Guest Sharing System
+        let currentGuestToken = null;
+
+        function showGuestShareModal() {
+            if (!currentUser || !currentHousehold) {
+                alert('Please sign in first');
+                return;
+            }
+
+            document.getElementById('guestShareModal').style.display = 'flex';
+            setTimeout(() => {
+                document.getElementById('guestName').focus();
+            }, 300);
+        }
+
+        function closeGuestShareModal() {
+            document.getElementById('guestShareModal').style.display = 'none';
+            document.getElementById('guestShareForm').reset();
+            document.getElementById('guestLinkResult').style.display = 'none';
+            hideGuestShareError();
+            currentGuestToken = null;
+        }
+
+        // Handle guest share form submission
+        document.addEventListener('DOMContentLoaded', () => {
+            const guestShareForm = document.getElementById('guestShareForm');
+            if (guestShareForm) {
+                guestShareForm.addEventListener('submit', handleGuestShareSubmit);
+            }
+        });
+
+        async function handleGuestShareSubmit(e) {
+            e.preventDefault();
+
+            const guestName = document.getElementById('guestName').value.trim();
+            const duration = parseInt(document.getElementById('guestDuration').value);
+            const permissions = {
+                canViewExpiry: document.getElementById('guestCanViewExpiry').checked,
+                canViewLocation: document.getElementById('guestCanViewLocation').checked,
+                canViewDetails: document.getElementById('guestCanViewDetails').checked
+            };
+
+            await createGuestToken(guestName, duration, permissions);
+        }
+
+        async function createGuestToken(guestName, duration, permissions) {
+            if (!window.db || !currentUser || !currentHousehold) {
+                showGuestShareError('Unable to create guest link');
+                return;
+            }
+
+            try {
+                // Generate a unique token
+                const tokenId = generateRandomToken();
+                const expiresAt = new Date(Date.now() + duration * 60 * 60 * 1000); // hours to milliseconds
+
+                // Create guest token document
+                const guestTokenRef = window.firestoreUtils.doc(window.db, 'guestTokens', tokenId);
+                await window.firestoreUtils.setDoc(guestTokenRef, {
+                    householdId: currentHousehold.id,
+                    householdName: currentHousehold.name,
+                    createdBy: currentUser.uid,
+                    createdByName: currentUser.displayName || currentUser.email.split('@')[0],
+                    guestName: guestName || 'Guest User',
+                    permissions: permissions,
+                    createdAt: new Date(),
+                    expiresAt: expiresAt,
+                    active: true,
+                    accessCount: 0
+                });
+
+                currentGuestToken = tokenId;
+
+                // Generate and show the guest link
+                const guestLink = `${window.location.origin}${window.location.pathname}?guest=${tokenId}`;
+
+                document.getElementById('guestLinkUrl').textContent = guestLink;
+                document.getElementById('guestLinkResult').style.display = 'block';
+
+                console.log('Guest token created:', tokenId);
+
+            } catch (error) {
+                console.error('Error creating guest token:', error);
+                showGuestShareError('Failed to create guest link. Please try again.');
+            }
+        }
+
+        function generateRandomToken() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let result = '';
+            for (let i = 0; i < 32; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+
+        async function copyGuestLink() {
+            const linkUrl = document.getElementById('guestLinkUrl').textContent;
+            try {
+                await navigator.clipboard.writeText(linkUrl);
+                alert('Guest link copied to clipboard!');
+            } catch (error) {
+                // Fallback for older browsers
+                prompt('Copy this guest link:', linkUrl);
+            }
+        }
+
+        async function revokeGuestLink() {
+            if (!currentGuestToken || !window.db) return;
+
+            try {
+                const guestTokenRef = window.firestoreUtils.doc(window.db, 'guestTokens', currentGuestToken);
+                await window.firestoreUtils.updateDoc(guestTokenRef, {
+                    active: false,
+                    revokedAt: new Date()
+                });
+
+                alert('Guest link has been revoked');
+                closeGuestShareModal();
+
+            } catch (error) {
+                console.error('Error revoking guest token:', error);
+                alert('Error revoking guest link');
+            }
+        }
+
+        function showGuestShareError(message) {
+            const errorDiv = document.getElementById('guestShareError');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+
+        function hideGuestShareError() {
+            document.getElementById('guestShareError').style.display = 'none';
+        }
+
+        // Guest access handling
+        let guestPermissions = null;
+        let isGuestMode = false;
+
+        async function checkForGuestAccess() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const guestToken = urlParams.get('guest');
+
+            if (guestToken && window.db) {
+                try {
+                    const tokenRef = window.firestoreUtils.doc(window.db, 'guestTokens', guestToken);
+                    const tokenDoc = await window.firestoreUtils.getDoc(tokenRef);
+
+                    if (tokenDoc.exists()) {
+                        const tokenData = tokenDoc.data();
+
+                        // Check if token is valid and not expired
+                        if (tokenData.active && new Date() < tokenData.expiresAt.toDate()) {
+                            // Enable guest mode
+                            isGuestMode = true;
+                            guestPermissions = tokenData.permissions;
+
+                            // Update access count
+                            await window.firestoreUtils.updateDoc(tokenRef, {
+                                accessCount: (tokenData.accessCount || 0) + 1,
+                                lastAccessed: new Date()
+                            });
+
+                            // Load household data for guest view
+                            await loadGuestHouseholdData(tokenData.householdId, tokenData);
+
+                            // Update UI for guest mode
+                            setupGuestUI(tokenData);
+
+                            return true;
+                        } else {
+                            alert('This guest link has expired or been revoked.');
+                        }
+                    } else {
+                        alert('Invalid guest link.');
+                    }
+                } catch (error) {
+                    console.error('Error checking guest access:', error);
+                    alert('Error processing guest link.');
+                }
+
+                // Clean up URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+
+            return false;
+        }
+
+        async function loadGuestHouseholdData(householdId, tokenData) {
+            try {
+                // Load food items for guest view
+                const foodItemsRef = window.firestoreUtils.collection(window.db, 'foodItems');
+                const q = window.firestoreUtils.query(
+                    foodItemsRef,
+                    window.firestoreUtils.where('householdId', '==', householdId)
+                );
+
+                const snapshot = await window.firestoreUtils.getDocs(q);
+                const items = [];
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const item = {
+                        ...data,
+                        firestoreId: doc.id,
+                        storedDate: new Date(data.storedDate),
+                        addedDate: new Date(data.addedDate)
+                    };
+                    items.push(item);
+                });
+
+                foodItems = items;
+                updateDisplay();
+
+                console.log('Loaded guest household data:', items.length, 'items');
+
+            } catch (error) {
+                console.error('Error loading guest household data:', error);
+            }
+        }
+
+        function setupGuestUI(tokenData) {
+            // Update header to show guest mode
+            const header = document.querySelector('.header p');
+            if (header) {
+                header.innerHTML = `
+                    🔗 Guest View: ${tokenData.householdName}<br>
+                    <span style="font-size: 12px; opacity: 0.8;">
+                        Welcome ${tokenData.guestName} - Read-only access expires ${tokenData.expiresAt.toDate().toLocaleDateString()}
+                    </span>
+                `;
+            }
+
+            // Hide add form for guests
+            const addForm = document.querySelector('.add-form');
+            if (addForm) {
+                addForm.style.display = 'none';
+            }
+
+            // Hide user profile button
+            const userProfileBtn = document.getElementById('userProfileBtn');
+            if (userProfileBtn) {
+                userProfileBtn.style.display = 'none';
+            }
+
+            // Add guest indicator to connection status
+            updateConnectionStatus('guest');
+        }
+
+        function showHouseholdSettings() {
+            alert('Household settings coming soon!');
+        }
 
         // Theme Management
         function initializeTheme() {
@@ -1227,9 +2594,12 @@
                 }
 
                 try {
-                    // Convert dates to Firestore timestamps
+                    // Convert dates to Firestore timestamps and add household info
                     const firestoreItem = {
                         ...item,
+                        householdId: currentHousehold ? currentHousehold.id : null,
+                        addedBy: currentUser ? currentUser.uid : null,
+                        addedByName: currentUser ? (currentUser.displayName || currentUser.email.split('@')[0]) : 'Anonymous',
                         storedDate: item.storedDate.toISOString(),
                         addedDate: item.addedDate.toISOString()
                     };
@@ -1404,17 +2774,27 @@
             // Initialize theme first
             initializeTheme();
 
+            // Initialize authentication
+            initializeAuth();
+
             document.getElementById('storedDate').valueAsDate = new Date();
 
-            // Load existing items from Firestore
-            try {
-                foodItems = await FirestoreService.loadFoodItems();
-                updateDisplay();
+            // Check for guest access first
+            const isGuest = await checkForGuestAccess();
 
-                // Setup real-time listener for live updates
-                FirestoreService.setupRealtimeListener();
-            } catch (error) {
-                console.error('Error loading food items:', error);
+            if (!isGuest) {
+                // Check for invitation in URL
+                await checkForInvitation();
+
+                // Show auth modal after a short delay if not authenticated
+                setTimeout(() => {
+                    if (!isAuthenticated && window.auth) {
+                        showAuthModal();
+                    } else if (!window.auth) {
+                        // If Firebase is not available, load from localStorage
+                        loadLocalStorageItems();
+                    }
+                }, 1000);
             }
         });
 
@@ -1661,24 +3041,46 @@
                 const status = getItemStatus(item);
                 const daysInStorage = getDaysInStorage(item.storedDate);
                 const locationClass = `location-${item.location.toLowerCase()}`;
-                
+
+                // Show who added the item (respect guest permissions)
+                const showAddedBy = isGuestMode ?
+                    (guestPermissions?.canViewDetails && item.addedByName) :
+                    (item.addedByName && isAuthenticated);
+                const addedByInfo = showAddedBy ? `<br>Added by: ${item.addedByName}` : '';
+
+                // Show location based on guest permissions
+                const showLocation = isGuestMode ? guestPermissions?.canViewLocation : true;
+                const locationDisplay = showLocation ?
+                    `<div class="storage-location ${locationClass}">${getLocationIcon(item.location)} ${item.location}</div>` :
+                    '';
+
+                // Show expiry information based on guest permissions
+                const showExpiry = isGuestMode ? guestPermissions?.canViewExpiry : true;
+                const expiryDisplay = showExpiry ?
+                    `<div class="days-left ${status.status}">${status.message}</div>` :
+                    `<div class="days-left">Expiration hidden</div>`;
+
+                // Hide delete button for guests
+                const deleteButton = isGuestMode ? '' : `<button class="delete-btn" onclick="deleteItem(${item.id})">Remove</button>`;
+
+                // Format details based on permissions
+                const locationText = showLocation ? (item.location === 'Freezer' ? 'Frozen' : 'Added') : 'Added';
+                const locationDays = showLocation ? `<br>In ${item.location.toLowerCase()}: ${daysInStorage} days` : '';
+
                 return `
                     <div class="item-card">
                         <div class="item-header">
                             <div>
                                 <div class="item-name">${item.name}</div>
-                                <div class="storage-location ${locationClass}">${getLocationIcon(item.location)} ${item.location}</div>
+                                ${locationDisplay}
                                 <div class="item-category">${item.category}</div>
                             </div>
                         </div>
                         <div class="item-details">
-                            ${item.location === 'Freezer' ? 'Frozen' : 'Added'}: ${item.storedDate.toLocaleDateString()}<br>
-                            In ${item.location.toLowerCase()}: ${daysInStorage} days
+                            ${locationText}: ${item.storedDate.toLocaleDateString()}${locationDays}${addedByInfo}
                         </div>
-                        <div class="days-left ${status.status}">
-                            ${status.message}
-                        </div>
-                        <button class="delete-btn" onclick="deleteItem(${item.id})">Remove</button>
+                        ${expiryDisplay}
+                        ${deleteButton}
                     </div>
                 `;
             }).join('');
