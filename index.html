@@ -579,6 +579,221 @@
             background: var(--primary-variant);
         }
 
+        /* Household Settings Modal */
+        .settings-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            padding: 16px 24px 0;
+            border-bottom: 1px solid var(--outline-variant);
+            overflow-x: auto;
+        }
+
+        .settings-tab {
+            padding: 8px 12px;
+            background: transparent;
+            color: var(--on-surface-variant);
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            touch-action: manipulation;
+        }
+
+        .settings-tab.active {
+            background: var(--primary);
+            color: var(--on-primary);
+        }
+
+        .settings-tab:hover:not(.active) {
+            background: var(--surface-variant);
+        }
+
+        .settings-content {
+            padding: 24px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .settings-panel {
+            display: none;
+        }
+
+        .settings-panel.active {
+            display: block;
+        }
+
+        .settings-panel h3 {
+            color: var(--on-surface);
+            font-size: 18px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--outline-variant);
+            padding-bottom: 8px;
+        }
+
+        .settings-panel h4 {
+            color: var(--on-surface);
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .settings-btn {
+            padding: 12px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            touch-action: manipulation;
+        }
+
+        .settings-btn.primary {
+            background: var(--primary);
+            color: var(--on-primary);
+        }
+
+        .settings-btn.primary:hover {
+            background: var(--primary-variant);
+            transform: translateY(-1px);
+        }
+
+        .settings-btn.danger {
+            background: var(--error-container);
+            color: var(--on-error-container);
+        }
+
+        .settings-btn.danger:hover {
+            background: #d32f2f;
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .member-card {
+            background: var(--surface-variant);
+            border: 1px solid var(--outline-variant);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .member-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: var(--on-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .member-info {
+            flex: 1;
+        }
+
+        .member-name {
+            font-weight: 600;
+            color: var(--on-surface);
+            font-size: 14px;
+        }
+
+        .member-email {
+            color: var(--on-surface-variant);
+            font-size: 12px;
+        }
+
+        .member-role {
+            background: var(--warning-container);
+            color: var(--on-warning-container);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .member-role.admin {
+            background: var(--success-container);
+            color: var(--on-success-container);
+        }
+
+        .duration-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .duration-grid > div {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .duration-grid label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--on-surface-variant);
+        }
+
+        .duration-grid input {
+            padding: 8px;
+            border: 1px solid var(--outline-variant);
+            border-radius: 6px;
+            background: var(--surface);
+            color: var(--on-surface);
+            font-size: 14px;
+        }
+
+        .data-section {
+            margin-bottom: 24px;
+            padding: 16px;
+            border: 1px solid var(--outline-variant);
+            border-radius: 12px;
+            background: var(--surface-variant);
+        }
+
+        .data-section h4 {
+            margin-top: 0;
+        }
+
+        .data-section p {
+            color: var(--on-surface-variant);
+            font-size: 14px;
+            margin: 8px 0;
+        }
+
+        .danger-zone {
+            border-color: var(--error-container);
+            background: var(--error-container);
+        }
+
+        .invitation-card, .guest-card {
+            background: var(--surface-variant);
+            border: 1px solid var(--outline-variant);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+        }
+
+        .invitation-email, .guest-name {
+            font-weight: 500;
+            color: var(--on-surface);
+        }
+
+        .invitation-status, .guest-expires {
+            font-size: 12px;
+            color: var(--on-surface-variant);
+        }
+
         /* Responsive Design - Tablet and Desktop */
         @media (min-width: 768px) {
             .auth-modal-content {
@@ -599,6 +814,21 @@
 
             .auth-footer {
                 padding: 24px 32px 32px;
+            }
+
+            .settings-tabs {
+                flex-wrap: nowrap;
+                gap: 8px;
+                overflow-x: visible;
+            }
+
+            .settings-tab {
+                font-size: 14px;
+                padding: 10px 16px;
+            }
+
+            .duration-grid {
+                grid-template-columns: repeat(3, 1fr);
             }
         }
 
@@ -1640,6 +1870,227 @@
         </div>
     </div>
 
+    <!-- Household Settings Modal -->
+    <div id="householdSettingsModal" class="auth-modal" style="display: none;">
+        <div class="auth-modal-content" style="max-width: 600px; max-height: 90vh;">
+            <div class="auth-header">
+                <h2>Household Settings</h2>
+                <p>Manage your household members, settings, and preferences</p>
+            </div>
+
+            <div class="settings-tabs">
+                <button class="settings-tab active" onclick="switchSettingsTab('members')">👥 Members</button>
+                <button class="settings-tab" onclick="switchSettingsTab('household')">🏠 Household</button>
+                <button class="settings-tab" onclick="switchSettingsTab('invitations')">📧 Invitations</button>
+                <button class="settings-tab" onclick="switchSettingsTab('guests')">👁️ Guest Access</button>
+                <button class="settings-tab" onclick="switchSettingsTab('data')">📊 Data</button>
+                <button class="settings-tab" onclick="switchSettingsTab('advanced')">⚙️ Advanced</button>
+            </div>
+
+            <div class="settings-content">
+                <!-- Members Tab -->
+                <div id="settingsMembers" class="settings-panel active">
+                    <h3>Household Members</h3>
+                    <div id="membersList"></div>
+
+                    <div class="member-actions" style="margin-top: 20px;">
+                        <button class="settings-btn primary" onclick="showInviteModal()">
+                            👥 Invite New Member
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Household Tab -->
+                <div id="settingsHousehold" class="settings-panel">
+                    <h3>Household Information</h3>
+                    <div class="auth-form">
+                        <div class="form-group">
+                            <label for="householdNameEdit">Household Name</label>
+                            <input type="text" id="householdNameEdit" placeholder="Enter household name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="householdTimezone">Timezone</label>
+                            <select id="householdTimezone">
+                                <option value="America/New_York">Eastern Time</option>
+                                <option value="America/Chicago">Central Time</option>
+                                <option value="America/Denver">Mountain Time</option>
+                                <option value="America/Los_Angeles">Pacific Time</option>
+                                <option value="UTC">UTC</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Default Storage Durations (days)</label>
+                            <div class="duration-grid">
+                                <div><label>Fruits:</label><input type="number" id="durationFruits" value="7" min="1"></div>
+                                <div><label>Vegetables:</label><input type="number" id="durationVegetables" value="7" min="1"></div>
+                                <div><label>Dairy:</label><input type="number" id="durationDairy" value="10" min="1"></div>
+                                <div><label>Meat:</label><input type="number" id="durationMeat" value="5" min="1"></div>
+                                <div><label>Leftovers:</label><input type="number" id="durationLeftovers" value="3" min="1"></div>
+                                <div><label>Other:</label><input type="number" id="durationOther" value="14" min="1"></div>
+                            </div>
+                        </div>
+
+                        <button class="settings-btn primary" onclick="saveHouseholdSettings()">Save Changes</button>
+                    </div>
+                </div>
+
+                <!-- Invitations Tab -->
+                <div id="settingsInvitations" class="settings-panel">
+                    <h3>Pending Invitations</h3>
+                    <div id="pendingInvitationsList"></div>
+
+                    <h3 style="margin-top: 30px;">Invitation Settings</h3>
+                    <div class="auth-form">
+                        <div class="form-group">
+                            <label for="inviteExpiration">Default Invitation Expiration</label>
+                            <select id="inviteExpiration">
+                                <option value="24">24 hours</option>
+                                <option value="168" selected>1 week</option>
+                                <option value="336">2 weeks</option>
+                                <option value="720">1 month</option>
+                            </select>
+                        </div>
+                        <button class="settings-btn primary" onclick="saveInvitationSettings()">Save Settings</button>
+                    </div>
+                </div>
+
+                <!-- Guest Access Tab -->
+                <div id="settingsGuests" class="settings-panel">
+                    <h3>Active Guest Tokens</h3>
+                    <div id="activeGuestsList"></div>
+
+                    <div class="guest-actions" style="margin-top: 20px;">
+                        <button class="settings-btn danger" onclick="revokeAllGuestTokens()">
+                            🚫 Revoke All Guest Access
+                        </button>
+                        <button class="settings-btn primary" onclick="showGuestShareModal()">
+                            🔗 Create New Guest Link
+                        </button>
+                    </div>
+
+                    <h3 style="margin-top: 30px;">Default Guest Permissions</h3>
+                    <div class="auth-form">
+                        <div class="form-group">
+                            <label style="display: flex; align-items: center; font-weight: normal;">
+                                <input type="checkbox" id="defaultGuestExpiry" checked style="margin-right: 8px;">
+                                Allow guests to view expiration dates by default
+                            </label>
+                            <label style="display: flex; align-items: center; font-weight: normal;">
+                                <input type="checkbox" id="defaultGuestLocation" checked style="margin-right: 8px;">
+                                Allow guests to view storage locations by default
+                            </label>
+                            <label style="display: flex; align-items: center; font-weight: normal;">
+                                <input type="checkbox" id="defaultGuestDetails" style="margin-right: 8px;">
+                                Allow guests to view who added items by default
+                            </label>
+                        </div>
+                        <button class="settings-btn primary" onclick="saveGuestSettings()">Save Defaults</button>
+                    </div>
+                </div>
+
+                <!-- Data Tab -->
+                <div id="settingsData" class="settings-panel">
+                    <h3>Data Management</h3>
+
+                    <div class="data-section">
+                        <h4>Export Data</h4>
+                        <p>Download your household data for backup or analysis</p>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="settings-btn primary" onclick="exportData('csv')">📊 Export as CSV</button>
+                            <button class="settings-btn primary" onclick="exportData('json')">💾 Export as JSON</button>
+                        </div>
+                    </div>
+
+                    <div class="data-section">
+                        <h4>Data Retention</h4>
+                        <div class="auth-form">
+                            <div class="form-group">
+                                <label for="autoDeleteDays">Auto-delete consumed items after (days)</label>
+                                <select id="autoDeleteDays">
+                                    <option value="0">Never</option>
+                                    <option value="30">30 days</option>
+                                    <option value="90" selected>90 days</option>
+                                    <option value="365">1 year</option>
+                                </select>
+                            </div>
+                            <button class="settings-btn primary" onclick="saveDataSettings()">Save Settings</button>
+                        </div>
+                    </div>
+
+                    <div class="data-section">
+                        <h4>Privacy Controls</h4>
+                        <div class="auth-form">
+                            <div class="form-group">
+                                <label style="display: flex; align-items: center; font-weight: normal;">
+                                    <input type="checkbox" id="shareUsageStats" style="margin-right: 8px;">
+                                    Share anonymous usage statistics to improve FreshKeep
+                                </label>
+                                <label style="display: flex; align-items: center; font-weight: normal;">
+                                    <input type="checkbox" id="allowAnalytics" style="margin-right: 8px;">
+                                    Allow analytics for app performance monitoring
+                                </label>
+                            </div>
+                            <button class="settings-btn primary" onclick="savePrivacySettings()">Save Privacy Settings</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advanced Tab -->
+                <div id="settingsAdvanced" class="settings-panel">
+                    <h3>Advanced Settings</h3>
+
+                    <div class="data-section">
+                        <h4>Custom Categories</h4>
+                        <div id="customCategoriesList"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <input type="text" id="newCategoryName" placeholder="Category name" style="flex: 1;">
+                            <button class="settings-btn primary" onclick="addCustomCategory()">Add Category</button>
+                        </div>
+                    </div>
+
+                    <div class="data-section">
+                        <h4>Storage Locations</h4>
+                        <div id="customLocationsList"></div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <input type="text" id="newLocationName" placeholder="Location name" style="flex: 1;">
+                            <button class="settings-btn primary" onclick="addCustomLocation()">Add Location</button>
+                        </div>
+                    </div>
+
+                    <div class="data-section">
+                        <h4>Sync Settings</h4>
+                        <div class="auth-form">
+                            <div class="form-group">
+                                <label style="display: flex; align-items: center; font-weight: normal;">
+                                    <input type="checkbox" id="enableOfflineMode" checked style="margin-right: 8px;">
+                                    Enable offline mode with local storage fallback
+                                </label>
+                                <label style="display: flex; align-items: center; font-weight: normal;">
+                                    <input type="checkbox" id="realTimeSync" checked style="margin-right: 8px;">
+                                    Enable real-time synchronization across devices
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="data-section danger-zone">
+                        <h4 style="color: var(--on-error-container);">⚠️ Danger Zone</h4>
+                        <p>These actions cannot be undone</p>
+                        <button class="settings-btn danger" onclick="confirmDeleteHousehold()">
+                            🗑️ Delete Entire Household
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="auth-footer">
+                <button class="auth-skip-btn" onclick="closeHouseholdSettings()">Close</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Firebase SDKs -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js';
@@ -2616,8 +3067,775 @@
         }
 
         function showHouseholdSettings() {
-            alert('Household settings coming soon!');
+            if (!currentUser || !currentHousehold) {
+                alert('Please sign in and join a household first');
+                return;
+            }
+
+            document.getElementById('householdSettingsModal').style.display = 'flex';
+            loadHouseholdSettingsData();
         }
+
+        function closeHouseholdSettings() {
+            document.getElementById('householdSettingsModal').style.display = 'none';
+        }
+
+        function switchSettingsTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.settings-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`.settings-tab[onclick="switchSettingsTab('${tabName}')"]`).classList.add('active');
+
+            // Update panels
+            document.querySelectorAll('.settings-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            document.getElementById(`settings${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`).classList.add('active');
+
+            // Load data for specific tabs
+            if (tabName === 'members') {
+                loadHouseholdMembers();
+            } else if (tabName === 'invitations') {
+                loadPendingInvitations();
+            } else if (tabName === 'guests') {
+                loadActiveGuestTokens();
+            } else if (tabName === 'advanced') {
+                loadCustomCategories();
+            }
+        }
+
+        async function loadHouseholdSettingsData() {
+            // Load current household data into form fields
+            if (currentHousehold) {
+                document.getElementById('householdNameEdit').value = currentHousehold.name || '';
+                document.getElementById('householdTimezone').value = currentHousehold.timezone || 'America/New_York';
+
+                // Load storage durations
+                const durations = currentHousehold.storageDurations || {};
+                document.getElementById('durationFruits').value = durations.fruits || 7;
+                document.getElementById('durationVegetables').value = durations.vegetables || 7;
+                document.getElementById('durationDairy').value = durations.dairy || 10;
+                document.getElementById('durationMeat').value = durations.meat || 5;
+                document.getElementById('durationLeftovers').value = durations.leftovers || 3;
+                document.getElementById('durationOther').value = durations.other || 14;
+            }
+
+            // Load default data for active tab
+            loadHouseholdMembers();
+        }
+
+        async function loadHouseholdMembers() {
+            if (!window.db || !currentHousehold) return;
+
+            try {
+                const membersList = document.getElementById('membersList');
+                membersList.innerHTML = '<div class="loading">Loading members...</div>';
+
+                const householdRef = window.firestoreUtils.doc(window.db, 'households', currentHousehold.id);
+                const householdDoc = await window.firestoreUtils.getDoc(householdRef);
+
+                if (householdDoc.exists()) {
+                    const data = householdDoc.data();
+                    const members = data.members || {};
+
+                    let membersHtml = '';
+                    for (const [uid, member] of Object.entries(members)) {
+                        const isCurrentUser = uid === currentUser.uid;
+                        const isAdmin = member.role === 'admin';
+
+                        membersHtml += `
+                            <div class="member-item">
+                                <div class="member-info">
+                                    <strong>${member.name}${isCurrentUser ? ' (You)' : ''}</strong>
+                                    <span class="member-role ${member.role}">${member.role}</span>
+                                    <div class="member-meta">
+                                        Joined ${new Date(member.joinedAt.toDate()).toLocaleDateString()}
+                                    </div>
+                                </div>
+                                <div class="member-actions">
+                                    ${!isCurrentUser && currentHousehold.role === 'admin' ? `
+                                        <select onchange="changeMemberRole('${uid}', this.value)">
+                                            <option value="member" ${member.role === 'member' ? 'selected' : ''}>Member</option>
+                                            <option value="admin" ${member.role === 'admin' ? 'selected' : ''}>Admin</option>
+                                        </select>
+                                        <button class="settings-btn danger small" onclick="removeMember('${uid}', '${member.name}')">Remove</button>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        `;
+                    }
+
+                    membersList.innerHTML = membersHtml || '<div class="empty-state">No members found</div>';
+                }
+            } catch (error) {
+                console.error('Error loading household members:', error);
+                document.getElementById('membersList').innerHTML = '<div class="error">Error loading members</div>';
+            }
+        }
+
+        async function changeMemberRole(uid, newRole) {
+            if (!window.db || !currentHousehold || currentHousehold.role !== 'admin') {
+                alert('Only admins can change member roles');
+                return;
+            }
+
+            try {
+                const householdRef = window.firestoreUtils.doc(window.db, 'households', currentHousehold.id);
+                await window.firestoreUtils.updateDoc(householdRef, {
+                    [`members.${uid}.role`]: newRole,
+                    [`members.${uid}.roleChangedAt`]: new Date(),
+                    [`members.${uid}.roleChangedBy`]: currentUser.uid
+                });
+
+                alert(`Member role updated to ${newRole}`);
+                loadHouseholdMembers(); // Refresh the list
+            } catch (error) {
+                console.error('Error changing member role:', error);
+                alert('Error updating member role');
+            }
+        }
+
+        async function removeMember(uid, memberName) {
+            if (!window.db || !currentHousehold || currentHousehold.role !== 'admin') {
+                alert('Only admins can remove members');
+                return;
+            }
+
+            if (!confirm(`Are you sure you want to remove ${memberName} from the household? This action cannot be undone.`)) {
+                return;
+            }
+
+            try {
+                const householdRef = window.firestoreUtils.doc(window.db, 'households', currentHousehold.id);
+                await window.firestoreUtils.updateDoc(householdRef, {
+                    [`members.${uid}`]: window.firestoreUtils.deleteField()
+                });
+
+                alert(`${memberName} has been removed from the household`);
+                loadHouseholdMembers(); // Refresh the list
+            } catch (error) {
+                console.error('Error removing member:', error);
+                alert('Error removing member');
+            }
+        }
+
+        async function saveHouseholdSettings() {
+            if (!window.db || !currentHousehold || currentHousehold.role !== 'admin') {
+                alert('Only admins can modify household settings');
+                return;
+            }
+
+            try {
+                const newName = document.getElementById('householdNameEdit').value.trim();
+                const timezone = document.getElementById('householdTimezone').value;
+
+                const storageDurations = {
+                    fruits: parseInt(document.getElementById('durationFruits').value),
+                    vegetables: parseInt(document.getElementById('durationVegetables').value),
+                    dairy: parseInt(document.getElementById('durationDairy').value),
+                    meat: parseInt(document.getElementById('durationMeat').value),
+                    leftovers: parseInt(document.getElementById('durationLeftovers').value),
+                    other: parseInt(document.getElementById('durationOther').value)
+                };
+
+                const householdRef = window.firestoreUtils.doc(window.db, 'households', currentHousehold.id);
+                await window.firestoreUtils.updateDoc(householdRef, {
+                    name: newName,
+                    timezone: timezone,
+                    storageDurations: storageDurations,
+                    updatedAt: new Date(),
+                    updatedBy: currentUser.uid
+                });
+
+                // Update local household data
+                currentHousehold.name = newName;
+                currentHousehold.timezone = timezone;
+                currentHousehold.storageDurations = storageDurations;
+
+                alert('Household settings saved successfully!');
+            } catch (error) {
+                console.error('Error saving household settings:', error);
+                alert('Error saving household settings');
+            }
+        }
+
+        async function loadPendingInvitations() {
+            if (!window.db || !currentHousehold) return;
+
+            try {
+                const invitationsList = document.getElementById('pendingInvitationsList');
+                invitationsList.innerHTML = '<div class="loading">Loading pending invitations...</div>';
+
+                const invitationsRef = window.firestoreUtils.collection(window.db, 'invitations');
+                const q = window.firestoreUtils.query(
+                    invitationsRef,
+                    window.firestoreUtils.where('householdId', '==', currentHousehold.id),
+                    window.firestoreUtils.where('status', '==', 'pending')
+                );
+
+                const snapshot = await window.firestoreUtils.getDocs(q);
+                let invitationsHtml = '';
+
+                snapshot.forEach((doc) => {
+                    const invitation = doc.data();
+                    const expiresAt = new Date(invitation.expiresAt.toDate());
+                    const isExpired = expiresAt < new Date();
+
+                    invitationsHtml += `
+                        <div class="invitation-item ${isExpired ? 'expired' : ''}">
+                            <div class="invitation-info">
+                                <strong>${invitation.email}</strong>
+                                <div class="invitation-meta">
+                                    Invited by ${invitation.invitedByName} on ${new Date(invitation.createdAt.toDate()).toLocaleDateString()}
+                                    <br>
+                                    ${isExpired ? 'Expired' : 'Expires'} ${expiresAt.toLocaleDateString()}
+                                </div>
+                            </div>
+                            <div class="invitation-actions">
+                                <button class="settings-btn danger small" onclick="cancelInvitation('${doc.id}', '${invitation.email}')">
+                                    Cancel
+                                </button>
+                                ${isExpired ? '' : `
+                                    <button class="settings-btn primary small" onclick="resendInvitation('${doc.id}', '${invitation.email}')">
+                                        Resend
+                                    </button>
+                                `}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                invitationsList.innerHTML = invitationsHtml || '<div class="empty-state">No pending invitations</div>';
+            } catch (error) {
+                console.error('Error loading pending invitations:', error);
+                document.getElementById('pendingInvitationsList').innerHTML = '<div class="error">Error loading invitations</div>';
+            }
+        }
+
+        async function cancelInvitation(invitationId, email) {
+            if (!confirm(`Cancel invitation for ${email}?`)) return;
+
+            try {
+                const invitationRef = window.firestoreUtils.doc(window.db, 'invitations', invitationId);
+                await window.firestoreUtils.updateDoc(invitationRef, {
+                    status: 'cancelled',
+                    cancelledAt: new Date(),
+                    cancelledBy: currentUser.uid
+                });
+
+                alert('Invitation cancelled');
+                loadPendingInvitations(); // Refresh the list
+            } catch (error) {
+                console.error('Error cancelling invitation:', error);
+                alert('Error cancelling invitation');
+            }
+        }
+
+        async function resendInvitation(invitationId, email) {
+            try {
+                // Extend expiration by 1 week
+                const newExpiresAt = new Date();
+                newExpiresAt.setDate(newExpiresAt.getDate() + 7);
+
+                const invitationRef = window.firestoreUtils.doc(window.db, 'invitations', invitationId);
+                await window.firestoreUtils.updateDoc(invitationRef, {
+                    expiresAt: newExpiresAt,
+                    resentAt: new Date(),
+                    resentBy: currentUser.uid
+                });
+
+                alert(`Invitation resent to ${email} with new expiration date`);
+                loadPendingInvitations(); // Refresh the list
+            } catch (error) {
+                console.error('Error resending invitation:', error);
+                alert('Error resending invitation');
+            }
+        }
+
+        async function saveInvitationSettings() {
+            if (!window.db || !currentHousehold || currentHousehold.role !== 'admin') {
+                alert('Only admins can modify invitation settings');
+                return;
+            }
+
+            try {
+                const defaultExpiration = parseInt(document.getElementById('inviteExpiration').value);
+
+                const householdRef = window.firestoreUtils.doc(window.db, 'households', currentHousehold.id);
+                await window.firestoreUtils.updateDoc(householdRef, {
+                    invitationSettings: {
+                        defaultExpirationHours: defaultExpiration
+                    },
+                    updatedAt: new Date(),
+                    updatedBy: currentUser.uid
+                });
+
+                alert('Invitation settings saved!');
+            } catch (error) {
+                console.error('Error saving invitation settings:', error);
+                alert('Error saving invitation settings');
+            }
+        }
+
+        async function loadActiveGuestTokens() {
+            if (!window.db || !currentHousehold) return;
+
+            try {
+                const guestsList = document.getElementById('activeGuestsList');
+                guestsList.innerHTML = '<div class="loading">Loading active guest tokens...</div>';
+
+                const guestTokensRef = window.firestoreUtils.collection(window.db, 'guestTokens');
+                const q = window.firestoreUtils.query(
+                    guestTokensRef,
+                    window.firestoreUtils.where('householdId', '==', currentHousehold.id),
+                    window.firestoreUtils.where('active', '==', true)
+                );
+
+                const snapshot = await window.firestoreUtils.getDocs(q);
+                let guestsHtml = '';
+
+                snapshot.forEach((doc) => {
+                    const token = doc.data();
+                    const expiresAt = new Date(token.expiresAt.toDate());
+                    const isExpired = expiresAt < new Date();
+
+                    guestsHtml += `
+                        <div class="guest-token-item ${isExpired ? 'expired' : ''}">
+                            <div class="guest-info">
+                                <strong>${token.guestName}</strong>
+                                <div class="guest-meta">
+                                    Created by ${token.createdByName} on ${new Date(token.createdAt.toDate()).toLocaleDateString()}
+                                    <br>
+                                    ${isExpired ? 'Expired' : 'Expires'} ${expiresAt.toLocaleDateString()} at ${expiresAt.toLocaleTimeString()}
+                                    <br>
+                                    Access count: ${token.accessCount || 0}
+                                    ${token.lastAccessed ? ` • Last used: ${new Date(token.lastAccessed.toDate()).toLocaleDateString()}` : ''}
+                                </div>
+                                <div class="guest-permissions">
+                                    Permissions: ${Object.entries(token.permissions || {})
+                                        .filter(([key, value]) => value)
+                                        .map(([key]) => key.replace('canView', '').replace(/([A-Z])/g, ' $1').toLowerCase())
+                                        .join(', ') || 'None'}
+                                </div>
+                            </div>
+                            <div class="guest-actions">
+                                <button class="settings-btn danger small" onclick="revokeGuestToken('${doc.id}', '${token.guestName}')">
+                                    Revoke
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                guestsList.innerHTML = guestsHtml || '<div class="empty-state">No active guest tokens</div>';
+            } catch (error) {
+                console.error('Error loading guest tokens:', error);
+                document.getElementById('activeGuestsList').innerHTML = '<div class="error">Error loading guest tokens</div>';
+            }
+        }
+
+        async function revokeGuestToken(tokenId, guestName) {
+            if (!confirm(`Revoke guest access for ${guestName}?`)) return;
+
+            try {
+                const tokenRef = window.firestoreUtils.doc(window.db, 'guestTokens', tokenId);
+                await window.firestoreUtils.updateDoc(tokenRef, {
+                    active: false,
+                    revokedAt: new Date(),
+                    revokedBy: currentUser.uid
+                });
+
+                alert(`Guest access revoked for ${guestName}`);
+                loadActiveGuestTokens(); // Refresh the list
+            } catch (error) {
+                console.error('Error revoking guest token:', error);
+                alert('Error revoking guest access');
+            }
+        }
+
+        async function revokeAllGuestTokens() {
+            if (!confirm('Are you sure you want to revoke ALL guest access? This cannot be undone.')) return;
+
+            try {
+                const guestTokensRef = window.firestoreUtils.collection(window.db, 'guestTokens');
+                const q = window.firestoreUtils.query(
+                    guestTokensRef,
+                    window.firestoreUtils.where('householdId', '==', currentHousehold.id),
+                    window.firestoreUtils.where('active', '==', true)
+                );
+
+                const snapshot = await window.firestoreUtils.getDocs(q);
+                const batch = window.firestoreUtils.writeBatch(window.db);
+
+                snapshot.forEach((doc) => {
+                    batch.update(doc.ref, {
+                        active: false,
+                        revokedAt: new Date(),
+                        revokedBy: currentUser.uid,
+                        batchRevoked: true
+                    });
+                });
+
+                await batch.commit();
+                alert(`Revoked ${snapshot.size} guest token(s)`);
+                loadActiveGuestTokens(); // Refresh the list
+            } catch (error) {
+                console.error('Error revoking all guest tokens:', error);
+                alert('Error revoking guest tokens');
+            }
+        }
+
+        async function saveGuestSettings() {
+            if (!window.db || !currentHousehold || currentHousehold.role !== 'admin') {
+                alert('Only admins can modify guest settings');
+                return;
+            }
+
+            try {
+                const defaultPermissions = {
+                    canViewExpiry: document.getElementById('defaultGuestExpiry').checked,
+                    canViewLocation: document.getElementById('defaultGuestLocation').checked,
+                    canViewDetails: document.getElementById('defaultGuestDetails').checked
+                };
+
+                const householdRef = window.firestoreUtils.doc(window.db, 'households', currentHousehold.id);
+                await window.firestoreUtils.updateDoc(householdRef, {
+                    guestSettings: {
+                        defaultPermissions: defaultPermissions
+                    },
+                    updatedAt: new Date(),
+                    updatedBy: currentUser.uid
+                });
+
+                alert('Guest settings saved!');
+            } catch (error) {
+                console.error('Error saving guest settings:', error);
+                alert('Error saving guest settings');
+            }
+        }
+
+        async function exportData(format) {
+            if (!window.db || !currentHousehold) {
+                alert('Cannot export data: not connected to household');
+                return;
+            }
+
+            try {
+                // Get all food items for this household
+                const foodItemsRef = window.firestoreUtils.collection(window.db, 'foodItems');
+                const q = window.firestoreUtils.query(
+                    foodItemsRef,
+                    window.firestoreUtils.where('householdId', '==', currentHousehold.id)
+                );
+
+                const snapshot = await window.firestoreUtils.getDocs(q);
+                const items = [];
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    items.push({
+                        id: doc.id,
+                        name: data.name,
+                        category: data.category,
+                        location: data.location,
+                        storedDate: new Date(data.storedDate).toISOString(),
+                        addedDate: new Date(data.addedDate).toISOString(),
+                        addedBy: data.addedByName,
+                        expiryDate: data.expiryDate,
+                        consumed: data.consumed || false,
+                        notes: data.notes || ''
+                    });
+                });
+
+                if (format === 'csv') {
+                    const csv = convertToCSV(items);
+                    downloadFile(csv, 'freshkeep-data.csv', 'text/csv');
+                } else if (format === 'json') {
+                    const json = JSON.stringify(items, null, 2);
+                    downloadFile(json, 'freshkeep-data.json', 'application/json');
+                }
+
+                alert(`Data exported successfully (${items.length} items)`);
+            } catch (error) {
+                console.error('Error exporting data:', error);
+                alert('Error exporting data');
+            }
+        }
+
+        function convertToCSV(items) {
+            if (items.length === 0) return '';
+
+            const headers = Object.keys(items[0]);
+            const csvContent = [
+                headers.join(','),
+                ...items.map(item =>
+                    headers.map(field => {
+                        const value = item[field] || '';
+                        return `"${String(value).replace(/"/g, '""')}"`;
+                    }).join(',')
+                )
+            ].join('\n');
+
+            return csvContent;
+        }
+
+        function downloadFile(content, filename, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+        async function saveDataSettings() {
+            if (!window.db || !currentHousehold || currentHousehold.role !== 'admin') {
+                alert('Only admins can modify data settings');
+                return;
+            }
+
+            try {
+                const autoDeleteDays = parseInt(document.getElementById('autoDeleteDays').value);
+
+                const householdRef = window.firestoreUtils.doc(window.db, 'households', currentHousehold.id);
+                await window.firestoreUtils.updateDoc(householdRef, {
+                    dataSettings: {
+                        autoDeleteDays: autoDeleteDays
+                    },
+                    updatedAt: new Date(),
+                    updatedBy: currentUser.uid
+                });
+
+                alert('Data retention settings saved!');
+            } catch (error) {
+                console.error('Error saving data settings:', error);
+                alert('Error saving data settings');
+            }
+        }
+
+        async function savePrivacySettings() {
+            if (!window.db || !currentHousehold || currentHousehold.role !== 'admin') {
+                alert('Only admins can modify privacy settings');
+                return;
+            }
+
+            try {
+                const privacySettings = {
+                    shareUsageStats: document.getElementById('shareUsageStats').checked,
+                    allowAnalytics: document.getElementById('allowAnalytics').checked
+                };
+
+                const householdRef = window.firestoreUtils.doc(window.db, 'households', currentHousehold.id);
+                await window.firestoreUtils.updateDoc(householdRef, {
+                    privacySettings: privacySettings,
+                    updatedAt: new Date(),
+                    updatedBy: currentUser.uid
+                });
+
+                alert('Privacy settings saved!');
+            } catch (error) {
+                console.error('Error saving privacy settings:', error);
+                alert('Error saving privacy settings');
+            }
+        }
+
+        async function loadCustomCategories() {
+            if (!window.db || !currentHousehold) return;
+
+            try {
+                const categoriesList = document.getElementById('customCategoriesList');
+                categoriesList.innerHTML = '<div class="loading">Loading custom categories...</div>';
+
+                const householdRef = window.firestoreUtils.doc(window.db, 'households', currentHousehold.id);
+                const householdDoc = await window.firestoreUtils.getDoc(householdRef);
+
+                if (householdDoc.exists()) {
+                    const data = householdDoc.data();
+                    const customCategories = data.customCategories || [];
+
+                    let categoriesHtml = '';
+                    customCategories.forEach((category, index) => {
+                        categoriesHtml += `
+                            <div class="category-item">
+                                <span class="category-name">${category}</span>
+                                ${currentHousehold.role === 'admin' ? `
+                                    <button class="settings-btn danger small" onclick="removeCustomCategory('${category}', ${index})">
+                                        Remove
+                                    </button>
+                                ` : ''}
+                            </div>
+                        `;
+                    });
+
+                    categoriesList.innerHTML = categoriesHtml || '<div class="empty-state">No custom categories</div>';
+                }
+            } catch (error) {
+                console.error('Error loading custom categories:', error);
+                document.getElementById('customCategoriesList').innerHTML = '<div class="error">Error loading categories</div>';
+            }
+        }
+
+        async function addCustomCategory() {
+            if (!window.db || !currentHousehold || currentHousehold.role !== 'admin') {
+                alert('Only admins can add custom categories');
+                return;
+            }
+
+            const categoryInput = document.getElementById('newCategoryName');
+            const categoryName = categoryInput.value.trim();
+
+            if (!categoryName) {
+                alert('Please enter a category name');
+                return;
+            }
+
+            try {
+                const householdRef = window.firestoreUtils.doc(window.db, 'households', currentHousehold.id);
+                const householdDoc = await window.firestoreUtils.getDoc(householdRef);
+
+                if (householdDoc.exists()) {
+                    const data = householdDoc.data();
+                    const customCategories = data.customCategories || [];
+
+                    if (customCategories.includes(categoryName)) {
+                        alert('Category already exists');
+                        return;
+                    }
+
+                    customCategories.push(categoryName);
+
+                    await window.firestoreUtils.updateDoc(householdRef, {
+                        customCategories: customCategories,
+                        updatedAt: new Date(),
+                        updatedBy: currentUser.uid
+                    });
+
+                    categoryInput.value = '';
+                    alert(`Category "${categoryName}" added successfully`);
+                    loadCustomCategories(); // Refresh the list
+                }
+            } catch (error) {
+                console.error('Error adding custom category:', error);
+                alert('Error adding custom category');
+            }
+        }
+
+        async function removeCustomCategory(categoryName, index) {
+            if (!window.db || !currentHousehold || currentHousehold.role !== 'admin') {
+                alert('Only admins can remove custom categories');
+                return;
+            }
+
+            if (!confirm(`Remove category "${categoryName}"? Items using this category will need to be recategorized.`)) {
+                return;
+            }
+
+            try {
+                const householdRef = window.firestoreUtils.doc(window.db, 'households', currentHousehold.id);
+                const householdDoc = await window.firestoreUtils.getDoc(householdRef);
+
+                if (householdDoc.exists()) {
+                    const data = householdDoc.data();
+                    const customCategories = data.customCategories || [];
+                    customCategories.splice(index, 1);
+
+                    await window.firestoreUtils.updateDoc(householdRef, {
+                        customCategories: customCategories,
+                        updatedAt: new Date(),
+                        updatedBy: currentUser.uid
+                    });
+
+                    alert(`Category "${categoryName}" removed successfully`);
+                    loadCustomCategories(); // Refresh the list
+                }
+            } catch (error) {
+                console.error('Error removing custom category:', error);
+                alert('Error removing custom category');
+            }
+        }
+
+        async function confirmDeleteHousehold() {
+            if (!window.db || !currentHousehold || currentHousehold.role !== 'admin') {
+                alert('Only admins can delete the household');
+                return;
+            }
+
+            const confirmText = prompt(`This will permanently delete the entire household and all data. This cannot be undone.\n\nType "${currentHousehold.name}" to confirm:`);
+
+            if (confirmText !== currentHousehold.name) {
+                alert('Household name does not match. Deletion cancelled.');
+                return;
+            }
+
+            try {
+                // Delete all food items
+                const foodItemsRef = window.firestoreUtils.collection(window.db, 'foodItems');
+                const foodQuery = window.firestoreUtils.query(
+                    foodItemsRef,
+                    window.firestoreUtils.where('householdId', '==', currentHousehold.id)
+                );
+                const foodSnapshot = await window.firestoreUtils.getDocs(foodQuery);
+
+                // Delete all invitations
+                const invitationsRef = window.firestoreUtils.collection(window.db, 'invitations');
+                const inviteQuery = window.firestoreUtils.query(
+                    invitationsRef,
+                    window.firestoreUtils.where('householdId', '==', currentHousehold.id)
+                );
+                const inviteSnapshot = await window.firestoreUtils.getDocs(inviteQuery);
+
+                // Delete all guest tokens
+                const guestTokensRef = window.firestoreUtils.collection(window.db, 'guestTokens');
+                const guestQuery = window.firestoreUtils.query(
+                    guestTokensRef,
+                    window.firestoreUtils.where('householdId', '==', currentHousehold.id)
+                );
+                const guestSnapshot = await window.firestoreUtils.getDocs(guestQuery);
+
+                // Use batch operations for efficiency
+                const batch = window.firestoreUtils.writeBatch(window.db);
+
+                // Add all deletions to batch
+                foodSnapshot.forEach((doc) => batch.delete(doc.ref));
+                inviteSnapshot.forEach((doc) => batch.delete(doc.ref));
+                guestSnapshot.forEach((doc) => batch.delete(doc.ref));
+
+                // Delete the household itself
+                const householdRef = window.firestoreUtils.doc(window.db, 'households', currentHousehold.id);
+                batch.delete(householdRef);
+
+                // Commit all deletions
+                await batch.commit();
+
+                // Reset local state
+                currentHousehold = null;
+                foodItems = [];
+                updateDisplay();
+                updateConnectionStatus('disconnected');
+
+                alert('Household deleted successfully. You will need to create or join a new household.');
+                closeHouseholdSettings();
+
+            } catch (error) {
+                console.error('Error deleting household:', error);
+                alert('Error deleting household. Please try again.');
+            }
+        }
+
+        // Handle Enter key in new category input
+        document.addEventListener('DOMContentLoaded', () => {
+            const newCategoryInput = document.getElementById('newCategoryName');
+            if (newCategoryInput) {
+                newCategoryInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        addCustomCategory();
+                    }
+                });
+            }
+        });
 
         // Theme Management
         function initializeTheme() {
