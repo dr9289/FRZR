@@ -10,6 +10,81 @@
     <title>FreshKeep</title>
     <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🥬</text></svg>">
     <style>
+        /* CSS Custom Properties for Theme Support */
+        :root {
+            /* Light Theme Colors - Material Design */
+            --surface: #ffffff;
+            --background: #fafafa;
+            --surface-variant: #f5f5f5;
+            --on-surface: #1c1b1f;
+            --on-surface-variant: #49454f;
+            --on-background: #1c1b1f;
+            --primary: #0095f6;
+            --primary-variant: #1877f2;
+            --on-primary: #ffffff;
+            --secondary: #625b71;
+            --on-secondary: #ffffff;
+            --outline: #79747e;
+            --outline-variant: #cac4d0;
+            --shadow: rgba(0, 0, 0, 0.12);
+            --elevation-1: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+            --elevation-2: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --elevation-3: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+            /* Status Colors */
+            --success-container: #e8f5e8;
+            --on-success-container: #2e7d2e;
+            --warning-container: #fff3cd;
+            --on-warning-container: #856404;
+            --error-container: #f8d7da;
+            --on-error-container: #721c24;
+
+            /* Location Colors */
+            --pantry-container: #d4edda;
+            --on-pantry-container: #155724;
+            --fridge-container: #cce7ff;
+            --on-fridge-container: #004085;
+            --freezer-container: #d1ecf1;
+            --on-freezer-container: #0c5460;
+        }
+
+        /* Dark Theme Colors - Material Design */
+        [data-theme="dark"] {
+            --surface: #1c1b1f;
+            --background: #121212;
+            --surface-variant: #2d2d2d;
+            --on-surface: #e6e1e5;
+            --on-surface-variant: #cac4d0;
+            --on-background: #e6e1e5;
+            --primary: #3d9dff;
+            --primary-variant: #5da9ff;
+            --on-primary: #003258;
+            --secondary: #ccc2dc;
+            --on-secondary: #332d41;
+            --outline: #938f99;
+            --outline-variant: #49454f;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --elevation-1: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.4);
+            --elevation-2: 0 2px 8px rgba(0, 0, 0, 0.25);
+            --elevation-3: 0 4px 12px rgba(0, 0, 0, 0.35);
+
+            /* Dark Status Colors */
+            --success-container: #1b5e20;
+            --on-success-container: #c8e6c9;
+            --warning-container: #e65100;
+            --on-warning-container: #fff3e0;
+            --error-container: #c62828;
+            --on-error-container: #ffebee;
+
+            /* Dark Location Colors */
+            --pantry-container: #2e7d32;
+            --on-pantry-container: #c8e6c9;
+            --fridge-container: #1565c0;
+            --on-fridge-container: #e3f2fd;
+            --freezer-container: #00838f;
+            --on-freezer-container: #e0f2f1;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -18,11 +93,11 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #fafafa;
+            background: var(--background);
             min-height: 100vh;
             padding: 0;
             margin: 0;
-            color: #262626;
+            color: var(--on-background);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             touch-action: manipulation;
@@ -32,6 +107,7 @@
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         .container {
@@ -43,41 +119,77 @@
         .header {
             text-align: center;
             padding: 20px 0 16px;
-            background: white;
-            border-bottom: 1px solid #dbdbdb;
+            background: var(--surface);
+            border-bottom: 1px solid var(--outline-variant);
             margin-bottom: 0;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+            box-shadow: var(--elevation-2);
+            transition: all 0.3s ease;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin-bottom: 8px;
         }
 
         .header h1 {
             font-size: 2.2em;
-            margin-bottom: 8px;
             font-family: 'Pacifico', cursive;
             font-weight: 400;
             letter-spacing: 0.5px;
             line-height: 1.1;
-            color: #262626;
+            color: var(--on-surface);
             text-shadow: none;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            right: 0;
+            background: var(--surface-variant);
+            border: 1px solid var(--outline-variant);
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--on-surface-variant);
+        }
+
+        .theme-toggle:hover {
+            background: var(--primary);
+            color: var(--on-primary);
+            transform: scale(1.1);
+        }
+
+        .theme-icon {
+            font-size: 20px;
+            transition: transform 0.3s ease;
         }
 
         .header p {
             font-size: 14px;
-            color: #8e8e8e;
+            color: var(--on-surface-variant);
             font-weight: 400;
             margin: 0;
             opacity: 1;
         }
 
         .add-form {
-            background: white;
+            background: var(--surface);
             border-radius: 12px;
             padding: 24px;
             margin: 20px 0;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-            border: 1px solid #dbdbdb;
+            box-shadow: var(--elevation-1);
+            border: 1px solid var(--outline-variant);
+            transition: all 0.3s ease;
         }
 
         .form-row {
@@ -91,33 +203,41 @@
             display: block;
             margin-bottom: 6px;
             font-weight: 600;
-            color: #262626;
+            color: var(--on-surface);
             font-size: 14px;
         }
 
         .form-group input, .form-group select {
             width: 100%;
             padding: 12px 16px;
-            border: 1.5px solid #dbdbdb;
+            border: 1.5px solid var(--outline-variant);
             border-radius: 8px;
             font-size: 14px;
             transition: all 0.2s ease;
             -webkit-appearance: none;
             appearance: none;
-            background: #fafafa;
+            background: var(--surface-variant);
+            color: var(--on-surface);
             font-family: 'Inter', inherit;
         }
 
         .form-group input:focus, .form-group select:focus {
             outline: none;
-            border-color: #0095f6;
-            background: white;
+            border-color: var(--primary);
+            background: var(--surface);
+            box-shadow: 0 0 0 3px rgba(61, 157, 255, 0.2);
+        }
+
+        .search-box:focus, .sort-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(61, 157, 255, 0.2);
         }
 
         .add-btn {
             padding: 12px 24px;
-            background: #0095f6;
-            color: white;
+            background: var(--primary);
+            color: var(--on-primary);
             border: none;
             border-radius: 8px;
             font-size: 14px;
@@ -131,7 +251,7 @@
         }
 
         .add-btn:hover {
-            background: #1877f2;
+            background: var(--primary-variant);
             transform: translateY(-1px);
         }
 
@@ -144,29 +264,29 @@
         }
 
         .stat-card {
-            background: white;
+            background: var(--surface);
             padding: 20px;
             border-radius: 12px;
             text-align: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
-            border: 1px solid #dbdbdb;
+            box-shadow: var(--elevation-1);
+            border: 1px solid var(--outline-variant);
             transition: all 0.2s ease;
         }
 
         .stat-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: var(--elevation-3);
         }
 
         .stat-number {
             font-size: 24px;
             font-weight: 800;
-            color: #262626;
+            color: var(--on-surface);
             margin-bottom: 4px;
         }
 
         .stat-label {
-            color: #8e8e8e;
+            color: var(--on-surface-variant);
             font-weight: 500;
             font-size: 12px;
             text-transform: uppercase;
@@ -181,17 +301,17 @@
         }
 
         .item-card {
-            background: white;
+            background: var(--surface);
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
-            border: 1px solid #dbdbdb;
+            box-shadow: var(--elevation-1);
+            border: 1px solid var(--outline-variant);
             transition: all 0.2s ease;
         }
 
         .item-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            box-shadow: var(--elevation-3);
         }
 
         .item-header {
@@ -201,14 +321,14 @@
         .item-name {
             font-size: 16px;
             font-weight: 700;
-            color: #262626;
+            color: var(--on-surface);
             margin-bottom: 6px;
             line-height: 1.3;
         }
 
         .item-category {
-            background: #f1f3f4;
-            color: #5f6368;
+            background: var(--surface-variant);
+            color: var(--on-surface-variant);
             padding: 4px 8px;
             border-radius: 12px;
             font-size: 12px;
@@ -218,7 +338,7 @@
 
         .item-details {
             padding: 0 16px;
-            color: #8e8e8e;
+            color: var(--on-surface-variant);
             font-size: 14px;
             margin-bottom: 12px;
             line-height: 1.4;
@@ -233,27 +353,27 @@
             font-size: 14px;
         }
 
-        .fresh { 
-            background: #e8f5e8; 
-            color: #2e7d2e; 
-            border: 1px solid #c3e6c3;
+        .fresh {
+            background: var(--success-container);
+            color: var(--on-success-container);
+            border: 1px solid var(--on-success-container);
         }
-        .warning { 
-            background: #fff3cd; 
-            color: #856404; 
-            border: 1px solid #ffeaa7;
+        .warning {
+            background: var(--warning-container);
+            color: var(--on-warning-container);
+            border: 1px solid var(--on-warning-container);
         }
-        .expired { 
-            background: #f8d7da; 
-            color: #721c24; 
-            border: 1px solid #f5c6cb;
+        .expired {
+            background: var(--error-container);
+            color: var(--on-error-container);
+            border: 1px solid var(--on-error-container);
         }
 
         .delete-btn {
             width: 100%;
             padding: 12px;
-            background: #262626;
-            color: white;
+            background: var(--secondary);
+            color: var(--on-secondary);
             border: none;
             cursor: pointer;
             font-weight: 600;
@@ -264,7 +384,7 @@
         }
 
         .delete-btn:hover {
-            background: #1a1a1a;
+            background: var(--outline);
         }
 
         .form-group input:focus, .form-group select:focus {
@@ -385,20 +505,21 @@
 
         .tab-btn {
             padding: 10px 20px;
-            background: white;
-            border: 2px solid #dbdbdb;
+            background: var(--surface);
+            border: 2px solid var(--outline-variant);
             border-radius: 25px;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
             font-family: 'Inter', inherit;
+            color: var(--on-surface);
         }
 
         .tab-btn.active {
-            background: #0095f6;
-            color: white;
-            border-color: #0095f6;
+            background: var(--primary);
+            color: var(--on-primary);
+            border-color: var(--primary);
         }
 
         .add-btn {
@@ -503,13 +624,13 @@
 
         .empty-state {
             text-align: center;
-            color: #8e8e8e;
+            color: var(--on-surface-variant);
             font-size: 16px;
             padding: 40px 20px;
-            background: white;
+            background: var(--surface);
             border-radius: 16px;
             margin: 16px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            box-shadow: var(--elevation-2);
         }
 
         .storage-tabs {
@@ -558,11 +679,12 @@
 
         .search-box {
             padding: 16px;
-            border: 2px solid #dbdbdb;
+            border: 2px solid var(--outline-variant);
             border-radius: 25px;
             font-size: 16px;
             font-family: 'Inter', inherit;
-            background: white;
+            background: var(--surface);
+            color: var(--on-surface);
             transition: all 0.2s ease;
             min-height: 48px;
             box-sizing: border-box;
@@ -570,11 +692,12 @@
 
         .sort-select {
             padding: 16px;
-            border: 2px solid #dbdbdb;
+            border: 2px solid var(--outline-variant);
             border-radius: 12px;
             font-size: 16px;
             font-family: 'Inter', inherit;
-            background: white;
+            background: var(--surface);
+            color: var(--on-surface);
             cursor: pointer;
             transition: all 0.2s ease;
             min-height: 48px;
@@ -583,8 +706,8 @@
 
         .clear-search {
             padding: 16px;
-            background: #6c757d;
-            color: white;
+            background: var(--secondary);
+            color: var(--on-secondary);
             border: none;
             border-radius: 12px;
             font-size: 16px;
@@ -596,7 +719,7 @@
         }
 
         .clear-search:active {
-            background: #5a6268;
+            background: var(--outline);
             transform: scale(0.98);
         }
 
@@ -646,26 +769,26 @@
         }
 
         .location-pantry {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+            background: var(--pantry-container);
+            color: var(--on-pantry-container);
+            border: 1px solid var(--on-pantry-container);
         }
 
         .location-fridge {
-            background: #cce7ff;
-            color: #004085;
-            border: 1px solid #99d6ff;
+            background: var(--fridge-container);
+            color: var(--on-fridge-container);
+            border: 1px solid var(--on-fridge-container);
         }
 
         .location-freezer {
-            background: #d1ecf1;
-            color: #0c5460;
-            border: 1px solid #bee5eb;
+            background: var(--freezer-container);
+            color: var(--on-freezer-container);
+            border: 1px solid var(--on-freezer-container);
         }
 
         .item-details {
             padding: 0 16px;
-            color: #8e8e8e;
+            color: var(--on-surface-variant);
             font-size: 14px;
             margin-bottom: 12px;
             line-height: 1.4;
@@ -680,20 +803,20 @@
             font-size: 14px;
         }
 
-        .fresh { 
-            background: #e8f5e8; 
-            color: #2e7d2e; 
-            border: 1px solid #c3e6c3;
+        .fresh {
+            background: var(--success-container);
+            color: var(--on-success-container);
+            border: 1px solid var(--on-success-container);
         }
-        .warning { 
-            background: #fff3cd; 
-            color: #856404; 
-            border: 1px solid #ffeaa7;
+        .warning {
+            background: var(--warning-container);
+            color: var(--on-warning-container);
+            border: 1px solid var(--on-warning-container);
         }
-        .expired { 
-            background: #f8d7da; 
-            color: #721c24; 
-            border: 1px solid #f5c6cb;
+        .expired {
+            background: var(--error-container);
+            color: var(--on-error-container);
+            border: 1px solid var(--on-error-container);
         }
 
         .batch-item {
@@ -824,7 +947,12 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🥬 FreshKeep</h1>
+            <div class="header-top">
+                <h1>🥬 FreshKeep</h1>
+                <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+                    <span class="theme-icon">🌙</span>
+                </button>
+            </div>
             <p>Track everything in your pantry, fridge, and freezer - never waste food again!</p>
             <div id="connectionStatus" style="font-size: 12px; margin-top: 5px; padding: 4px 8px; border-radius: 4px; display: inline-block;">
                 Connecting to database...
@@ -1029,6 +1157,66 @@
         let searchTerm = '';
         let sortBy = 'expiration';
 
+        // Theme Management
+        function initializeTheme() {
+            // Check for saved theme preference or default to 'light' mode
+            const savedTheme = localStorage.getItem('freshkeep-theme');
+            const systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            let theme = savedTheme;
+            if (!theme) {
+                theme = systemPrefersDark ? 'dark' : 'light';
+            }
+
+            setTheme(theme);
+
+            // Listen for system theme changes
+            if (window.matchMedia) {
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+                    if (!localStorage.getItem('freshkeep-theme')) {
+                        setTheme(e.matches ? 'dark' : 'light');
+                    }
+                });
+            }
+        }
+
+        function setTheme(theme) {
+            const html = document.documentElement;
+            const themeIcon = document.querySelector('.theme-icon');
+
+            if (theme === 'dark') {
+                html.setAttribute('data-theme', 'dark');
+                if (themeIcon) themeIcon.textContent = '☀️';
+            } else {
+                html.removeAttribute('data-theme');
+                if (themeIcon) themeIcon.textContent = '🌙';
+            }
+
+            // Update meta theme-color for mobile browsers
+            const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+            if (metaThemeColor) {
+                metaThemeColor.setAttribute('content', theme === 'dark' ? '#121212' : '#667eea');
+            }
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+            setTheme(newTheme);
+            localStorage.setItem('freshkeep-theme', newTheme);
+
+            // Add a subtle animation to indicate the change
+            const themeToggle = document.querySelector('.theme-toggle');
+            if (themeToggle) {
+                themeToggle.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    themeToggle.style.transform = '';
+                }, 150);
+            }
+        }
+
         // Firestore service functions
         const FirestoreService = {
             // Save a food item to Firestore
@@ -1213,6 +1401,9 @@
 
         // Initialize app after DOM loads
         window.addEventListener('DOMContentLoaded', async function() {
+            // Initialize theme first
+            initializeTheme();
+
             document.getElementById('storedDate').valueAsDate = new Date();
 
             // Load existing items from Firestore
