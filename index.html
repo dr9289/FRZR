@@ -865,6 +865,142 @@
             color: var(--on-error) !important;
         }
 
+        /* Clean Header Design Override */
+        .header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--outline-variant);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--elevation-2);
+            transition: all 0.3s ease;
+            text-align: left !important;
+            padding: 0 !important;
+            margin-bottom: 0;
+        }
+        .header-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .app-branding h1 {
+            font-size: 1.8em !important;
+            font-family: 'Pacifico', cursive;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            line-height: 1;
+            color: var(--on-surface);
+            margin: 0 !important;
+        }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .header-actions button {
+            background: var(--surface-variant);
+            border: 1px solid var(--outline-variant);
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--on-surface-variant);
+            font-size: 16px;
+            touch-action: manipulation;
+        }
+        .header-actions button:hover {
+            background: var(--primary);
+            color: var(--on-primary);
+            transform: scale(1.05);
+        }
+        .header-actions button:active {
+            transform: scale(0.95);
+        }
+        .scan-quick-btn {
+            background: var(--primary-container) !important;
+            color: var(--on-primary-container) !important;
+        }
+
+        /* Quick Actions Design */
+        .quick-actions {
+            padding: 20px;
+            background: var(--surface);
+        }
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 12px;
+            background: var(--surface-variant);
+            border: 1px solid var(--outline-variant);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--on-surface);
+            min-height: 100px;
+            touch-action: manipulation;
+        }
+        .action-btn:hover {
+            background: var(--primary-container);
+            color: var(--on-primary-container);
+            transform: translateY(-2px);
+            box-shadow: var(--elevation-2);
+        }
+        .action-btn:active {
+            transform: translateY(0);
+        }
+        .action-btn.primary {
+            background: var(--primary);
+            color: var(--on-primary);
+            border-color: var(--primary);
+        }
+        .action-btn.primary:hover {
+            background: var(--primary-variant);
+        }
+        .action-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        .action-text {
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        @media (max-width: 480px) {
+            .action-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            .action-btn {
+                flex-direction: row;
+                padding: 16px;
+                min-height: 64px;
+                text-align: left;
+            }
+            .action-icon {
+                font-size: 24px;
+                margin-bottom: 0;
+                margin-right: 12px;
+            }
+        }
+
         .settings-content {
             padding: 16px 24px;
             flex: 1;
@@ -1812,31 +1948,43 @@
 <body>
     <div class="container">
         <div class="header">
-            <div class="header-top">
-                <button class="user-profile-btn" onclick="toggleUserMenu()" id="userProfileBtn" aria-label="User profile" style="display: none;">
-                    <span id="userProfileIcon">👤</span>
-                </button>
-                <h1>🥬 FreshKeep</h1>
-                <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
-                    <span class="theme-icon">🌙</span>
-                </button>
-            </div>
-            <p>Track everything in your pantry, fridge, and freezer - never waste food again!</p>
-        </div>
-
-        <div class="add-form">
-            <div class="scan-section" style="margin-bottom: 20px;">
-                <div class="scan-buttons" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px;">
-                    <button class="tab-btn scan-tab primary-scan" id="scanBtn" onclick="toggleScanner()">
-                        📱 Scan Barcode
+            <div class="header-main">
+                <div class="app-branding">
+                    <h1>🥬 FreshKeep</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="scan-quick-btn" onclick="toggleScanner()" aria-label="Quick scan">
+                        <span>📱</span>
                     </button>
-                    <button class="tab-btn scan-tab secondary-scan" id="batchBtn" onclick="toggleBatchMode()">
-                        📦 Batch Scan
+                    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+                        <span class="theme-icon">🌙</span>
                     </button>
-                    <button class="tab-btn scan-tab tertiary-scan" onclick="toggleManualEntry()">
-                        ⌨️ Manual Entry
+                    <button class="user-profile-btn" onclick="toggleUserMenu()" id="userProfileBtn" aria-label="User profile" style="display: none;">
+                        <span id="userProfileIcon">👤</span>
                     </button>
                 </div>
+            </div>
+        </div>
+
+        <div class="quick-actions">
+            <div class="action-grid">
+                <button class="action-btn primary" onclick="toggleScanner()">
+                    <span class="action-icon">📱</span>
+                    <span class="action-text">Scan Item</span>
+                </button>
+                <button class="action-btn secondary" onclick="toggleBatchMode()">
+                    <span class="action-icon">📦</span>
+                    <span class="action-text">Batch Add</span>
+                </button>
+                <button class="action-btn tertiary" onclick="toggleManualEntry()">
+                    <span class="action-icon">➕</span>
+                    <span class="action-text">Add Manually</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="add-form" style="display: none;">
+            <div class="scan-section" style="margin-bottom: 20px;">
                 
                 <div id="manualEntry" style="display: none; margin-bottom: 15px;">
                     <div style="display: flex; gap: 10px;">
@@ -4377,6 +4525,10 @@
             if (isScanning) {
                 stopScanner();
             } else {
+                // Show the add form first
+                const addForm = document.querySelector('.add-form');
+                addForm.style.display = 'block';
+
                 isBatchMode = false;
                 startScanner();
             }
@@ -4386,6 +4538,10 @@
             if (isScanning && isBatchMode) {
                 stopScanner();
             } else {
+                // Show the add form first
+                const addForm = document.querySelector('.add-form');
+                addForm.style.display = 'block';
+
                 isBatchMode = true;
                 document.getElementById('batchQueue').style.display = 'block';
                 startScanner();
@@ -4393,13 +4549,22 @@
         }
 
         function toggleManualEntry() {
+            const addForm = document.querySelector('.add-form');
             const manualEntry = document.getElementById('manualEntry');
-            const isVisible = manualEntry.style.display !== 'none';
-            manualEntry.style.display = isVisible ? 'none' : 'block';
-            
-            if (!isVisible) {
-                document.getElementById('manualBarcode').focus();
-            }
+
+            // Show the add form first
+            addForm.style.display = 'block';
+
+            // Then show manual entry section
+            manualEntry.style.display = 'block';
+
+            // Focus on the main form instead of barcode
+            setTimeout(() => {
+                const itemNameInput = document.getElementById('itemName');
+                if (itemNameInput) {
+                    itemNameInput.focus();
+                }
+            }, 100);
         }
 
         function toggleDateField() {
