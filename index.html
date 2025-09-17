@@ -405,10 +405,12 @@
             z-index: 9999;
             transition: right 0.3s ease;
             box-shadow: var(--elevation-3);
+            visibility: hidden;
         }
 
         .user-menu.show {
             right: 0;
+            visibility: visible;
         }
 
         .user-menu-content {
@@ -465,11 +467,12 @@
         .user-action-btn {
             width: 100%;
             padding: 16px;
-            background: var(--surface-variant);
-            color: var(--on-surface);
-            border: none;
+            background: var(--primary);
+            color: var(--on-primary);
+            border: 1px solid var(--primary);
             border-radius: 12px;
             font-size: 16px;
+            font-weight: 500;
             cursor: pointer;
             margin-bottom: 8px;
             text-align: left;
@@ -478,12 +481,21 @@
         }
 
         .user-action-btn:hover {
-            background: var(--outline-variant);
+            background: var(--primary-variant);
+            transform: translateY(-1px);
+            box-shadow: var(--elevation-2);
         }
 
         .user-action-btn.danger {
             background: var(--error-container);
             color: var(--on-error-container);
+            border-color: var(--error-container);
+        }
+
+        .user-action-btn.danger:hover {
+            background: #d32f2f;
+            color: #ffffff;
+            transform: translateY(-1px);
         }
 
         /* User Profile Button in Header */
@@ -1450,7 +1462,7 @@
     </div>
 
     <!-- User Profile Menu -->
-    <div id="userMenu" class="user-menu" style="display: none;">
+    <div id="userMenu" class="user-menu">
         <div class="user-menu-content">
             <div class="user-info">
                 <div class="user-avatar" id="userAvatar">👤</div>
