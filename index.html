@@ -826,6 +826,9 @@
         <div class="header">
             <h1>🥬 FreshKeep</h1>
             <p>Track everything in your pantry, fridge, and freezer - never waste food again!</p>
+            <div id="connectionStatus" style="font-size: 12px; margin-top: 5px; padding: 4px 8px; border-radius: 4px; display: inline-block;">
+                Connecting to database...
+            </div>
         </div>
 
         <div class="add-form">
@@ -962,6 +965,60 @@
         </div>
     </div>
 
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js';
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, onSnapshot, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js';
+
+        // Firebase configuration - Replace with your actual config
+        // To get your config:
+        // 1. Go to https://console.firebase.google.com
+        // 2. Create a new project or select existing one
+        // 3. Add a web app to your project
+        // 4. Enable Firestore Database in your project
+        // 5. Copy the config object from Firebase console
+        const firebaseConfig = {
+            apiKey: "AIzaSyDlhIJzu9Ln_R2fAAgakKfFzzJgTDzautE",
+            authDomain: "freshkeep-34a12.firebaseapp.com",
+            projectId: "freshkeep-34a12",
+            storageBucket: "freshkeep-34a12.firebasestorage.app",
+            messagingSenderId: "332100833248",
+            appId: "1:332100833248:web:e920634dc1485dfdcda585",
+            measurementId: "G-WBKNQGT7JJ"
+        };
+
+        // Initialize Firebase
+        try {
+            window.firebaseApp = initializeApp(firebaseConfig);
+            window.db = getFirestore(window.firebaseApp);
+            window.firestoreUtils = { collection, addDoc, getDocs, deleteDoc, doc, onSnapshot, query, orderBy };
+            console.log('Firebase initialized successfully');
+            updateConnectionStatus('firebase');
+        } catch (error) {
+            console.error('Firebase initialization error:', error);
+            // Fallback to local storage if Firebase fails
+            window.db = null;
+            updateConnectionStatus('local');
+        }
+
+        // Update connection status indicator
+        function updateConnectionStatus(type) {
+            const statusEl = document.getElementById('connectionStatus');
+            if (!statusEl) return;
+
+            if (type === 'firebase') {
+                statusEl.textContent = '☁️ Connected to Firebase';
+                statusEl.style.background = '#d4edda';
+                statusEl.style.color = '#155724';
+                statusEl.style.border = '1px solid #c3e6cb';
+            } else {
+                statusEl.textContent = '💾 Using Local Storage';
+                statusEl.style.background = '#fff3cd';
+                statusEl.style.color = '#856404';
+                statusEl.style.border = '1px solid #ffeaa7';
+            }
+        }
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
     <script>
         let foodItems = [];
@@ -971,6 +1028,169 @@
         let currentTab = 'all';
         let searchTerm = '';
         let sortBy = 'expiration';
+
+        // Firestore service functions
+        const FirestoreService = {
+            // Save a food item to Firestore
+            async saveFoodItem(item) {
+                if (!window.db) {
+                    console.log('Firestore not available, using local storage');
+                    return this.saveToLocalStorage(item);
+                }
+
+                try {
+                    // Convert dates to Firestore timestamps
+                    const firestoreItem = {
+                        ...item,
+                        storedDate: item.storedDate.toISOString(),
+                        addedDate: item.addedDate.toISOString()
+                    };
+
+                    const docRef = await window.firestoreUtils.addDoc(
+                        window.firestoreUtils.collection(window.db, 'foodItems'),
+                        firestoreItem
+                    );
+
+                    // Update local item with Firestore ID
+                    item.firestoreId = docRef.id;
+                    console.log('Food item saved to Firestore:', docRef.id);
+                    return docRef.id;
+                } catch (error) {
+                    console.error('Error saving to Firestore:', error);
+                    // Fallback to local storage
+                    return this.saveToLocalStorage(item);
+                }
+            },
+
+            // Load all food items from Firestore
+            async loadFoodItems() {
+                if (!window.db) {
+                    console.log('Firestore not available, using local storage');
+                    return this.loadFromLocalStorage();
+                }
+
+                try {
+                    const querySnapshot = await window.firestoreUtils.getDocs(
+                        window.firestoreUtils.collection(window.db, 'foodItems')
+                    );
+
+                    const items = [];
+                    querySnapshot.forEach((doc) => {
+                        const data = doc.data();
+                        const item = {
+                            ...data,
+                            firestoreId: doc.id,
+                            storedDate: new Date(data.storedDate),
+                            addedDate: new Date(data.addedDate)
+                        };
+                        items.push(item);
+                    });
+
+                    console.log('Loaded', items.length, 'items from Firestore');
+                    return items;
+                } catch (error) {
+                    console.error('Error loading from Firestore:', error);
+                    // Fallback to local storage
+                    return this.loadFromLocalStorage();
+                }
+            },
+
+            // Delete a food item from Firestore
+            async deleteFoodItem(item) {
+                if (!window.db || !item.firestoreId) {
+                    console.log('Firestore not available or no Firestore ID, using local storage');
+                    return this.deleteFromLocalStorage(item);
+                }
+
+                try {
+                    await window.firestoreUtils.deleteDoc(
+                        window.firestoreUtils.doc(window.db, 'foodItems', item.firestoreId)
+                    );
+                    console.log('Food item deleted from Firestore:', item.firestoreId);
+                    return true;
+                } catch (error) {
+                    console.error('Error deleting from Firestore:', error);
+                    return this.deleteFromLocalStorage(item);
+                }
+            },
+
+            // Setup real-time listener for food items
+            setupRealtimeListener() {
+                if (!window.db) {
+                    console.log('Firestore not available, skipping real-time listener');
+                    return;
+                }
+
+                try {
+                    const unsubscribe = window.firestoreUtils.onSnapshot(
+                        window.firestoreUtils.collection(window.db, 'foodItems'),
+                        (snapshot) => {
+                            const items = [];
+                            snapshot.forEach((doc) => {
+                                const data = doc.data();
+                                const item = {
+                                    ...data,
+                                    firestoreId: doc.id,
+                                    storedDate: new Date(data.storedDate),
+                                    addedDate: new Date(data.addedDate)
+                                };
+                                items.push(item);
+                            });
+
+                            foodItems = items;
+                            updateDisplay();
+                            console.log('Real-time update: loaded', items.length, 'items');
+                        },
+                        (error) => {
+                            console.error('Real-time listener error:', error);
+                        }
+                    );
+
+                    // Store unsubscribe function globally for cleanup
+                    window.firestoreUnsubscribe = unsubscribe;
+                } catch (error) {
+                    console.error('Error setting up real-time listener:', error);
+                }
+            },
+
+            // Local storage fallback methods
+            saveToLocalStorage(item) {
+                const stored = localStorage.getItem('freshkeep-items') || '[]';
+                const items = JSON.parse(stored);
+
+                // Convert dates to strings for storage
+                const storageItem = {
+                    ...item,
+                    storedDate: item.storedDate.toISOString(),
+                    addedDate: item.addedDate.toISOString()
+                };
+
+                items.push(storageItem);
+                localStorage.setItem('freshkeep-items', JSON.stringify(items));
+                console.log('Saved to local storage');
+                return item.id;
+            },
+
+            loadFromLocalStorage() {
+                const stored = localStorage.getItem('freshkeep-items') || '[]';
+                const items = JSON.parse(stored);
+
+                return items.map(item => ({
+                    ...item,
+                    storedDate: new Date(item.storedDate),
+                    addedDate: new Date(item.addedDate)
+                }));
+            },
+
+            deleteFromLocalStorage(item) {
+                const stored = localStorage.getItem('freshkeep-items') || '[]';
+                const items = JSON.parse(stored);
+                const filtered = items.filter(storedItem => storedItem.id !== item.id);
+                localStorage.setItem('freshkeep-items', JSON.stringify(filtered));
+                console.log('Deleted from local storage');
+                return true;
+            }
+        };
 
         // Storage guidelines (months) - varies by location
         const storageGuidelines = {
@@ -991,9 +1211,20 @@
             }
         };
 
-        // Initialize date field after DOM loads
-        window.addEventListener('DOMContentLoaded', function() {
+        // Initialize app after DOM loads
+        window.addEventListener('DOMContentLoaded', async function() {
             document.getElementById('storedDate').valueAsDate = new Date();
+
+            // Load existing items from Firestore
+            try {
+                foodItems = await FirestoreService.loadFoodItems();
+                updateDisplay();
+
+                // Setup real-time listener for live updates
+                FirestoreService.setupRealtimeListener();
+            } catch (error) {
+                console.error('Error loading food items:', error);
+            }
         });
 
         function toggleScanner() {
@@ -1036,7 +1267,7 @@
             }
         }
 
-        function addItem() {
+        async function addItem() {
             const name = document.getElementById('itemName').value.trim();
             const category = document.getElementById('category').value;
             const location = document.getElementById('storageLocation').value;
@@ -1059,17 +1290,45 @@
                 addedDate: new Date()
             };
 
-            foodItems.push(item);
-            
-            document.getElementById('itemName').value = '';
-            document.getElementById('storedDate').valueAsDate = new Date();
+            try {
+                // Save to Firestore
+                await FirestoreService.saveFoodItem(item);
 
-            updateDisplay();
+                // If not using real-time listener, add to local array
+                if (!window.firestoreUnsubscribe) {
+                    foodItems.push(item);
+                    updateDisplay();
+                }
+
+                document.getElementById('itemName').value = '';
+                document.getElementById('storedDate').valueAsDate = new Date();
+            } catch (error) {
+                console.error('Error adding item:', error);
+                alert('Error adding item. Please try again.');
+            }
         }
 
-        function deleteItem(id) {
-            foodItems = foodItems.filter(item => item.id !== id);
-            updateDisplay();
+        async function deleteItem(id) {
+            try {
+                // Find the item to delete
+                const itemToDelete = foodItems.find(item => item.id === id);
+                if (!itemToDelete) {
+                    console.error('Item not found:', id);
+                    return;
+                }
+
+                // Delete from Firestore
+                await FirestoreService.deleteFoodItem(itemToDelete);
+
+                // If not using real-time listener, remove from local array
+                if (!window.firestoreUnsubscribe) {
+                    foodItems = foodItems.filter(item => item.id !== id);
+                    updateDisplay();
+                }
+            } catch (error) {
+                console.error('Error deleting item:', error);
+                alert('Error deleting item. Please try again.');
+            }
         }
 
         function switchTab(tab) {
@@ -1315,7 +1574,7 @@
             updateBatchDisplay();
         }
 
-        function addAllBatchItems() {
+        async function addAllBatchItems() {
             if (batchQueue.length === 0) {
                 showLookupStatus('No items in batch queue', 'error');
                 return;
@@ -1323,7 +1582,7 @@
 
             const storedDateInput = document.getElementById('storedDate').value;
             const location = document.getElementById('storageLocation').value;
-            
+
             let storedDate;
             if (storedDateInput) {
                 const dateParts = storedDateInput.split('-');
@@ -1332,27 +1591,43 @@
                 storedDate = new Date();
             }
 
+            showLookupStatus('Adding items to database...', 'loading');
             let addedCount = 0;
-            batchQueue.forEach(batchItem => {
-                const item = {
-                    id: Date.now() + Math.random(),
-                    name: batchItem.name,
-                    category: batchItem.category,
-                    location: location,
-                    storedDate: storedDate,
-                    addedDate: new Date()
-                };
-                
-                foodItems.push(item);
-                addedCount++;
-            });
 
-            clearBatchQueue();
-            updateDisplay();
-            showLookupStatus(`Added ${addedCount} items to ${location.toLowerCase()}!`, 'success');
-            
-            if (!isBatchMode) {
-                document.getElementById('batchQueue').style.display = 'none';
+            try {
+                // Add each item to Firestore
+                for (const batchItem of batchQueue) {
+                    const item = {
+                        id: Date.now() + Math.random(),
+                        name: batchItem.name,
+                        category: batchItem.category,
+                        location: location,
+                        storedDate: storedDate,
+                        addedDate: new Date()
+                    };
+
+                    await FirestoreService.saveFoodItem(item);
+
+                    // If not using real-time listener, add to local array
+                    if (!window.firestoreUnsubscribe) {
+                        foodItems.push(item);
+                    }
+
+                    addedCount++;
+                }
+
+                clearBatchQueue();
+                if (!window.firestoreUnsubscribe) {
+                    updateDisplay();
+                }
+                showLookupStatus(`Added ${addedCount} items to ${location.toLowerCase()}!`, 'success');
+
+                if (!isBatchMode) {
+                    document.getElementById('batchQueue').style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Error adding batch items:', error);
+                showLookupStatus('Error adding some items. Please try again.', 'error');
             }
         }
 
