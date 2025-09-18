@@ -16,31 +16,143 @@
 
     <style>
         .page-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 60vh;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .page-header {
             text-align: center;
-            padding: 40px 20px;
-        }
-
-        .coming-soon-icon {
-            font-size: 64px;
-            margin-bottom: 24px;
-        }
-
-        .coming-soon-title {
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--on-surface);
-            margin-bottom: 12px;
-        }
-
-        .coming-soon-text {
-            color: var(--on-surface-variant);
             margin-bottom: 32px;
-            max-width: 400px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--on-surface);
+            margin: 0 0 8px 0;
+        }
+
+        .page-subtitle {
+            color: var(--on-surface-variant);
+            font-size: 16px;
+            margin: 0;
+        }
+
+        .add-item-form {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid var(--outline-variant);
+            box-shadow: var(--elevation-1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            color: var(--on-surface);
+            font-weight: 500;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid var(--outline-variant);
+            border-radius: 8px;
+            background: var(--surface);
+            color: var(--on-surface);
+            font-size: 16px;
+            font-family: inherit;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--outline-variant);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 120px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--on-primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-variant);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--surface-variant);
+            color: var(--on-surface-variant);
+            border: 1px solid var(--outline-variant);
+        }
+
+        .btn-secondary:hover {
+            background: var(--outline-variant);
+        }
+
+        @media (max-width: 480px) {
+            .page-content {
+                padding: 16px;
+            }
+
+            .add-item-form {
+                padding: 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+
+            .btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -62,13 +174,96 @@
 
         <!-- Main Content -->
         <main class="page-content">
-            <div class="coming-soon-icon">➕</div>
-            <h1 class="coming-soon-title">Add Item</h1>
-            <p class="coming-soon-text">
-                The manual item entry form is being moved to this dedicated page for a cleaner experience.
-                Coming in Phase 2 of the redesign!
-            </p>
-            <a href="dashboard.html" class="btn btn-primary">← Back to Dashboard</a>
+            <div class="page-header">
+                <h1 class="page-title">Add New Item</h1>
+                <p class="page-subtitle">Manually add items to your pantry</p>
+            </div>
+
+            <form class="add-item-form" id="addItemForm">
+                <div class="form-group">
+                    <label for="itemName" class="form-label">Item Name *</label>
+                    <input type="text" id="itemName" name="itemName" class="form-input" required placeholder="e.g., Milk, Apples, Bread">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="category" class="form-label">Category</label>
+                        <select id="category" name="category" class="form-select">
+                            <option value="">Select category</option>
+                            <option value="dairy">🥛 Dairy</option>
+                            <option value="fruits">🍎 Fruits</option>
+                            <option value="vegetables">🥕 Vegetables</option>
+                            <option value="meat">🥩 Meat & Poultry</option>
+                            <option value="seafood">🐟 Seafood</option>
+                            <option value="grains">🌾 Grains & Cereals</option>
+                            <option value="snacks">🍿 Snacks</option>
+                            <option value="beverages">🥤 Beverages</option>
+                            <option value="condiments">🧂 Condiments</option>
+                            <option value="frozen">🧊 Frozen Foods</option>
+                            <option value="canned">🥫 Canned Goods</option>
+                            <option value="other">📦 Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="location" class="form-label">Location *</label>
+                        <select id="location" name="location" class="form-select" required>
+                            <option value="">Select location</option>
+                            <option value="pantry">🏠 Pantry</option>
+                            <option value="fridge">❄️ Fridge</option>
+                            <option value="freezer">🧊 Freezer</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="quantity" class="form-label">Quantity</label>
+                        <input type="number" id="quantity" name="quantity" class="form-input" min="1" value="1" placeholder="1">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="unit" class="form-label">Unit</label>
+                        <select id="unit" name="unit" class="form-select">
+                            <option value="item">Item(s)</option>
+                            <option value="kg">Kilogram</option>
+                            <option value="g">Gram</option>
+                            <option value="lb">Pound</option>
+                            <option value="oz">Ounce</option>
+                            <option value="l">Liter</option>
+                            <option value="ml">Milliliter</option>
+                            <option value="cup">Cup</option>
+                            <option value="tbsp">Tablespoon</option>
+                            <option value="tsp">Teaspoon</option>
+                            <option value="package">Package</option>
+                            <option value="can">Can</option>
+                            <option value="bottle">Bottle</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="purchaseDate" class="form-label">Purchase Date</label>
+                        <input type="date" id="purchaseDate" name="purchaseDate" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="expiryDate" class="form-label">Expiry Date</label>
+                        <input type="date" id="expiryDate" name="expiryDate" class="form-input">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes" class="form-label">Notes</label>
+                    <textarea id="notes" name="notes" class="form-textarea" rows="3" placeholder="Additional notes (brand, special storage instructions, etc.)"></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='dashboard.html'">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Item</button>
+                </div>
+            </form>
         </main>
 
         <!-- Bottom Navigation -->
@@ -98,5 +293,109 @@
 
     <!-- Shared JavaScript -->
     <script src="shared.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            setActiveNavItem('add');
+
+            // Set today's date as default for purchase date
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('purchaseDate').value = today;
+
+            // Handle form submission
+            document.getElementById('addItemForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                addNewItem();
+            });
+        });
+
+        function addNewItem() {
+            const form = document.getElementById('addItemForm');
+            const formData = new FormData(form);
+
+            const item = {
+                id: Date.now(), // Simple ID generation
+                name: formData.get('itemName'),
+                category: formData.get('category'),
+                location: formData.get('location'),
+                quantity: parseInt(formData.get('quantity')) || 1,
+                unit: formData.get('unit'),
+                purchaseDate: formData.get('purchaseDate'),
+                expiryDate: formData.get('expiryDate'),
+                notes: formData.get('notes'),
+                dateAdded: new Date().toISOString()
+            };
+
+            // Validate required fields
+            if (!item.name || !item.location) {
+                showNotification('Please fill in all required fields', 'error');
+                return;
+            }
+
+            // Get existing items from localStorage
+            let items = JSON.parse(localStorage.getItem('freshkeep-items') || '[]');
+
+            // Add new item
+            items.push(item);
+
+            // Save to localStorage
+            localStorage.setItem('freshkeep-items', JSON.stringify(items));
+
+            // Show success message
+            showNotification('Item added successfully!', 'success');
+
+            // Reset form
+            form.reset();
+            document.getElementById('purchaseDate').value = new Date().toISOString().split('T')[0];
+
+            // Optional: redirect to pantry after a short delay
+            setTimeout(() => {
+                window.location.href = 'pantry.html';
+            }, 1500);
+        }
+
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.textContent = message;
+
+            // Style the notification
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 12px 20px;
+                background: ${type === 'success' ? 'var(--success-container)' : type === 'error' ? 'var(--error-container)' : 'var(--surface)'};
+                color: ${type === 'success' ? 'var(--on-success-container)' : type === 'error' ? 'var(--on-error-container)' : 'var(--on-surface)'};
+                border-radius: 8px;
+                box-shadow: var(--elevation-2);
+                z-index: 1000;
+                animation: slideIn 0.3s ease;
+            `;
+
+            // Add to page
+            document.body.appendChild(notification);
+
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
 </body>
 </html>

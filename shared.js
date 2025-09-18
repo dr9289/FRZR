@@ -67,8 +67,16 @@ function setActiveNavItem(pageId) {
         item.classList.remove('active');
     });
 
-    // Add active class to current page
-    const activeItem = document.querySelector(`[data-page="${pageId}"]`);
+    // Add active class to current page - try both data-page and direct matching
+    let activeItem = document.querySelector(`[data-page="${pageId}"]`);
+
+    // Fallback: match by href if data-page doesn't work
+    if (!activeItem) {
+        const currentFile = `${pageId}.html`;
+        activeItem = document.querySelector(`.nav-item[href="${currentFile}"]`);
+    }
+
+    // Special case for add.html - it's not in bottom nav, so skip if not found
     if (activeItem) {
         activeItem.classList.add('active');
     }

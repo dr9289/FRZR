@@ -21,7 +21,8 @@
             background: var(--surface);
             padding: 16px 20px;
             border-bottom: 1px solid var(--outline-variant);
-            sticky: top: 80px;
+            position: sticky;
+            top: 80px;
             z-index: 50;
         }
 
@@ -415,7 +416,7 @@
         </main>
 
         <!-- Floating Action Button -->
-        <button class="fab" onclick="window.location.href='scan.html'" aria-label="Add new item">
+        <button class="fab" onclick="window.location.href='add.html'" aria-label="Add new item">
             ➕
         </button>
 
@@ -465,17 +466,19 @@
 
         async function loadPantryData() {
             try {
-                // Load from localStorage (will be connected to Firebase later)
+                // Load from localStorage
                 const stored = localStorage.getItem('freshkeep-items') || '[]';
                 foodItems = JSON.parse(stored).map(item => ({
                     ...item,
-                    storedDate: new Date(item.storedDate),
-                    addedDate: new Date(item.addedDate)
+                    purchaseDate: item.purchaseDate ? new Date(item.purchaseDate) : null,
+                    expiryDate: item.expiryDate ? new Date(item.expiryDate) : null,
+                    dateAdded: item.dateAdded ? new Date(item.dateAdded) : new Date()
                 }));
 
                 updateDisplay();
             } catch (error) {
                 console.error('Error loading pantry data:', error);
+                showEmptyState();
             }
         }
 
@@ -494,7 +497,8 @@
                     <div class="empty-state">
                         <div class="empty-state-icon">${getTabIcon(currentTab)}</div>
                         <h3>${emptyMessage}</h3>
-                        <p>${searchTerm ? 'Try adjusting your search' : 'Start by scanning or adding your first food item!'}</p>
+                        <p>${searchTerm ? 'Try adjusting your search' : 'Start by adding your first food item!'}</p>
+                        ${!searchTerm ? '<button class="btn btn-primary" onclick="window.location.href=\'add.html\'" style="margin-top: 16px;">Add Item</button>' : ''}
                     </div>
                 `;
                 return;
@@ -537,8 +541,8 @@
                                 <span class="detail-value">${timeAgo}</span>
                             </div>
                             <div class="detail-item">
-                                <span class="detail-label">Stored</span>
-                                <span class="detail-value">${item.storedDate.toLocaleDateString()}</span>
+                                <span class="detail-label">Quantity</span>
+                                <span class="detail-value">${item.quantity} ${item.unit || 'item(s)'}</span>
                             </div>
                         </div>
                         <div class="expiry-status ${expiryStatus.class}">
@@ -698,8 +702,9 @@
                 // Update localStorage
                 const itemsToStore = foodItems.map(item => ({
                     ...item,
-                    storedDate: item.storedDate.toISOString(),
-                    addedDate: item.addedDate.toISOString()
+                    purchaseDate: item.purchaseDate ? item.purchaseDate.toISOString() : null,
+                    expiryDate: item.expiryDate ? item.expiryDate.toISOString() : null,
+                    dateAdded: item.dateAdded ? item.dateAdded.toISOString() : new Date().toISOString()
                 }));
                 localStorage.setItem('freshkeep-items', JSON.stringify(itemsToStore));
 
