@@ -515,7 +515,7 @@
 
         function createItemCard(item) {
             const expiryStatus = getExpiryStatus(item);
-            const timeAgo = getTimeAgo(item.addedDate);
+            const timeAgo = getTimeAgo(item.dateAdded);
 
             return `
                 <div class="item-card">
@@ -555,7 +555,7 @@
 
         function createListItem(item) {
             const expiryStatus = getExpiryStatus(item);
-            const timeAgo = getTimeAgo(item.addedDate);
+            const timeAgo = getTimeAgo(item.dateAdded);
 
             return `
                 <div class="item-list-card">
@@ -639,7 +639,7 @@
                     filtered.sort((a, b) => a.name.localeCompare(b.name));
                     break;
                 case 'date':
-                    filtered.sort((a, b) => b.addedDate - a.addedDate);
+                    filtered.sort((a, b) => b.dateAdded - a.dateAdded);
                     break;
                 case 'category':
                     filtered.sort((a, b) => a.category.localeCompare(b.category));

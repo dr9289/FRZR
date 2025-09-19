@@ -69,6 +69,9 @@ FRZR/
 ### Current State
 - Static HTML pages with shared styling
 - Theme system fully implemented
+- **Add Item functionality completely working** (add.html)
+- **Pantry management fully functional** (pantry.html)
+- localStorage data persistence implemented
 - Firebase integration placeholders in place
 - Mobile-responsive design complete
 
@@ -85,6 +88,21 @@ toggleTheme()        // Switch between themes
 ```javascript
 setActiveNavItem(pageId)     // Highlight current page
 toggleUserMenu()             // Show/hide user menu
+```
+
+#### Data Management
+```javascript
+// Add Item (add.html:311-354)
+addNewItem()                 // Process form submission and save to localStorage
+showNotification(msg, type)  // Display success/error messages
+
+// Pantry Management (pantry.html:467-716)
+loadPantryData()             // Load items from localStorage
+handleSearch()               // Filter items by search term
+handleSort()                 // Sort items by various criteria
+deleteItem(itemId)           // Remove item from storage
+editItem(itemId)             // Edit item (placeholder)
+updateDisplay()              // Refresh item display
 ```
 
 #### Page Initialization
