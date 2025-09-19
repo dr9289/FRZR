@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CURRENT: FreshKeep Dashboard - Before Redesign</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #fefbff;
+            color: #1c1b1f;
+        }
+
+        .mockup-container {
+            max-width: 375px;
+            margin: 20px auto;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .status-bar {
+            height: 44px;
+            background: #000;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .header {
+            background: #667eea;
+            color: white;
+            padding: 16px 20px 20px;
+            height: 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            font-size: 32px;
+        }
+
+        .header-text {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .header-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 2px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .header-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        /* CURRENT DESIGN: Too many sections competing */
+        .quick-actions {
+            margin-bottom: 24px;
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .action-btn {
+            background: #e8eaff;
+            color: #21005d;
+            text-align: center;
+            padding: 16px 8px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+            border: 1px solid #cac4d0;
+        }
+
+        .action-icon {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* CURRENT DESIGN: Stats grid with too many cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #cac4d0;
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 20px;
+            font-weight: 700;
+            color: #667eea;
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: #49454f;
+            font-weight: 500;
+            font-size: 11px;
+            margin-top: 4px;
+        }
+
+        /* CURRENT DESIGN: Recent items section adding more clutter */
+        .recent-items {
+            background: white;
+            border: 1px solid #cac4d0;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .recent-items h3 {
+            margin: 0 0 12px 0;
+            font-size: 16px;
+            color: #1c1b1f;
+        }
+
+        .recent-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f4f3f7;
+        }
+
+        .recent-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-name {
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .item-details {
+            font-size: 12px;
+            color: #49454f;
+        }
+
+        .expiry-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 500;
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        /* CURRENT DESIGN: Heavy bottom navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 375px;
+            background: white;
+            border-top: 1px solid #cac4d0;
+            padding: 8px 0 24px;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        .nav-item {
+            text-align: center;
+            padding: 8px 4px;
+            text-decoration: none;
+            color: #49454f;
+            font-size: 10px;
+        }
+
+        .nav-item.active {
+            color: #667eea;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .congestion-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 0, 0, 0.1);
+            pointer-events: none;
+            border: 2px dashed red;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .congestion-label {
+            background: red;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .problem-annotations {
+            margin: 20px;
+            background: #fff;
+            border: 2px solid #ff4444;
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .problem-title {
+            color: #ff4444;
+            font-weight: 700;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        .problem-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .problem-list li {
+            padding: 4px 0;
+            font-size: 14px;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .problem-list li:before {
+            content: "❌";
+            position: absolute;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="mockup-container">
+        <!-- Phone Status Bar -->
+        <div class="status-bar">
+            <span>9:41</span>
+            <span>100%</span>
+        </div>
+
+        <!-- CURRENT: Heavy header with too much branding -->
+        <div class="header">
+            <div class="header-left">
+                <div class="logo">🥬</div>
+                <div>
+                    <div class="header-text">FreshKeep</div>
+                    <div class="header-subtitle">Smart Food Tracker</div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="header-btn">🔍</button>
+                <button class="header-btn">🌙</button>
+                <button class="header-btn">👤</button>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- CURRENT: Too many competing quick actions -->
+            <div class="quick-actions">
+                <div class="action-grid">
+                    <a href="#" class="action-btn">
+                        <span class="action-icon">📱</span>
+                        <span class="action-text">Scan Item</span>
+                    </a>
+                    <a href="#" class="action-btn">
+                        <span class="action-icon">➕</span>
+                        <span class="action-text">Add Manually</span>
+                    </a>
+                    <a href="#" class="action-btn">
+                        <span class="action-icon">🍎</span>
+                        <span class="action-text">View Groceries</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- CURRENT: Too many stats cards creating visual noise -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">24</div>
+                    <div class="stat-label">Total Items</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">Expiring Soon</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">In Pantry</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">8</div>
+                    <div class="stat-label">In Fridge</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">In Freezer</div>
+                </div>
+            </div>
+
+            <!-- CURRENT: Another section adding to congestion -->
+            <div class="recent-items">
+                <h3>Recent Items</h3>
+                <div class="recent-item">
+                    <div>
+                        <div class="item-name">Organic Bananas</div>
+                        <div class="item-details">Pantry • Added 2 days ago</div>
+                    </div>
+                    <div class="expiry-badge">2 days left</div>
+                </div>
+                <div class="recent-item">
+                    <div>
+                        <div class="item-name">Greek Yogurt</div>
+                        <div class="item-details">Fridge • Added 1 day ago</div>
+                    </div>
+                    <div class="expiry-badge">5 days left</div>
+                </div>
+                <div class="recent-item">
+                    <div>
+                        <div class="item-name">Frozen Peas</div>
+                        <div class="item-details">Freezer • Added 3 days ago</div>
+                    </div>
+                    <div class="expiry-badge">Good</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CURRENT: Too many navigation items -->
+        <div class="bottom-nav">
+            <a href="#" class="nav-item active">
+                <span class="nav-icon">🏠</span>
+                <span>Home</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="nav-icon">🍎</span>
+                <span>Pantry</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="nav-icon">📱</span>
+                <span>Scanner</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="nav-icon">👥</span>
+                <span>Family</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="nav-icon">⚙️</span>
+                <span>Settings</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Problem Analysis -->
+    <div class="problem-annotations">
+        <div class="problem-title">🚨 Current Design Problems</div>
+        <ul class="problem-list">
+            <li><strong>Visual Hierarchy:</strong> 4 major sections competing for attention</li>
+            <li><strong>Information Overload:</strong> 5 stat cards + 3 quick actions + recent items</li>
+            <li><strong>Heavy Header:</strong> 80px height eating screen real estate</li>
+            <li><strong>Border Noise:</strong> Every element has borders creating visual clutter</li>
+            <li><strong>Navigation Overload:</strong> 5 bottom nav items + 3 header actions</li>
+            <li><strong>Poor Spacing:</strong> Inconsistent margins (12px, 16px, 20px, 24px)</li>
+            <li><strong>Content Density:</strong> Too much information crammed into viewport</li>
+            <li><strong>Mobile UX Issues:</strong> Small touch targets, non-thumb-friendly layout</li>
+        </ul>
+    </div>
+</body>
+</html>
