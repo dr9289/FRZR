@@ -15,13 +15,14 @@ FreshKeep is a progressive web application (PWA) designed for smart food invento
 
 ```
 FRZR/
-├── index.html          # Welcome/landing page with comprehensive styling
+├── index.html          # Landing/welcome page that redirects to dashboard
 ├── dashboard.html      # Main dashboard with stats and overview
 ├── pantry.html         # Food inventory management
 ├── add.html           # Add new food items
 ├── scan.html          # Barcode scanning functionality
 ├── family.html        # Family/household management
 ├── settings.html      # App settings and preferences
+├── firebase-config.js  # Firebase integration and offline-first data sync
 ├── shared.css         # Global styles and theme variables
 └── shared.js          # Shared JavaScript utilities
 ```
@@ -42,12 +43,13 @@ FRZR/
 - Multi-page application structure
 
 ### Core Pages
-1. **Dashboard** (dashboard.html) - Stats grid and overview
-2. **Pantry** (pantry.html) - Food inventory with search and filtering
-3. **Add Items** (add.html) - Form for adding new food items
-4. **Scanner** (scan.html) - Barcode scanning functionality
-5. **Family** (family.html) - Household member management
-6. **Settings** (settings.html) - App configuration
+1. **Landing Page** (index.html) - Welcome page with auto-redirect for returning users
+2. **Dashboard** (dashboard.html) - Stats grid and overview
+3. **Pantry** (pantry.html) - Food inventory with search and filtering
+4. **Add Items** (add.html) - Form for adding new food items
+5. **Scanner** (scan.html) - Barcode scanning functionality
+6. **Family** (family.html) - Household member management
+7. **Settings** (settings.html) - App configuration
 
 ### Styling System
 - **Location**: CSS custom properties in index.html:14-86
