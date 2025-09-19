@@ -1,0 +1,86 @@
+FRESHKEEP TODO - HIGH PRIORITY FIXES & MISSING FEATURES
+
+=== CRITICAL BROKEN FEATURES ===
+
+1. Add Item Form (add.html) - No form submission handler
+   - Form exists but no JavaScript to process submissions
+   - Buttons don't connect to any functionality
+   - Location: add.html - missing form submit handlers
+
+2. Pantry Management (pantry.html) - Functions missing implementations
+   - handleSearch(), handleSort(), editItem(), deleteItem() - called but not defined
+   - loadPantryData() function incomplete - no data source
+   - Location: pantry.html:467-695 - function stubs only
+
+3. Scanner Functionality - Placeholder only
+   - Barcode scanner UI exists but no actual scanning logic
+   - QuaggaJS library included but not initialized
+   - Location: index.html:5038+ - scanner setup incomplete
+
+4. Settings Page - Empty functionality
+   - UI elements present but no JavaScript handlers
+   - Location: settings.html - no script functionality
+
+=== MISSING CORE FEATURES ===
+
+1. Data Persistence Layer
+   - Firebase config present but requires actual project setup
+   - Local storage fallback incomplete in most pages
+   - Location: index.html:2510-2543 - needs real Firebase config
+
+2. Form Validation
+   - No client-side validation on any forms
+   - No error handling for user inputs
+   - Location: All forms lack validation
+
+3. Navigation State Management
+   - setActiveNavItem() not called on page loads
+   - Bottom navigation not consistently implemented
+   - Location: shared.js:64-83 - not being used
+
+=== HIGHEST PRIORITY ENHANCEMENTS ===
+
+PRIORITY 1 - CRITICAL
+[ ] Complete Add Item Functionality
+    - Implement form submission handler in add.html
+    - Connect to data storage (localStorage + Firebase)
+    - Add form validation and error handling
+
+[ ] Fix Pantry Core Functions
+    - Implement loadPantryData(), search, sort, edit, delete
+    - Connect to actual data source
+    - Fix broken onclick handlers in pantry.html
+
+PRIORITY 2 - HIGH
+[ ] Implement Data Storage
+    - Complete localStorage fallback system
+    - Set up Firebase project with proper config
+    - Implement offline-first data sync
+
+[ ] Scanner Implementation
+    - Initialize QuaggaJS barcode scanner
+    - Connect scanner results to add item form
+    - Handle camera permissions and errors
+
+PRIORITY 3 - MEDIUM
+[ ] Navigation Fixes
+    - Fix active page highlighting across all pages
+    - Implement consistent bottom navigation
+    - Add page transition handling
+
+[ ] Settings Functionality
+    - Implement theme persistence (partially done)
+    - Add user profile management
+    - Household settings and management
+
+[ ] Error Handling & Validation
+    - Form validation on all inputs
+    - Network error handling for Firebase
+    - User feedback for all operations
+
+=== NOTES ===
+- App has solid UI/UX design but most core functionality is broken or missing
+- The top 3 critical fixes needed are Add Item Form, Pantry Management, and Data Storage
+- Without these fixes, the app is essentially a static demo with no working features
+- Theme system and navigation UI are working correctly
+- Firebase integration is partially implemented but needs real project setup
