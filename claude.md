@@ -71,8 +71,9 @@ FRZR/
 - Theme system fully implemented
 - **Add Item functionality completely working** (add.html)
 - **Pantry management fully functional** (pantry.html)
+- **Scanner functionality fully implemented** (scan.html)
+- **Firebase integration with offline-first data sync** (firebase-config.js)
 - localStorage data persistence implemented
-- Firebase integration placeholders in place
 - Mobile-responsive design complete
 
 ### Key Functions
@@ -92,17 +93,30 @@ toggleUserMenu()             // Show/hide user menu
 
 #### Data Management
 ```javascript
-// Add Item (add.html:311-354)
-addNewItem()                 // Process form submission and save to localStorage
+// Add Item (add.html:430-485)
+addNewItem()                 // Process form submission with Firebase/localStorage sync
 showNotification(msg, type)  // Display success/error messages
 
 // Pantry Management (pantry.html:467-716)
-loadPantryData()             // Load items from localStorage
+loadPantryData()             // Load items from Firebase/localStorage
 handleSearch()               // Filter items by search term
 handleSort()                 // Sort items by various criteria
 deleteItem(itemId)           // Remove item from storage
 editItem(itemId)             // Edit item (placeholder)
 updateDisplay()              // Refresh item display
+
+// Scanner Functions (scan.html:328-567)
+startScanner()               // Initialize QuaggaJS barcode scanner
+stopScanner()                // Stop scanner and clean up resources
+toggleBatchMode()            // Enable batch scanning mode
+addToBatchQueue()            // Add scanned items to batch queue
+lookupProduct(barcode)       // Lookup product and redirect to add form
+
+// Firebase Integration (firebase-config.js)
+FreshKeepDB.addItem()        // Add item with Firebase/localStorage sync
+FreshKeepDB.getItems()       // Get items with offline-first approach
+FreshKeepDB.deleteItem()     // Delete with sync
+FreshKeepDB.updateItem()     // Update with sync
 ```
 
 #### Page Initialization

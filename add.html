@@ -132,6 +132,34 @@
             background: var(--outline-variant);
         }
 
+        .input-with-scan {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .input-with-scan .form-input {
+            flex: 1;
+        }
+
+        .scan-shortcut-btn {
+            padding: 8px 12px;
+            background: var(--primary-container);
+            color: var(--on-primary-container);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.2s ease;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .scan-shortcut-btn:hover {
+            background: var(--primary);
+            color: var(--on-primary);
+            transform: scale(1.05);
+        }
+
         @media (max-width: 480px) {
             .page-content {
                 padding: 16px;
@@ -182,7 +210,10 @@
             <form class="add-item-form" id="addItemForm">
                 <div class="form-group">
                     <label for="itemName" class="form-label">Item Name *</label>
-                    <input type="text" id="itemName" name="itemName" class="form-input" required placeholder="e.g., Milk, Apples, Bread">
+                    <div class="input-with-scan">
+                        <input type="text" id="itemName" name="itemName" class="form-input" required placeholder="e.g., Milk, Apples, Bread">
+                        <a href="scan.html" class="scan-shortcut-btn" title="Scan barcode">📱</a>
+                    </div>
                 </div>
 
                 <div class="form-row">
@@ -293,6 +324,8 @@
 
     <!-- Shared JavaScript -->
     <script src="shared.js"></script>
+    <!-- Firebase Configuration -->
+    <script type="module" src="firebase-config.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             setActiveNavItem('add');
@@ -301,6 +334,9 @@
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('purchaseDate').value = today;
 
+            // Check for scanned barcode data
+            handleScannedBarcode();
+
             // Handle form submission
             document.getElementById('addItemForm').addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -308,12 +344,94 @@
             });
         });
 
-        function addNewItem() {
+        function handleScannedBarcode() {
+            // Check URL parameters first
+            const urlParams = new URLSearchParams(window.location.search);
+            const barcodeFromUrl = urlParams.get('barcode');
+
+            // Check localStorage for scanned barcode
+            const scannedBarcode = localStorage.getItem('scannedBarcode');
+            const scanTimestamp = localStorage.getItem('scanTimestamp');
+
+            let barcode = barcodeFromUrl || scannedBarcode;
+
+            if (barcode) {
+                // Check if the scanned barcode is recent (within 5 minutes)
+                const isRecent = !scanTimestamp || (Date.now() - parseInt(scanTimestamp)) < 300000;
+
+                if (isRecent) {
+                    populateFormWithBarcode(barcode);
+                    showBarcodeNotification(barcode);
+                }
+
+                // Clean up localStorage after use
+                localStorage.removeItem('scannedBarcode');
+                localStorage.removeItem('scanTimestamp');
+
+                // Clean up URL if barcode was from URL
+                if (barcodeFromUrl) {
+                    const newUrl = window.location.pathname;
+                    window.history.replaceState({}, document.title, newUrl);
+                }
+            }
+        }
+
+        function populateFormWithBarcode(barcode) {
+            // Set focus to the name field since barcode doesn't have a direct input
+            const nameField = document.getElementById('itemName');
+            nameField.focus();
+
+            // Try to lookup product info by barcode (mock implementation)
+            lookupProductByBarcode(barcode);
+        }
+
+        function lookupProductByBarcode(barcode) {
+            // Mock product lookup - in a real app, this would call an API
+            const mockProducts = {
+                '1234567890123': { name: 'Whole Milk', category: 'dairy' },
+                '9876543210987': { name: 'Bread Loaf', category: 'grains' },
+                '5555555555555': { name: 'Bananas', category: 'produce' },
+                '7777777777777': { name: 'Greek Yogurt', category: 'dairy' }
+            };
+
+            const product = mockProducts[barcode];
+            if (product) {
+                document.getElementById('itemName').value = product.name;
+                document.getElementById('category').value = product.category;
+                showNotification(`Product found: ${product.name}`, 'success');
+            } else {
+                showNotification(`Barcode scanned: ${barcode}. Please enter product details.`, 'info');
+            }
+        }
+
+        function showBarcodeNotification(barcode) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: var(--primary-container);
+                color: var(--on-primary-container);
+                padding: 12px 20px;
+                border-radius: 8px;
+                z-index: 1000;
+                font-size: 14px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            `;
+            notification.textContent = `📱 Scanned: ${barcode}`;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 4000);
+        }
+
+        async function addNewItem() {
             const form = document.getElementById('addItemForm');
             const formData = new FormData(form);
 
             const item = {
-                id: Date.now(), // Simple ID generation
                 name: formData.get('itemName'),
                 category: formData.get('category'),
                 location: formData.get('location'),
@@ -321,8 +439,7 @@
                 unit: formData.get('unit'),
                 purchaseDate: formData.get('purchaseDate'),
                 expiryDate: formData.get('expiryDate'),
-                notes: formData.get('notes'),
-                dateAdded: new Date().toISOString()
+                notes: formData.get('notes')
             };
 
             // Validate required fields
@@ -331,26 +448,40 @@
                 return;
             }
 
-            // Get existing items from localStorage
-            let items = JSON.parse(localStorage.getItem('freshkeep-items') || '[]');
+            try {
+                // Show loading state
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const originalText = submitBtn.textContent;
+                submitBtn.textContent = 'Adding...';
+                submitBtn.disabled = true;
 
-            // Add new item
-            items.push(item);
+                // Use FreshKeepDB to add item (handles Firebase + localStorage)
+                const itemId = await window.FreshKeepDB.addItem(item);
 
-            // Save to localStorage
-            localStorage.setItem('freshkeep-items', JSON.stringify(items));
+                showNotification('✅ Item added successfully!', 'success');
 
-            // Show success message
-            showNotification('Item added successfully!', 'success');
+                // Reset form
+                form.reset();
+                document.getElementById('purchaseDate').value = new Date().toISOString().split('T')[0];
 
-            // Reset form
-            form.reset();
-            document.getElementById('purchaseDate').value = new Date().toISOString().split('T')[0];
+                // Restore button
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
 
-            // Optional: redirect to pantry after a short delay
-            setTimeout(() => {
-                window.location.href = 'pantry.html';
-            }, 1500);
+                // Optional: redirect to pantry after a short delay
+                setTimeout(() => {
+                    window.location.href = 'pantry.html';
+                }, 1500);
+
+            } catch (error) {
+                console.error('Error adding item:', error);
+                showNotification('❌ Failed to add item. Please try again.', 'error');
+
+                // Restore button
+                const submitBtn = form.querySelector('button[type="submit"]');
+                submitBtn.textContent = 'Add Item';
+                submitBtn.disabled = false;
+            }
         }
 
         function showNotification(message, type = 'info') {
