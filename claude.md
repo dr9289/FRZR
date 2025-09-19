@@ -75,6 +75,7 @@ FRZR/
 - **Pantry management fully functional** (pantry.html)
 - **Scanner functionality fully implemented** (scan.html)
 - **Firebase integration with offline-first data sync** (firebase-config.js)
+- **Unified navigation system with header navigation** (shared.js)
 - localStorage data persistence implemented
 - Mobile-responsive design complete
 
@@ -89,8 +90,11 @@ toggleTheme()        // Switch between themes
 
 #### Navigation
 ```javascript
-setActiveNavItem(pageId)     // Highlight current page
-toggleUserMenu()             // Show/hide user menu
+setActiveNavItem(pageId)         // Highlight current page
+insertHeaderNavigation(page)     // Add unified header navigation
+createHeaderNavigation()         // Generate header HTML
+goBack()                        // Smart back navigation
+toggleUserMenu()                // Show/hide user menu
 ```
 
 #### Data Management
