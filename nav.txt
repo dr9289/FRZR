@@ -1,12 +1,5 @@
 NAVIGATION ISSUES & IMPROVEMENT SUGGESTIONS
 
-=== TERMINOLOGY UPDATE (COMPLETED) ===
-✅ Updated navigation terminology for better user experience:
-   - "Groceries" - User-facing navigation label (was "Pantry")
-   - pantry.html manages all storage locations (pantry, fridge, freezer)
-   - data-page="inventory" for consistent routing
-   - Updated all navigation references across all pages
-
 === IDENTIFIED PROBLEMS ===
 
 1. DUPLICATE HEADERS (Dashboard Page)
@@ -181,7 +174,7 @@ class ScrollResponsiveHeader {
     getCurrentPageTitle() {
         const pageTitles = {
             'dashboard': 'Dashboard',
-            'inventory': 'Groceries',
+            'pantry': 'Pantry',
             'add': 'Add Item',
             'scan': 'Scanner',
             'settings': 'Settings'
@@ -226,7 +219,7 @@ RECOMMENDED DESIGN PATTERN:
    - Initial: "🥬 FreshKeep" + "Smart Food Tracker"
    - Scrolled: "🥬 Dashboard"
 
-2. SUB-PAGES (Add, Groceries, etc.):
+2. SUB-PAGES (Add, Pantry, etc.):
    - Initial: "🥬 FreshKeep" + "Page Name"
    - Scrolled: "🥬 Page Name"
 

@@ -93,7 +93,8 @@ function createHeaderNavigation(currentPage = '', showBackButton = false, custom
         'settings': 'Settings'
     };
 
-    const title = customTitle || pageTitles[currentPage] || 'FreshKeep';
+    const pageTitle = customTitle || pageTitles[currentPage] || 'FreshKeep';
+    const isDashboard = currentPage === 'dashboard';
 
     return `
         <header class="app-header">
@@ -102,10 +103,12 @@ function createHeaderNavigation(currentPage = '', showBackButton = false, custom
                     <button class="back-button" onclick="goBack()">
                         <span class="material-icons">arrow_back</span>
                     </button>
-                ` : `
-                    <div class="app-logo-small">🥬</div>
-                `}
-                <h1 class="page-title">${title}</h1>
+                ` : ''}
+                <div class="header-branding">
+                    <div class="app-logo">🥬</div>
+                    <h1 class="page-title">${isDashboard ? 'FreshKeep' : pageTitle}</h1>
+                    ${isDashboard ? '<div class="app-subtitle">Smart Food Tracker</div>' : ''}
+                </div>
                 <div class="header-actions">
                     <button class="theme-toggle" onclick="toggleTheme()">
                         <span class="theme-icon">🌙</span>
@@ -131,6 +134,9 @@ function insertHeaderNavigation(currentPage = '', showBackButton = false, custom
 
     // Initialize theme icon
     initializeTheme();
+
+    // Initialize scroll-responsive header
+    initializeScrollResponsiveHeader(currentPage);
 }
 
 // Back navigation helper
@@ -140,6 +146,81 @@ function goBack() {
         window.history.back();
     } else {
         window.location.href = 'dashboard.html';
+    }
+}
+
+// Scroll-responsive header functionality
+function initializeScrollResponsiveHeader(currentPage) {
+    const header = document.querySelector('.app-header');
+    const headerBranding = document.querySelector('.header-branding');
+
+    if (!header || !headerBranding) return;
+
+    const scrollThreshold = 60;
+    let isScrolled = false;
+    let ticking = false;
+
+    const pageTitles = {
+        'dashboard': 'Dashboard',
+        'inventory': 'Groceries',
+        'add': 'Add Item',
+        'scan': 'Scanner',
+        'family': 'Family',
+        'settings': 'Settings'
+    };
+
+    function handleScroll() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const shouldBeScrolled = scrollTop > scrollThreshold;
+
+        if (shouldBeScrolled !== isScrolled) {
+            isScrolled = shouldBeScrolled;
+            updateHeader();
+        }
+    }
+
+    function updateHeader() {
+        header.classList.toggle('scrolled', isScrolled);
+        headerBranding.classList.toggle('scrolled', isScrolled);
+
+        const pageTitle = header.querySelector('.page-title');
+        const appSubtitle = header.querySelector('.app-subtitle');
+
+        if (pageTitle) {
+            if (isScrolled) {
+                // Scrolled state: show compact page title
+                if (currentPage === 'dashboard') {
+                    pageTitle.textContent = 'Dashboard';
+                } else {
+                    pageTitle.textContent = pageTitles[currentPage] || 'FreshKeep';
+                }
+            } else {
+                // Initial state: show full branding or page title
+                if (currentPage === 'dashboard') {
+                    pageTitle.textContent = 'FreshKeep';
+                } else {
+                    pageTitle.textContent = pageTitles[currentPage] || 'FreshKeep';
+                }
+            }
+        }
+    }
+
+    // Throttled scroll listener for performance
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            requestAnimationFrame(() => {
+                handleScroll();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+
+    // Check if user prefers reduced motion
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+        header.style.transition = 'none';
+        if (headerBranding) headerBranding.style.transition = 'none';
     }
 }
 

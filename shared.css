@@ -25,6 +25,7 @@
     --on-secondary: #ffffff;
 
     --surface: #ffffff;
+    --surface-rgb: 255, 255, 255;
     --surface-variant: #f4f3f7;
     --on-surface: #1c1b1f;
     --on-surface-variant: #49454f;
@@ -65,6 +66,7 @@
     --on-secondary: #ffffff;
 
     --surface: #141218;
+    --surface-rgb: 20, 18, 24;
     --surface-variant: #2b2930;
     --on-surface: #e6e1e5;
     --on-surface-variant: #cac4d0;
@@ -183,26 +185,32 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
-    background: var(--surface);
+    background: rgba(var(--surface-rgb, 255, 255, 255), 0.9);
     border-top: 1px solid var(--outline-variant);
     display: flex;
     justify-content: space-around;
-    padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+    padding: 8px 0 max(8px, env(safe-area-inset-bottom));
     z-index: 1000;
     box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+    transform: translateZ(0);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    transition: transform 0.3s ease;
 }
 
 .nav-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 8px 12px;
+    padding: 12px;
     text-decoration: none;
     color: var(--on-surface-variant);
     transition: all 0.3s ease;
     border-radius: 12px;
     min-width: 48px;
+    min-height: 48px;
     touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .nav-item.active {
@@ -403,6 +411,24 @@ input::placeholder, textarea::placeholder {
     }
 }
 
+/* Hide navigation when keyboard is visible on mobile */
+@media (max-height: 500px) and (orientation: portrait) {
+    .bottom-nav {
+        transform: translateY(100%);
+    }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .bottom-nav {
+        transition: none;
+    }
+
+    .nav-item {
+        transition: none;
+    }
+}
+
 /* Tablet and Desktop */
 @media (min-width: 768px) {
     .bottom-nav {
@@ -433,6 +459,7 @@ input::placeholder, textarea::placeholder {
         --on-secondary: #ffffff;
 
         --surface: #141218;
+        --surface-rgb: 20, 18, 24;
         --surface-variant: #2b2930;
         --on-surface: #e6e1e5;
         --on-surface-variant: #cac4d0;
@@ -482,9 +509,18 @@ input::placeholder, textarea::placeholder {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: var(--surface);
+    background: rgba(var(--surface-rgb), 0.9);
     border-bottom: 1px solid var(--outline-variant);
     box-shadow: var(--elevation-1);
+    height: var(--header-height, 80px);
+    transition: height 0.3s ease, box-shadow 0.3s ease;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+.app-header.scrolled {
+    --header-height: 56px;
+    box-shadow: var(--elevation-2);
 }
 
 .header-content {
@@ -494,24 +530,63 @@ input::placeholder, textarea::placeholder {
     padding: 12px 16px;
     max-width: 1200px;
     margin: 0 auto;
-    min-height: 56px;
+    height: 100%;
 }
 
-.app-logo-small {
-    font-size: 24px;
+.header-branding {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.3s ease;
+    flex: 1;
+}
+
+.header-branding.scrolled {
+    flex-direction: row;
+    gap: 8px;
+    justify-content: flex-start;
+}
+
+.app-logo {
+    font-size: var(--logo-size, 32px);
+    transition: font-size 0.3s ease;
     flex-shrink: 0;
 }
 
+.scrolled .app-logo {
+    --logo-size: 24px;
+}
+
 .page-title {
-    font-size: 20px;
+    font-size: var(--title-size, 24px);
     font-weight: 600;
     color: var(--on-surface);
     margin: 0;
-    flex: 1;
     text-align: center;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    transition: font-size 0.3s ease;
+}
+
+.scrolled .page-title {
+    --title-size: 18px;
+    text-align: left;
+}
+
+.app-subtitle {
+    font-size: 14px;
+    color: var(--on-surface-variant);
+    margin: 2px 0 0 0;
+    opacity: var(--subtitle-opacity, 1);
+    max-height: var(--subtitle-height, 20px);
+    transition: all 0.3s ease;
+}
+
+.scrolled .app-subtitle {
+    --subtitle-opacity: 0;
+    --subtitle-height: 0px;
+    margin: 0;
 }
 
 .header-actions {
