@@ -194,10 +194,11 @@ body {
     padding: 8px 0 max(8px, env(safe-area-inset-bottom));
     z-index: 1000;
     box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
-    transform: translateZ(0);
+    transform: translate3d(0, 0, 0);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    will-change: transform;
 }
 
 .nav-item {
@@ -658,8 +659,8 @@ input::placeholder, textarea::placeholder {
     color: var(--on-primary);
     border: none;
     border-radius: 50%;
-    width: 32px;
-    height: 32px;
+    width: 48px;
+    height: 48px;
     padding: 12px;
     display: flex;
     align-items: center;
@@ -667,7 +668,7 @@ input::placeholder, textarea::placeholder {
     text-decoration: none;
     box-shadow: var(--elevation-2);
     transition: all 0.2s ease, color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
-    box-sizing: content-box;
+    box-sizing: border-box;
 }
 
 .add-button:hover {
@@ -787,8 +788,8 @@ body.has-header .container {
     }
 
     .add-button {
-        width: 36px;
-        height: 36px;
+        width: 44px;
+        height: 44px;
     }
 
     .material-icons {
