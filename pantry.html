@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#667eea">
-    <title>Pantry - FreshKeep</title>
+    <title>Groceries - FreshKeep</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,7 +16,7 @@
 
     <!-- Page Specific Styles -->
     <style>
-        /* Pantry Specific Styles */
+        /* Inventory Specific Styles */
         .page-header {
             background: var(--surface);
             padding: 16px 20px;
@@ -426,9 +426,9 @@
                 <span class="nav-icon">🏠</span>
                 <span class="nav-label">Home</span>
             </a>
-            <a href="pantry.html" class="nav-item active" data-page="pantry">
+            <a href="pantry.html" class="nav-item active" data-page="inventory">
                 <span class="nav-icon">🍎</span>
-                <span class="nav-label">Pantry</span>
+                <span class="nav-label">Groceries</span>
             </a>
             <a href="scan.html" class="nav-item" data-page="scan">
                 <span class="nav-icon">📱</span>
@@ -448,9 +448,9 @@
     <!-- Shared JavaScript -->
     <script src="shared.js"></script>
 
-    <!-- Pantry Specific JavaScript -->
+    <!-- Inventory Specific JavaScript -->
     <script>
-        // Pantry page state
+        // Inventory page state
         let foodItems = [];
         let filteredItems = [];
         let currentView = 'grid';
@@ -458,17 +458,17 @@
         let searchTerm = '';
         let sortBy = 'expiration';
 
-        // Initialize pantry page
+        // Initialize inventory page
         document.addEventListener('DOMContentLoaded', function() {
             // Add header navigation
-            insertHeaderNavigation('pantry');
+            insertHeaderNavigation('inventory');
             document.body.classList.add('has-header');
 
-            setActiveNavItem('pantry');
-            loadPantryData();
+            setActiveNavItem('inventory');
+            loadInventoryData();
         });
 
-        async function loadPantryData() {
+        async function loadInventoryData() {
             try {
                 // Load from localStorage
                 const stored = localStorage.getItem('freshkeep-items') || '[]';
@@ -481,7 +481,7 @@
 
                 updateDisplay();
             } catch (error) {
-                console.error('Error loading pantry data:', error);
+                console.error('Error loading inventory data:', error);
                 showEmptyState();
             }
         }

@@ -204,7 +204,7 @@
         <main class="page-content">
             <div class="page-header">
                 <h1 class="page-title">Add New Item</h1>
-                <p class="page-subtitle">Manually add items to your pantry</p>
+                <p class="page-subtitle">Manually add items to your groceries</p>
             </div>
 
             <form class="add-item-form" id="addItemForm">
@@ -308,9 +308,9 @@
                 <span class="nav-icon">🏠</span>
                 <span class="nav-label">Home</span>
             </a>
-            <a href="pantry.html" class="nav-item" data-page="pantry">
+            <a href="pantry.html" class="nav-item" data-page="inventory">
                 <span class="nav-icon">🍎</span>
-                <span class="nav-label">Pantry</span>
+                <span class="nav-label">Groceries</span>
             </a>
             <a href="scan.html" class="nav-item" data-page="scan">
                 <span class="nav-icon">📱</span>
@@ -533,7 +533,7 @@
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
 
-                // Optional: redirect to pantry after a short delay
+                // Optional: redirect to groceries after a short delay
                 setTimeout(() => {
                     window.location.href = 'pantry.html';
                 }, 1500);

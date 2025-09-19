@@ -190,9 +190,9 @@
                         <span class="action-icon">➕</span>
                         <span class="action-text">Add Manually</span>
                     </a>
-                    <a href="pantry.html" class="action-btn secondary">
+                    <a href="pantry.html" class="action-btn secondary"
                         <span class="action-icon">🍎</span>
-                        <span class="action-text">View Pantry</span>
+                        <span class="action-text">View Groceries</span>
                     </a>
                 </div>
             </section>
@@ -215,6 +215,10 @@
                     <div class="stat-number" id="fridgeItems">0</div>
                     <div class="stat-label">In Fridge</div>
                 </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="freezerItems">0</div>
+                    <div class="stat-label">In Freezer</div>
+                </div>
             </section>
 
             <!-- Recent Items -->
@@ -235,9 +239,9 @@
                 <span class="nav-icon">🏠</span>
                 <span class="nav-label">Home</span>
             </a>
-            <a href="pantry.html" class="nav-item" data-page="pantry">
+            <a href="pantry.html" class="nav-item" data-page="inventory">
                 <span class="nav-icon">🍎</span>
-                <span class="nav-label">Pantry</span>
+                <span class="nav-label">Groceries</span>
             </a>
             <a href="scan.html" class="nav-item" data-page="scan">
                 <span class="nav-icon">📱</span>
@@ -303,13 +307,15 @@
                     return expiryDate <= threeDaysFromNow && expiryDate >= now;
                 }).length,
                 pantry: foodItems.filter(item => item.location === 'pantry').length,
-                fridge: foodItems.filter(item => item.location === 'fridge').length
+                fridge: foodItems.filter(item => item.location === 'fridge').length,
+                freezer: foodItems.filter(item => item.location === 'freezer').length
             };
 
             document.getElementById('totalItems').textContent = stats.total;
             document.getElementById('expiringSoon').textContent = stats.expiringSoon;
             document.getElementById('pantryItems').textContent = stats.pantry;
             document.getElementById('fridgeItems').textContent = stats.fridge;
+            document.getElementById('freezerItems').textContent = stats.freezer;
         }
 
         function updateRecentItems() {

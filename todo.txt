@@ -1,5 +1,14 @@
 FRESHKEEP TODO - HIGH PRIORITY FIXES & MISSING FEATURES
 
+=== TERMINOLOGY UPDATE ===
+✅ Updated app terminology for better user experience:
+   - "Groceries" - User-facing term for overall food management
+   - "Pantry", "Fridge", "Freezer" - Specific storage locations
+   - "inventory" - Technical term in code (data-page attributes, functions)
+   - Updated all navigation labels, page titles, and user-facing text
+   - Added freezer statistics to dashboard (was missing before)
+   - Function names updated: loadPantryData() → loadInventoryData()
+
 === CRITICAL BROKEN FEATURES ===
 
 1. Add Item Form (add.html) - FIXED ✅
@@ -8,9 +17,9 @@ FRESHKEEP TODO - HIGH PRIORITY FIXES & MISSING FEATURES
    - Success/error notifications working
    - Location: add.html:305-354 - complete implementation
 
-2. Pantry Management (pantry.html) - MOSTLY FIXED ✅
+2. Grocery Management (pantry.html) - MOSTLY FIXED ✅
    - handleSearch(), handleSort(), deleteItem() - fully implemented
-   - loadPantryData() function complete with localStorage integration
+   - loadInventoryData() function complete with localStorage integration
    - editItem() placeholder with user feedback (edit functionality planned for future)
    - Fixed date property inconsistency (dateAdded vs addedDate)
    - Location: pantry.html:467-716 - functional implementations
@@ -49,8 +58,8 @@ PRIORITY 1 - CRITICAL
     - ✅ Connect to data storage (localStorage + Firebase)
     - ✅ Add form validation and error handling
 
-[✅] Fix Pantry Core Functions
-    - ✅ Implement loadPantryData(), search, sort, delete
+[✅] Fix Grocery Core Functions
+    - ✅ Implement loadInventoryData(), search, sort, delete
     - ✅ Connect to actual data source (localStorage)
     - ✅ Fix broken onclick handlers in pantry.html
     - 🔄 Edit functionality placeholder (future implementation)
@@ -88,7 +97,7 @@ PRIORITY 3 - MEDIUM
 
 === NOTES ===
 - App now has fully functional core features with modern multi-page architecture
-- ✅ All Priority 1, 2 & 3 tasks completed: Add Item, Pantry Management, Scanner, Data Storage, Settings, Validation
+- ✅ All Priority 1, 2 & 3 tasks completed: Add Item, Grocery Management, Scanner, Data Storage, Settings, Validation
 - ✅ Navigation system completely overhauled with unified header navigation
 - ✅ index.html converted to landing page with quick access navigation
 - ✅ Firebase integration with offline-first data synchronization implemented

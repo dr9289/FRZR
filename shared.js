@@ -86,7 +86,7 @@ function setActiveNavItem(pageId) {
 function createHeaderNavigation(currentPage = '', showBackButton = false, customTitle = '') {
     const pageTitles = {
         'dashboard': 'Dashboard',
-        'pantry': 'Pantry',
+        'inventory': 'Groceries',
         'add': 'Add Item',
         'scan': 'Scanner',
         'family': 'Family',

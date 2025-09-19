@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-FreshKeep is a progressive web application (PWA) designed for smart food inventory management. The app helps users track food items across different storage locations (pantry, fridge, freezer) with expiration monitoring and a modern, mobile-first interface.
+FreshKeep is a progressive web application (PWA) designed for smart grocery management. The app helps users track food items across different storage locations (pantry, fridge, freezer) with expiration monitoring and a modern, mobile-first interface.
 
 ## Architecture
 
@@ -17,7 +17,7 @@ FreshKeep is a progressive web application (PWA) designed for smart food invento
 FRZR/
 ├── index.html          # Landing/welcome page that redirects to dashboard
 ├── dashboard.html      # Main dashboard with stats and overview
-├── pantry.html         # Food inventory management
+├── pantry.html         # Grocery management (pantry, fridge, freezer)
 ├── add.html           # Add new food items
 ├── scan.html          # Barcode scanning functionality
 ├── family.html        # Family/household management
@@ -45,7 +45,7 @@ FRZR/
 ### Core Pages
 1. **Landing Page** (index.html) - Welcome page with auto-redirect for returning users
 2. **Dashboard** (dashboard.html) - Stats grid and overview
-3. **Pantry** (pantry.html) - Food inventory with search and filtering
+3. **Groceries** (pantry.html) - Grocery management with search and filtering across all storage locations
 4. **Add Items** (add.html) - Form for adding new food items
 5. **Scanner** (scan.html) - Barcode scanning functionality
 6. **Family** (family.html) - Household member management
@@ -72,7 +72,7 @@ FRZR/
 - Static HTML pages with shared styling
 - Theme system fully implemented
 - **Add Item functionality completely working** (add.html)
-- **Pantry management fully functional** (pantry.html)
+- **Grocery management fully functional** (pantry.html)
 - **Scanner functionality fully implemented** (scan.html)
 - **Settings page fully functional** (settings.html)
 - **Firebase integration with offline-first data sync** (firebase-config.js)
@@ -105,13 +105,14 @@ toggleUserMenu()                // Show/hide user menu
 addNewItem()                 // Process form submission with Firebase/localStorage sync
 showNotification(msg, type)  // Display success/error messages
 
-// Pantry Management (pantry.html:467-716)
-loadPantryData()             // Load items from Firebase/localStorage
+// Grocery Management (pantry.html:467-716)
+loadInventoryData()          // Load items from Firebase/localStorage
 handleSearch()               // Filter items by search term
 handleSort()                 // Sort items by various criteria
 deleteItem(itemId)           // Remove item from storage
 editItem(itemId)             // Edit item (placeholder)
 updateDisplay()              // Refresh item display
+switchTab(location)          // Switch between pantry/fridge/freezer tabs
 
 // Scanner Functions (scan.html:328-567)
 startScanner()               // Initialize QuaggaJS barcode scanner
