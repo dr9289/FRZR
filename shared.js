@@ -93,7 +93,7 @@ function createHeaderNavigation(currentPage = '', showBackButton = false, custom
         'settings': 'Settings'
     };
 
-    const pageTitle = customTitle || pageTitles[currentPage] || 'FreshKeep';
+    const pageTitle = customTitle || pageTitles[currentPage] || '';
     const isDashboard = currentPage === 'dashboard';
 
     return `
@@ -106,8 +106,7 @@ function createHeaderNavigation(currentPage = '', showBackButton = false, custom
                 ` : ''}
                 <div class="header-branding">
                     <div class="app-logo">🥬</div>
-                    <h1 class="page-title">${isDashboard ? 'FreshKeep' : pageTitle}</h1>
-                    ${isDashboard ? '<div class="app-subtitle">Smart Food Tracker</div>' : ''}
+                    ${!isDashboard && pageTitle ? `<h1 class="page-title">${pageTitle}</h1>` : ''}
                 </div>
                 <div class="header-actions">
                     <button class="theme-toggle" onclick="toggleTheme()">
@@ -137,6 +136,12 @@ function insertHeaderNavigation(currentPage = '', showBackButton = false, custom
 
     // Initialize scroll-responsive header
     initializeScrollResponsiveHeader(currentPage);
+
+    // Enhance navigation interactions with haptic feedback
+    enhanceNavigationInteractions();
+
+    // Initialize keyboard-aware navigation
+    initializeKeyboardAwareNavigation();
 }
 
 // Back navigation helper
@@ -188,18 +193,14 @@ function initializeScrollResponsiveHeader(currentPage) {
 
         if (pageTitle) {
             if (isScrolled) {
-                // Scrolled state: show compact page title
-                if (currentPage === 'dashboard') {
-                    pageTitle.textContent = 'Dashboard';
-                } else {
-                    pageTitle.textContent = pageTitles[currentPage] || 'FreshKeep';
+                // Scrolled state: show page title for all pages except dashboard
+                if (currentPage !== 'dashboard') {
+                    pageTitle.textContent = pageTitles[currentPage] || '';
                 }
             } else {
-                // Initial state: show full branding or page title
-                if (currentPage === 'dashboard') {
-                    pageTitle.textContent = 'FreshKeep';
-                } else {
-                    pageTitle.textContent = pageTitles[currentPage] || 'FreshKeep';
+                // Initial state: hide title on dashboard, show on other pages
+                if (currentPage !== 'dashboard') {
+                    pageTitle.textContent = pageTitles[currentPage] || '';
                 }
             }
         }
@@ -224,6 +225,51 @@ function initializeScrollResponsiveHeader(currentPage) {
     }
 }
 
+// Keyboard-aware navigation functionality
+function initializeKeyboardAwareNavigation() {
+    const bottomNav = document.querySelector('.bottom-nav');
+    if (!bottomNav) return;
+
+    let initialViewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+    let isKeyboardVisible = false;
+
+    function handleViewportChange() {
+        const currentHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+        const heightDifference = initialViewportHeight - currentHeight;
+        const threshold = 150; // Minimum height change to consider keyboard visible
+
+        const shouldHideNav = heightDifference > threshold;
+
+        if (shouldHideNav !== isKeyboardVisible) {
+            isKeyboardVisible = shouldHideNav;
+
+            if (isKeyboardVisible) {
+                bottomNav.style.transform = 'translateY(100%)';
+                bottomNav.setAttribute('aria-hidden', 'true');
+            } else {
+                bottomNav.style.transform = 'translateY(0)';
+                bottomNav.setAttribute('aria-hidden', 'false');
+            }
+        }
+    }
+
+    // Modern browsers with Visual Viewport API
+    if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', handleViewportChange);
+    } else {
+        // Fallback for older browsers
+        window.addEventListener('resize', handleViewportChange);
+    }
+
+    // Handle orientation changes
+    window.addEventListener('orientationchange', () => {
+        setTimeout(() => {
+            initialViewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+            handleViewportChange();
+        }, 500);
+    });
+}
+
 // Firebase utility functions (placeholder - will be filled based on current implementation)
 let currentUser = null;
 let currentHousehold = null;
@@ -241,6 +287,87 @@ function toggleUserMenu() {
         const isVisible = userMenu.style.display === 'block';
         userMenu.style.display = isVisible ? 'none' : 'block';
     }
+}
+
+// Haptic feedback utility
+function triggerHapticFeedback(type = 'light') {
+    // Check if the device supports haptic feedback
+    if ('vibrate' in navigator) {
+        switch (type) {
+            case 'light':
+                navigator.vibrate(10);
+                break;
+            case 'medium':
+                navigator.vibrate(20);
+                break;
+            case 'heavy':
+                navigator.vibrate([10, 10, 20]);
+                break;
+            case 'tap':
+                navigator.vibrate(5);
+                break;
+            default:
+                navigator.vibrate(10);
+        }
+    }
+
+    // For devices with more advanced haptic feedback (iOS Safari)
+    if ('DeviceMotionEvent' in window && 'requestPermission' in DeviceMotionEvent) {
+        // Use iOS haptic feedback if available
+        try {
+            if (window.TapticEngine) {
+                switch (type) {
+                    case 'light':
+                        window.TapticEngine.impact('light');
+                        break;
+                    case 'medium':
+                        window.TapticEngine.impact('medium');
+                        break;
+                    case 'heavy':
+                        window.TapticEngine.impact('heavy');
+                        break;
+                    case 'tap':
+                        window.TapticEngine.selection();
+                        break;
+                }
+            }
+        } catch (e) {
+            // Fallback to regular vibration
+        }
+    }
+}
+
+// Enhanced navigation item interaction with haptic feedback
+function enhanceNavigationInteractions() {
+    const navItems = document.querySelectorAll('.nav-item');
+
+    navItems.forEach(item => {
+        // Add haptic feedback on touch start
+        item.addEventListener('touchstart', (e) => {
+            triggerHapticFeedback('tap');
+            item.classList.add('nav-item-pressed');
+        }, { passive: true });
+
+        // Remove pressed state on touch end
+        item.addEventListener('touchend', (e) => {
+            setTimeout(() => {
+                item.classList.remove('nav-item-pressed');
+            }, 150);
+        }, { passive: true });
+
+        // Add click haptic feedback for mouse users too
+        item.addEventListener('click', (e) => {
+            triggerHapticFeedback('light');
+        });
+    });
+
+    // Add haptic feedback to theme toggle and other buttons
+    const interactiveButtons = document.querySelectorAll('.theme-toggle, .back-button, .add-button');
+    interactiveButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            triggerHapticFeedback('medium');
+        });
+    });
 }
 
 // Initialize page
