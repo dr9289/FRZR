@@ -211,7 +211,9 @@
                 <div class="form-group">
                     <label for="itemName" class="form-label">Item Name *</label>
                     <div class="input-with-scan">
-                        <input type="text" id="itemName" name="itemName" class="form-input" required placeholder="e.g., Milk, Apples, Bread">
+                        <input type="text" id="itemName" name="itemName" class="form-input" required
+                               minlength="2" maxlength="50" placeholder="e.g., Milk, Apples, Bread"
+                               title="Item name must be 2-50 characters long">
                         <a href="scan.html" class="scan-shortcut-btn" title="Scan barcode">📱</a>
                     </div>
                 </div>
@@ -250,7 +252,8 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="quantity" class="form-label">Quantity</label>
-                        <input type="number" id="quantity" name="quantity" class="form-input" min="1" value="1" placeholder="1">
+                        <input type="number" id="quantity" name="quantity" class="form-input" min="1" max="999" value="1" placeholder="1"
+                               title="Quantity must be between 1 and 999">
                     </div>
 
                     <div class="form-group">
@@ -287,7 +290,9 @@
 
                 <div class="form-group">
                     <label for="notes" class="form-label">Notes</label>
-                    <textarea id="notes" name="notes" class="form-textarea" rows="3" placeholder="Additional notes (brand, special storage instructions, etc.)"></textarea>
+                    <textarea id="notes" name="notes" class="form-textarea" rows="3" maxlength="200"
+                              placeholder="Additional notes (brand, special storage instructions, etc.)"
+                              title="Notes must be less than 200 characters"></textarea>
                 </div>
 
                 <div class="form-actions">
@@ -408,6 +413,61 @@
             }
         }
 
+        // Form validation function
+        function validateForm(item) {
+            const errors = [];
+
+            // Required field validation
+            if (!item.name || item.name.trim().length === 0) {
+                errors.push('Item name is required');
+            } else if (item.name.trim().length < 2) {
+                errors.push('Item name must be at least 2 characters long');
+            } else if (item.name.trim().length > 50) {
+                errors.push('Item name must be less than 50 characters');
+            }
+
+            if (!item.location) {
+                errors.push('Location is required');
+            }
+
+            // Quantity validation
+            if (item.quantity && (item.quantity < 1 || item.quantity > 999)) {
+                errors.push('Quantity must be between 1 and 999');
+            }
+
+            // Date validation
+            if (item.purchaseDate) {
+                const purchaseDate = new Date(item.purchaseDate);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+
+                if (purchaseDate > today) {
+                    errors.push('Purchase date cannot be in the future');
+                }
+            }
+
+            if (item.expiryDate) {
+                const expiryDate = new Date(item.expiryDate);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+
+                if (expiryDate < today) {
+                    errors.push('Expiry date should not be in the past');
+                }
+
+                if (item.purchaseDate && expiryDate < new Date(item.purchaseDate)) {
+                    errors.push('Expiry date must be after purchase date');
+                }
+            }
+
+            // Notes validation
+            if (item.notes && item.notes.length > 200) {
+                errors.push('Notes must be less than 200 characters');
+            }
+
+            return errors;
+        }
+
         function showBarcodeNotification(barcode) {
             const notification = document.createElement('div');
             notification.style.cssText = `
@@ -446,9 +506,10 @@
                 notes: formData.get('notes')
             };
 
-            // Validate required fields
-            if (!item.name || !item.location) {
-                showNotification('Please fill in all required fields', 'error');
+            // Enhanced validation
+            const validationErrors = validateForm(item);
+            if (validationErrors.length > 0) {
+                showNotification(validationErrors[0], 'error');
                 return;
             }
 

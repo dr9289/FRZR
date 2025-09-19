@@ -16,31 +16,225 @@
 
     <style>
         .page-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 60vh;
-            text-align: center;
-            padding: 40px 20px;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
-        .coming-soon-icon {
-            font-size: 64px;
-            margin-bottom: 24px;
+        .settings-section {
+            background: var(--surface-container);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid var(--outline-variant);
         }
 
-        .coming-soon-title {
-            font-size: 24px;
+        .settings-section h2 {
+            margin: 0 0 16px 0;
+            font-size: 18px;
             font-weight: 600;
             color: var(--on-surface);
-            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .coming-soon-text {
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--outline-variant);
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-label {
+            font-weight: 500;
+            color: var(--on-surface);
+        }
+
+        .setting-description {
+            font-size: 14px;
             color: var(--on-surface-variant);
-            margin-bottom: 32px;
-            max-width: 400px;
+            margin-top: 4px;
+        }
+
+        .setting-control {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 24px;
+            background: var(--outline);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-switch.active {
+            background: var(--primary);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        .toggle-switch.active::after {
+            transform: translateX(24px);
+        }
+
+        .input-field {
+            background: var(--surface-container-highest);
+            border: 1px solid var(--outline-variant);
+            border-radius: 8px;
+            padding: 12px;
+            color: var(--on-surface);
+            font-family: inherit;
+            min-width: 200px;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--on-primary);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-danger {
+            background: var(--error);
+            color: var(--on-error);
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary-container);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-right: 16px;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--on-surface);
+            margin: 0;
+        }
+
+        .user-email {
+            color: var(--on-surface-variant);
+            margin: 4px 0 0 0;
+        }
+
+        .household-member {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: var(--surface-container-highest);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .member-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--secondary-container);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 16px;
+        }
+
+        .member-info {
+            flex: 1;
+        }
+
+        .member-name {
+            font-weight: 500;
+            color: var(--on-surface);
+        }
+
+        .member-role {
+            font-size: 12px;
+            color: var(--on-surface-variant);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--surface-container-high);
+            color: var(--on-surface);
+            padding: 16px 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            border-left-color: var(--success);
+        }
+
+        .notification.error {
+            border-left-color: var(--error);
         }
     </style>
 </head>
@@ -62,13 +256,142 @@
 
         <!-- Main Content -->
         <main class="page-content">
-            <div class="coming-soon-icon">⚙️</div>
-            <h1 class="coming-soon-title">Settings & More</h1>
-            <p class="coming-soon-text">
-                User preferences, account management, data export, and advanced settings
-                are being moved to this dedicated page. Coming in Phase 2!
-            </p>
-            <a href="dashboard.html" class="btn btn-primary">← Back to Dashboard</a>
+            <!-- User Profile Section -->
+            <div class="settings-section">
+                <h2>👤 User Profile</h2>
+                <div class="setting-item">
+                    <div style="display: flex; align-items: center; width: 100%;">
+                        <div class="user-avatar" id="userAvatar">👤</div>
+                        <div class="user-info">
+                            <h3 class="user-name" id="userName">Guest User</h3>
+                            <p class="user-email" id="userEmail">No account connected</p>
+                        </div>
+                        <button class="btn btn-outline" onclick="editProfile()">Edit</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Appearance Settings -->
+            <div class="settings-section">
+                <h2>🎨 Appearance</h2>
+                <div class="setting-item">
+                    <div>
+                        <div class="setting-label">Dark Mode</div>
+                        <div class="setting-description">Toggle between light and dark themes</div>
+                    </div>
+                    <div class="setting-control">
+                        <div class="toggle-switch" id="themeToggle" onclick="toggleThemeAndSave()"></div>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div>
+                        <div class="setting-label">Auto Theme</div>
+                        <div class="setting-description">Follow system preference</div>
+                    </div>
+                    <div class="setting-control">
+                        <div class="toggle-switch" id="autoThemeToggle" onclick="toggleAutoTheme()"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Household Management -->
+            <div class="settings-section">
+                <h2>🏠 Household</h2>
+                <div class="setting-item">
+                    <div>
+                        <div class="setting-label">Household Name</div>
+                        <div class="setting-description">Name of your household</div>
+                    </div>
+                    <div class="setting-control">
+                        <input type="text" class="input-field" id="householdName" placeholder="Enter household name"
+                               maxlength="50" onchange="saveHouseholdName()"
+                               title="Household name must be less than 50 characters">
+                    </div>
+                </div>
+                <div class="setting-item" style="flex-direction: column; align-items: flex-start;">
+                    <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <div>
+                            <div class="setting-label">Family Members</div>
+                            <div class="setting-description">Manage household members</div>
+                        </div>
+                        <button class="btn btn-outline" onclick="addFamilyMember()">Add Member</button>
+                    </div>
+                    <div id="familyMembers" style="width: 100%;">
+                        <!-- Family members will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data & Privacy -->
+            <div class="settings-section">
+                <h2>🔒 Data & Privacy</h2>
+                <div class="setting-item">
+                    <div>
+                        <div class="setting-label">Export Data</div>
+                        <div class="setting-description">Download your data as JSON</div>
+                    </div>
+                    <div class="setting-control">
+                        <button class="btn btn-outline" onclick="exportData()">Export</button>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div>
+                        <div class="setting-label">Clear Local Data</div>
+                        <div class="setting-description">Remove all locally stored data</div>
+                    </div>
+                    <div class="setting-control">
+                        <button class="btn btn-danger" onclick="clearLocalData()">Clear</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notifications -->
+            <div class="settings-section">
+                <h2>🔔 Notifications</h2>
+                <div class="setting-item">
+                    <div>
+                        <div class="setting-label">Expiration Alerts</div>
+                        <div class="setting-description">Get notified about expiring items</div>
+                    </div>
+                    <div class="setting-control">
+                        <div class="toggle-switch active" id="expirationAlertsToggle" onclick="toggleExpirationAlerts()"></div>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div>
+                        <div class="setting-label">Alert Days</div>
+                        <div class="setting-description">Days before expiration to alert</div>
+                    </div>
+                    <div class="setting-control">
+                        <input type="number" class="input-field" id="alertDays" value="3" min="1" max="30"
+                               onchange="saveAlertDays()" style="width: 80px;"
+                               title="Must be between 1 and 30 days">
+                    </div>
+                </div>
+            </div>
+
+            <!-- About -->
+            <div class="settings-section">
+                <h2>ℹ️ About</h2>
+                <div class="setting-item">
+                    <div>
+                        <div class="setting-label">Version</div>
+                        <div class="setting-description">App version information</div>
+                    </div>
+                    <div class="setting-control">
+                        <span style="color: var(--on-surface-variant);">v1.0.0</span>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div>
+                        <div class="setting-label">Storage Usage</div>
+                        <div class="setting-description">Local storage usage</div>
+                    </div>
+                    <div class="setting-control">
+                        <span style="color: var(--on-surface-variant);" id="storageUsage">Calculating...</span>
+                    </div>
+                </div>
+            </div>
         </main>
 
         <!-- Bottom Navigation -->
@@ -99,12 +422,350 @@
     <!-- Shared JavaScript -->
     <script src="shared.js"></script>
     <script>
+        // Settings state
+        let settings = {
+            user: {
+                name: 'Guest User',
+                email: '',
+                avatar: '👤'
+            },
+            household: {
+                name: '',
+                members: []
+            },
+            preferences: {
+                autoTheme: false,
+                expirationAlerts: true,
+                alertDays: 3
+            }
+        };
+
+        // Load settings from localStorage
+        function loadSettings() {
+            const savedSettings = localStorage.getItem('freshkeep-settings');
+            if (savedSettings) {
+                settings = { ...settings, ...JSON.parse(savedSettings) };
+            }
+            updateUI();
+        }
+
+        // Save settings to localStorage
+        function saveSettings() {
+            localStorage.setItem('freshkeep-settings', JSON.stringify(settings));
+        }
+
+        // Update UI with current settings
+        function updateUI() {
+            // User profile
+            document.getElementById('userName').textContent = settings.user.name;
+            document.getElementById('userEmail').textContent = settings.user.email || 'No account connected';
+            document.getElementById('userAvatar').textContent = settings.user.avatar;
+
+            // Theme toggles
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const themeToggle = document.getElementById('themeToggle');
+            const autoThemeToggle = document.getElementById('autoThemeToggle');
+
+            themeToggle.classList.toggle('active', currentTheme === 'dark');
+            autoThemeToggle.classList.toggle('active', settings.preferences.autoTheme);
+
+            // Household
+            document.getElementById('householdName').value = settings.household.name;
+            renderFamilyMembers();
+
+            // Notifications
+            const expirationToggle = document.getElementById('expirationAlertsToggle');
+            expirationToggle.classList.toggle('active', settings.preferences.expirationAlerts);
+            document.getElementById('alertDays').value = settings.preferences.alertDays;
+
+            // Storage usage
+            updateStorageUsage();
+        }
+
+        // Theme management
+        function toggleThemeAndSave() {
+            toggleTheme();
+            settings.preferences.autoTheme = false;
+            saveSettings();
+            updateUI();
+        }
+
+        function toggleAutoTheme() {
+            settings.preferences.autoTheme = !settings.preferences.autoTheme;
+
+            if (settings.preferences.autoTheme) {
+                // Remove manual theme preference
+                localStorage.removeItem('freshkeep-theme');
+                // Apply system preference
+                const systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                setTheme(systemPrefersDark ? 'dark' : 'light');
+            }
+
+            saveSettings();
+            updateUI();
+            showNotification('Auto theme ' + (settings.preferences.autoTheme ? 'enabled' : 'disabled'), 'success');
+        }
+
+        // User profile management with validation
+        function editProfile() {
+            const newName = prompt('Enter your name:', settings.user.name);
+            if (newName !== null) {
+                const validation = validateProfileName(newName);
+                if (validation.isValid) {
+                    settings.user.name = newName.trim();
+                    saveSettings();
+                    updateUI();
+                    showNotification('Profile updated successfully', 'success');
+                } else {
+                    showNotification(validation.error, 'error');
+                }
+            }
+        }
+
+        // Validation functions
+        function validateProfileName(name) {
+            if (!name || name.trim().length === 0) {
+                return { isValid: false, error: 'Name cannot be empty' };
+            }
+            if (name.trim().length < 2) {
+                return { isValid: false, error: 'Name must be at least 2 characters long' };
+            }
+            if (name.trim().length > 30) {
+                return { isValid: false, error: 'Name must be less than 30 characters' };
+            }
+            if (!/^[a-zA-Z\s'-]+$/.test(name.trim())) {
+                return { isValid: false, error: 'Name can only contain letters, spaces, hyphens and apostrophes' };
+            }
+            return { isValid: true };
+        }
+
+        function validateHouseholdName(name) {
+            if (name.length > 50) {
+                return { isValid: false, error: 'Household name must be less than 50 characters' };
+            }
+            return { isValid: true };
+        }
+
+        function validateFamilyMemberName(name) {
+            if (!name || name.trim().length === 0) {
+                return { isValid: false, error: 'Family member name cannot be empty' };
+            }
+            if (name.trim().length < 2) {
+                return { isValid: false, error: 'Family member name must be at least 2 characters long' };
+            }
+            if (name.trim().length > 30) {
+                return { isValid: false, error: 'Family member name must be less than 30 characters' };
+            }
+            if (!/^[a-zA-Z\s'-]+$/.test(name.trim())) {
+                return { isValid: false, error: 'Name can only contain letters, spaces, hyphens and apostrophes' };
+            }
+            // Check for duplicates
+            const existingNames = settings.household.members.map(m => m.name.toLowerCase());
+            if (existingNames.includes(name.trim().toLowerCase())) {
+                return { isValid: false, error: 'Family member with this name already exists' };
+            }
+            return { isValid: true };
+        }
+
+        // Household management with validation
+        function saveHouseholdName() {
+            const name = document.getElementById('householdName').value;
+            const validation = validateHouseholdName(name);
+
+            if (validation.isValid) {
+                settings.household.name = name;
+                saveSettings();
+                showNotification('Household name saved', 'success');
+            } else {
+                showNotification(validation.error, 'error');
+                // Reset the input to the saved value
+                document.getElementById('householdName').value = settings.household.name;
+            }
+        }
+
+        function addFamilyMember() {
+            const name = prompt('Enter family member name:');
+            if (name !== null) {
+                const validation = validateFamilyMemberName(name);
+                if (validation.isValid) {
+                    const member = {
+                        id: Date.now().toString(),
+                        name: name.trim(),
+                        role: 'Member',
+                        avatar: getRandomAvatar()
+                    };
+                    settings.household.members.push(member);
+                    saveSettings();
+                    renderFamilyMembers();
+                    showNotification('Family member added', 'success');
+                } else {
+                    showNotification(validation.error, 'error');
+                }
+            }
+        }
+
+        function removeFamilyMember(memberId) {
+            if (confirm('Remove this family member?')) {
+                settings.household.members = settings.household.members.filter(m => m.id !== memberId);
+                saveSettings();
+                renderFamilyMembers();
+                showNotification('Family member removed', 'success');
+            }
+        }
+
+        function renderFamilyMembers() {
+            const container = document.getElementById('familyMembers');
+
+            if (settings.household.members.length === 0) {
+                container.innerHTML = '<p style="color: var(--on-surface-variant); font-style: italic;">No family members added yet</p>';
+                return;
+            }
+
+            container.innerHTML = settings.household.members.map(member => `
+                <div class="household-member">
+                    <div class="member-avatar">${member.avatar}</div>
+                    <div class="member-info">
+                        <div class="member-name">${member.name}</div>
+                        <div class="member-role">${member.role}</div>
+                    </div>
+                    <button class="btn btn-danger" style="padding: 8px 12px; font-size: 12px;" onclick="removeFamilyMember('${member.id}')">Remove</button>
+                </div>
+            `).join('');
+        }
+
+        function getRandomAvatar() {
+            const avatars = ['👤', '👨', '👩', '👧', '👦', '👴', '👵', '🧑', '🧓'];
+            return avatars[Math.floor(Math.random() * avatars.length)];
+        }
+
+        // Notification settings
+        function toggleExpirationAlerts() {
+            settings.preferences.expirationAlerts = !settings.preferences.expirationAlerts;
+            saveSettings();
+            updateUI();
+            showNotification('Expiration alerts ' + (settings.preferences.expirationAlerts ? 'enabled' : 'disabled'), 'success');
+        }
+
+        function saveAlertDays() {
+            const input = document.getElementById('alertDays');
+            const days = parseInt(input.value);
+
+            if (isNaN(days) || days < 1 || days > 30) {
+                showNotification('Alert days must be between 1 and 30', 'error');
+                // Reset to saved value
+                input.value = settings.preferences.alertDays;
+                return;
+            }
+
+            settings.preferences.alertDays = days;
+            saveSettings();
+            showNotification('Alert timing updated', 'success');
+        }
+
+        // Data management
+        function exportData() {
+            try {
+                const allData = {
+                    settings: settings,
+                    items: JSON.parse(localStorage.getItem('freshkeep-items') || '[]'),
+                    exportDate: new Date().toISOString(),
+                    version: '1.0.0'
+                };
+
+                const dataStr = JSON.stringify(allData, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(dataBlob);
+                link.download = `freshkeep-export-${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                showNotification('Data exported successfully', 'success');
+            } catch (error) {
+                showNotification('Failed to export data', 'error');
+            }
+        }
+
+        function clearLocalData() {
+            const confirmText = 'Are you sure? This will delete all your data including food items, settings, and preferences. This action cannot be undone.';
+
+            if (confirm(confirmText)) {
+                // Clear all FreshKeep data
+                const keysToRemove = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key && key.startsWith('freshkeep-')) {
+                        keysToRemove.push(key);
+                    }
+                }
+
+                keysToRemove.forEach(key => localStorage.removeItem(key));
+
+                // Reset settings to default
+                settings = {
+                    user: { name: 'Guest User', email: '', avatar: '👤' },
+                    household: { name: '', members: [] },
+                    preferences: { autoTheme: false, expirationAlerts: true, alertDays: 3 }
+                };
+
+                updateUI();
+                showNotification('All local data cleared', 'success');
+            }
+        }
+
+        // Storage usage calculation
+        function updateStorageUsage() {
+            try {
+                let totalSize = 0;
+                for (let key in localStorage) {
+                    if (localStorage.hasOwnProperty(key) && key.startsWith('freshkeep-')) {
+                        totalSize += localStorage[key].length;
+                    }
+                }
+
+                // Convert to KB
+                const sizeKB = (totalSize / 1024).toFixed(2);
+                document.getElementById('storageUsage').textContent = `${sizeKB} KB`;
+            } catch (error) {
+                document.getElementById('storageUsage').textContent = 'Unable to calculate';
+            }
+        }
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            // Remove existing notification
+            const existing = document.querySelector('.notification');
+            if (existing) {
+                existing.remove();
+            }
+
+            // Create new notification
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+
+            document.body.appendChild(notification);
+
+            // Trigger animation
+            setTimeout(() => notification.classList.add('show'), 100);
+
+            // Auto remove after 3 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
             // Add header navigation
             insertHeaderNavigation('settings');
             document.body.classList.add('has-header');
 
             setActiveNavItem('settings');
+            loadSettings();
         });
     </script>
 </body>
