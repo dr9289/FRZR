@@ -328,6 +328,10 @@
     <script type="module" src="firebase-config.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Add header navigation with back button for add page
+            insertHeaderNavigation('add', true);
+            document.body.classList.add('has-header');
+
             setActiveNavItem('add');
 
             // Set today's date as default for purchase date

@@ -315,6 +315,10 @@
         let batchQueue = [];
 
         document.addEventListener('DOMContentLoaded', function() {
+            // Add header navigation
+            insertHeaderNavigation('scan');
+            document.body.classList.add('has-header');
+
             setActiveNavItem('scan');
 
             // Add enter key support for manual barcode entry

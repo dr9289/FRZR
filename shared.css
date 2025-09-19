@@ -1,5 +1,8 @@
 /* FreshKeep Shared Styles - Mobile First with Dark Mode Support */
 
+/* Import Material Icons */
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
 /* Reset and Base Styles */
 * {
     margin: 0;
@@ -471,5 +474,156 @@ input::placeholder, textarea::placeholder {
     [data-theme="dark"] {
         --outline: #ffffff;
         --outline-variant: #cccccc;
+    }
+}
+
+/* Header Navigation Styles */
+.app-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--surface);
+    border-bottom: 1px solid var(--outline-variant);
+    box-shadow: var(--elevation-1);
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: 56px;
+}
+
+.app-logo-small {
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.page-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--on-surface);
+    margin: 0;
+    flex: 1;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.back-button {
+    background: none;
+    border: none;
+    color: var(--on-surface);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+    flex-shrink: 0;
+}
+
+.back-button:hover {
+    background: var(--surface-variant);
+}
+
+.theme-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    font-size: 18px;
+}
+
+.theme-toggle:hover {
+    background: var(--surface-variant);
+    transform: scale(1.05);
+}
+
+.add-button {
+    background: var(--primary);
+    color: var(--on-primary);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: var(--elevation-2);
+    transition: all 0.2s ease;
+}
+
+.add-button:hover {
+    background: var(--primary-variant);
+    transform: scale(1.05);
+    box-shadow: var(--elevation-3);
+}
+
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 20px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+}
+
+/* Adjust main content to account for header */
+body.has-header {
+    padding-top: 0;
+}
+
+body.has-header main,
+body.has-header .container {
+    padding-top: 16px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .header-content {
+        padding: 8px 12px;
+        min-height: 48px;
+    }
+
+    .page-title {
+        font-size: 18px;
+    }
+
+    .back-button,
+    .theme-toggle {
+        padding: 6px;
+    }
+
+    .add-button {
+        width: 36px;
+        height: 36px;
+    }
+
+    .material-icons {
+        font-size: 18px;
     }
 }

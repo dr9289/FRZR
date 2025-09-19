@@ -82,6 +82,67 @@ function setActiveNavItem(pageId) {
     }
 }
 
+// Unified header navigation component
+function createHeaderNavigation(currentPage = '', showBackButton = false, customTitle = '') {
+    const pageTitles = {
+        'dashboard': 'Dashboard',
+        'pantry': 'Pantry',
+        'add': 'Add Item',
+        'scan': 'Scanner',
+        'family': 'Family',
+        'settings': 'Settings'
+    };
+
+    const title = customTitle || pageTitles[currentPage] || 'FreshKeep';
+
+    return `
+        <header class="app-header">
+            <div class="header-content">
+                ${showBackButton ? `
+                    <button class="back-button" onclick="goBack()">
+                        <span class="material-icons">arrow_back</span>
+                    </button>
+                ` : `
+                    <div class="app-logo-small">🥬</div>
+                `}
+                <h1 class="page-title">${title}</h1>
+                <div class="header-actions">
+                    <button class="theme-toggle" onclick="toggleTheme()">
+                        <span class="theme-icon">🌙</span>
+                    </button>
+                    ${currentPage !== 'add' && currentPage !== 'scan' ? `
+                        <a href="add.html" class="add-button" title="Add Item">
+                            <span class="material-icons">add</span>
+                        </a>
+                    ` : ''}
+                </div>
+            </div>
+        </header>
+    `;
+}
+
+// Insert header navigation into page
+function insertHeaderNavigation(currentPage = '', showBackButton = false, customTitle = '') {
+    const body = document.body;
+    const headerHTML = createHeaderNavigation(currentPage, showBackButton, customTitle);
+
+    // Insert at the beginning of body
+    body.insertAdjacentHTML('afterbegin', headerHTML);
+
+    // Initialize theme icon
+    initializeTheme();
+}
+
+// Back navigation helper
+function goBack() {
+    // If there's history, go back, otherwise go to dashboard
+    if (window.history.length > 1) {
+        window.history.back();
+    } else {
+        window.location.href = 'dashboard.html';
+    }
+}
+
 // Firebase utility functions (placeholder - will be filled based on current implementation)
 let currentUser = null;
 let currentHousehold = null;

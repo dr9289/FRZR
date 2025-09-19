@@ -460,6 +460,10 @@
 
         // Initialize pantry page
         document.addEventListener('DOMContentLoaded', function() {
+            // Add header navigation
+            insertHeaderNavigation('pantry');
+            document.body.classList.add('has-header');
+
             setActiveNavItem('pantry');
             loadPantryData();
         });

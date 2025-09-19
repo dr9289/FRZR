@@ -264,6 +264,10 @@
 
         // Initialize dashboard
         document.addEventListener('DOMContentLoaded', function() {
+            // Add header navigation
+            insertHeaderNavigation('dashboard');
+            document.body.classList.add('has-header');
+
             setActiveNavItem('dashboard');
             loadDashboardData();
         });
