@@ -352,6 +352,47 @@
         .notification.error {
             border-left-color: var(--error);
         }
+
+        /* Bottom navigation - matching other pages */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 375px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid #f0f0f0;
+            padding: 12px 0 32px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .nav-item {
+            text-align: center;
+            padding: 12px 8px;
+            text-decoration: none;
+            color: #9CA3AF;
+            font-size: 11px;
+            font-weight: 500;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 48px;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item.active {
+            color: #667eea;
+        }
+
+        .nav-icon {
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
     </style>
 </head>
 <body>
@@ -896,10 +937,6 @@
 
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
-            // Add header navigation
-            insertHeaderNavigation('settings');
-            document.body.classList.add('has-header');
-
             setActiveNavItem('settings');
             loadSettings();
         });
