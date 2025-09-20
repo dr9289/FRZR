@@ -140,6 +140,9 @@ function insertHeaderNavigation(currentPage = '', showBackButton = false, custom
     // Enhance navigation interactions with haptic feedback
     enhanceNavigationInteractions();
 
+    // Initialize scroll-responsive navigation
+    initializeScrollResponsiveNavigation();
+
     // Initialize keyboard-aware navigation
     initializeKeyboardAwareNavigation();
 }
@@ -225,6 +228,120 @@ function initializeScrollResponsiveHeader(currentPage) {
     }
 }
 
+// Scroll-responsive navigation functionality
+function initializeScrollResponsiveNavigation() {
+    const bottomNav = document.querySelector('.bottom-nav');
+    if (!bottomNav) return;
+
+    let lastScrollY = window.scrollY;
+    let isScrolling = false;
+    let scrollDirection = 'up';
+    let isNavVisible = true;
+    let scrollTimer = null;
+
+    // Configuration
+    const scrollThreshold = 10; // Minimum scroll distance to trigger hide/show
+    const scrollDelay = 150; // Delay before checking scroll direction
+
+    function hideNavigation() {
+        // Don't hide if keyboard is already hiding the nav
+        if (isNavVisible && !bottomNav.classList.contains('nav-keyboard-hidden')) {
+            bottomNav.style.transform = 'translateY(100%)';
+            bottomNav.classList.add('nav-hidden');
+            isNavVisible = false;
+        }
+    }
+
+    function showNavigation() {
+        // Don't show if keyboard is forcing nav to be hidden
+        if (!isNavVisible && !bottomNav.classList.contains('nav-keyboard-hidden')) {
+            bottomNav.style.transform = 'translateY(0)';
+            bottomNav.classList.remove('nav-hidden');
+            isNavVisible = true;
+        }
+    }
+
+    function handleScroll() {
+        const currentScrollY = window.scrollY;
+        const scrollDelta = Math.abs(currentScrollY - lastScrollY);
+
+        // Don't hide nav when at the very top of the page
+        if (currentScrollY <= 10) {
+            showNavigation();
+            lastScrollY = currentScrollY;
+            return;
+        }
+
+        // Only process if scroll distance is significant enough
+        if (scrollDelta < scrollThreshold) {
+            lastScrollY = currentScrollY;
+            return;
+        }
+
+        // Determine scroll direction
+        if (currentScrollY > lastScrollY) {
+            scrollDirection = 'down';
+        } else {
+            scrollDirection = 'up';
+        }
+
+        // Clear any existing timer
+        clearTimeout(scrollTimer);
+
+        // Set a delay to avoid too frequent hiding/showing
+        scrollTimer = setTimeout(() => {
+            if (scrollDirection === 'down' && currentScrollY > 100) {
+                hideNavigation();
+            } else if (scrollDirection === 'up') {
+                showNavigation();
+            }
+        }, scrollDelay);
+
+        lastScrollY = currentScrollY;
+    }
+
+    // Throttled scroll handler for better performance
+    let scrollTicking = false;
+    function throttledScrollHandler() {
+        if (!scrollTicking) {
+            requestAnimationFrame(() => {
+                handleScroll();
+                scrollTicking = false;
+            });
+            scrollTicking = true;
+        }
+    }
+
+    // Show navigation when user stops scrolling
+    let scrollStopTimer = null;
+    function handleScrollStop() {
+        clearTimeout(scrollStopTimer);
+        scrollStopTimer = setTimeout(() => {
+            if (window.scrollY <= 10) {
+                showNavigation();
+            }
+        }, 1000); // Show nav after 1 second of no scrolling
+    }
+
+    // Add scroll event listeners
+    window.addEventListener('scroll', throttledScrollHandler, { passive: true });
+    window.addEventListener('scroll', handleScrollStop, { passive: true });
+
+    // Show navigation on touch end (user finished interacting)
+    let touchEndTimer = null;
+    document.addEventListener('touchend', () => {
+        clearTimeout(touchEndTimer);
+        touchEndTimer = setTimeout(() => {
+            if (window.scrollY <= 50) {
+                showNavigation();
+            }
+        }, 500);
+    }, { passive: true });
+
+    // Always show navigation when page loads
+    showNavigation();
+}
+
 // Keyboard-aware navigation functionality
 function initializeKeyboardAwareNavigation() {
     const bottomNav = document.querySelector('.bottom-nav');
@@ -245,9 +362,11 @@ function initializeKeyboardAwareNavigation() {
 
             if (isKeyboardVisible) {
                 bottomNav.style.transform = 'translateY(100%)';
+                bottomNav.classList.add('nav-keyboard-hidden');
                 bottomNav.setAttribute('aria-hidden', 'true');
             } else {
                 bottomNav.style.transform = 'translateY(0)';
+                bottomNav.classList.remove('nav-keyboard-hidden');
                 bottomNav.setAttribute('aria-hidden', 'false');
             }
         }

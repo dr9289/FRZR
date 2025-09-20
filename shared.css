@@ -280,6 +280,15 @@ body {
     will-change: transform;
 }
 
+/* Navigation hidden states */
+.bottom-nav.nav-hidden {
+    transform: translateY(100%);
+}
+
+.bottom-nav.nav-keyboard-hidden {
+    transform: translateY(100%);
+}
+
 .nav-item {
     display: flex;
     flex-direction: column;
@@ -336,8 +345,20 @@ body {
 /* Content Styles */
 .page-content {
     padding: 20px;
-    padding-bottom: 100px; /* Space for bottom nav */
+    padding-bottom: 120px; /* Space for bottom nav - matches pages */
     min-height: calc(100vh - 80px);
+}
+
+/* Content area with consistent bottom spacing for navigation */
+.content {
+    padding-bottom: 120px; /* Standard space for bottom nav */
+    transition: padding-bottom 0.3s ease;
+}
+
+/* Reduced padding when nav is hidden to maximize content space */
+.nav-hidden + .content,
+.nav-keyboard-hidden + .content {
+    padding-bottom: 40px;
 }
 
 /* Quick Actions (Dashboard) */

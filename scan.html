@@ -135,6 +135,13 @@
         /* Content area - matching dashboard */
         .content {
             padding: 32px 24px 120px;
+            transition: padding-bottom 0.3s ease;
+        }
+
+        /* Reduced padding when nav is hidden to maximize content space */
+        .nav-hidden ~ .container .content,
+        .nav-keyboard-hidden ~ .container .content {
+            padding-bottom: 40px;
         }
 
         /* Page header - simplified like dashboard */
@@ -348,6 +355,12 @@
     <script>
         // Initialize scroll header
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize navigation systems
+            initializeScrollResponsiveNavigation();
+            initializeKeyboardAwareNavigation();
+            enhanceNavigationInteractions();
+            setActiveNavItem('scan');
+
             initScrollHeader();
         });
 
