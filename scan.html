@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#667eea">
-    <title>Scan - FreshKeep</title>
+    <title>Scanner - FreshKeep</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Shared Styles -->
     <link rel="stylesheet" href="shared.css">
 
+    <!-- Page Styles - Exactly like dashboard -->
     <style>
         /* Override container for mobile-first 375px design */
         .container {
@@ -25,7 +26,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
-        /* Redesigned header with branding */
+        /* Redesigned header - matching dashboard */
         .header {
             background: #ffffff;
             padding: 8px 24px;
@@ -81,210 +82,152 @@
             justify-content: center;
         }
 
-        .main-content {
-            padding: 20px;
-            padding-bottom: 100px;
+        /* Content area - matching dashboard */
+        .content {
+            padding: 32px 24px 120px;
         }
 
-        .scanner-section {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .scanner-section h2 {
+        /* Page header - simplified like dashboard */
+        .page-header {
             text-align: center;
-            color: var(--on-surface);
-            margin-bottom: 8px;
+            margin-bottom: 48px;
+            padding: 32px 0;
         }
 
-        .scanner-desc {
-            text-align: center;
-            color: var(--on-surface-variant);
-            margin-bottom: 24px;
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0 0 8px 0;
         }
 
-        .scanner-controls {
+        .page-subtitle {
+            font-size: 14px;
+            color: var(--text-tertiary);
+            margin: 0;
+        }
+
+        /* Scanner section - like dashboard actions */
+        .scanner-actions {
             display: flex;
-            gap: 12px;
-            justify-content: center;
-            margin-bottom: 20px;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 48px;
         }
 
-        .scanner-controls .btn {
-            flex: 1;
-            max-width: 150px;
-        }
-
-        .video-container {
-            position: relative;
-            display: inline-block;
+        .action-btn-large {
+            background: #667eea;
+            color: white;
             text-align: center;
+            padding: 20px;
+            border-radius: 16px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            min-height: 56px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn-large.secondary {
+            background: #f8f9fa;
+            color: #495057;
+            border: 1px solid #e9ecef;
+        }
+
+        .action-btn-large:active {
+            transform: scale(0.98);
+        }
+
+        .action-icon {
+            font-size: 24px;
+        }
+
+        /* Camera area - simplified */
+        .camera-container {
+            background: #f8f9fa;
+            border: 1px solid #f0f0f0;
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .camera-placeholder {
+            font-size: 48px;
             margin-bottom: 16px;
         }
 
-        #video {
-            width: 100%;
-            max-width: 400px;
-            border-radius: 12px;
-            background: var(--surface-variant);
+        .camera-text {
+            color: var(--text-secondary);
+            font-size: 14px;
         }
 
-        .scan-overlay {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 200px;
-            height: 200px;
-            border: 2px solid var(--primary);
-            border-radius: 8px;
-            pointer-events: none;
-        }
-
-        .scan-overlay::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--primary);
-            animation: scanLine 2s ease-in-out infinite;
-        }
-
-        @keyframes scanLine {
-            0%, 100% { transform: translateY(-100px); opacity: 0; }
-            50% { transform: translateY(0); opacity: 1; }
-        }
-
+        /* Scanner status - like dashboard metric */
         .scanner-status {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 32px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 16px;
         }
 
-        .scanner-status .btn {
-            margin-right: 12px;
+        .status-text {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin: 0;
         }
 
-        #scanMode {
-            font-weight: 500;
-            color: var(--on-surface-variant);
+        /* Bottom navigation - exactly like dashboard */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 375px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid #f0f0f0;
+            padding: 12px 0 32px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
         }
 
-        .lookup-status {
+        .nav-item {
             text-align: center;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            min-height: 20px;
-        }
-
-        .lookup-status.loading {
-            background: var(--tertiary-container);
-            color: var(--on-tertiary-container);
-        }
-
-        .lookup-status.success {
-            background: var(--success-container);
-            color: var(--on-success-container);
-        }
-
-        .lookup-status.error {
-            background: var(--error-container);
-            color: var(--on-error-container);
-        }
-
-        #batchQueue {
-            background: var(--surface-variant);
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-        }
-
-        #batchQueue h3 {
-            margin: 0 0 16px 0;
-            color: var(--on-surface);
-        }
-
-        #batchItems {
-            margin-bottom: 16px;
-        }
-
-        .batch-item {
-            background: var(--surface);
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 8px;
+            padding: 12px 8px;
+            text-decoration: none;
+            color: #9CA3AF;
+            font-size: 11px;
+            font-weight: 500;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
+            min-height: 48px;
+            justify-content: center;
+            transition: all 0.2s ease;
         }
 
-        .batch-controls {
-            display: flex;
-            gap: 12px;
+        .nav-item.active {
+            color: #667eea;
         }
 
-        .batch-controls .btn {
-            flex: 1;
-        }
-
-        .manual-entry {
-            background: var(--surface-variant);
-            padding: 20px;
-            border-radius: 12px;
-        }
-
-        .manual-entry h3 {
-            margin: 0 0 8px 0;
-            color: var(--on-surface);
-        }
-
-        .manual-entry p {
-            color: var(--on-surface-variant);
-            margin-bottom: 16px;
-        }
-
-        .manual-controls {
-            display: flex;
-            gap: 12px;
-        }
-
-        .manual-controls input {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid var(--outline);
-            border-radius: 8px;
-            background: var(--surface);
-            color: var(--on-surface);
-        }
-
-        .manual-controls .btn {
-            white-space: nowrap;
-        }
-
-        @media (max-width: 480px) {
-            .scanner-controls {
-                flex-direction: column;
-            }
-
-            .scanner-controls .btn {
-                max-width: none;
-            }
-
-            .manual-controls {
-                flex-direction: column;
-            }
-
-            .batch-controls {
-                flex-direction: column;
-            }
+        .nav-icon {
+            font-size: 22px;
+            margin-bottom: 4px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Redesigned Header with Branding -->
+        <!-- Header - exactly like dashboard -->
         <div class="header">
             <div class="brand-container">
                 <div class="logo">🥬</div>
@@ -296,337 +239,76 @@
             <button class="profile-btn">👤</button>
         </div>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <div class="scanner-section">
-                <h2>📱 Barcode Scanner</h2>
-                <p class="scanner-desc">Scan product barcodes to quickly add items to your groceries</p>
-
-                <div class="scanner-controls">
-                    <button id="scanBtn" class="btn btn-primary" onclick="startScanner()">📱 Start Scanner</button>
-                    <button id="batchBtn" class="btn btn-secondary" onclick="toggleBatchMode()">📦 Batch Scan</button>
-                </div>
-
-                <div id="scannerContainer" style="display: none;">
-                    <div class="video-container">
-                        <video id="video" autoplay muted playsinline></video>
-                        <div id="overlay" class="scan-overlay"></div>
-                    </div>
-                    <div class="scanner-status">
-                        <button onclick="stopScanner()" class="btn btn-danger">🛑 Stop Scanner</button>
-                        <span id="scanMode"></span>
-                    </div>
-                </div>
-
-                <div id="lookupStatus" class="lookup-status"></div>
-
-                <!-- Batch Queue -->
-                <div id="batchQueue" style="display: none;">
-                    <h3>📦 Batch Queue</h3>
-                    <div id="batchItems"></div>
-                    <div class="batch-controls">
-                        <button onclick="addAllToInventory()" class="btn btn-success">✅ Add All</button>
-                        <button onclick="clearBatchQueue()" class="btn btn-danger">🗑️ Clear Queue</button>
-                    </div>
-                </div>
-
-                <!-- Manual Entry Option -->
-                <div class="manual-entry">
-                    <h3>✋ Manual Entry</h3>
-                    <p>Can't scan? Enter barcode manually:</p>
-                    <div class="manual-controls">
-                        <input type="text" id="manualBarcode" placeholder="Enter barcode number" />
-                        <button onclick="lookupManualBarcode()" class="btn btn-primary">🔍 Look Up</button>
-                    </div>
-                </div>
+        <div class="content">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">📱 Barcode Scanner</h1>
+                <p class="page-subtitle">Scan product barcodes to quickly add items</p>
             </div>
-        </main>
+
+            <!-- Camera Area -->
+            <div class="camera-container">
+                <div class="camera-placeholder">📷</div>
+                <p class="camera-text">Position barcode within the frame</p>
+            </div>
+
+            <!-- Scanner Status -->
+            <div class="scanner-status">
+                <p class="status-text">Ready to scan</p>
+            </div>
+
+            <!-- Scanner Actions -->
+            <div class="scanner-actions">
+                <button class="action-btn-large" onclick="startScanning()">
+                    <span class="action-icon">📱</span>
+                    <span>Start Scanning</span>
+                </button>
+                <a href="add.html" class="action-btn-large secondary">
+                    <span class="action-icon">✏️</span>
+                    <span>Add Manually Instead</span>
+                </a>
+            </div>
+        </div>
 
         <!-- Bottom Navigation -->
         <nav class="bottom-nav">
             <a href="dashboard.html" class="nav-item">
                 <span class="nav-icon">🏠</span>
-                <span class="nav-label">Home</span>
+                <span>Home</span>
             </a>
             <a href="pantry.html" class="nav-item">
                 <span class="nav-icon">🍎</span>
-                <span class="nav-label">Groceries</span>
+                <span>Groceries</span>
             </a>
             <a href="scan.html" class="nav-item active">
                 <span class="nav-icon">📱</span>
-                <span class="nav-label">Scanner</span>
+                <span>Scanner</span>
             </a>
             <a href="settings.html" class="nav-item">
                 <span class="nav-icon">⚙️</span>
-                <span class="nav-label">Settings</span>
+                <span>Settings</span>
             </a>
         </nav>
     </div>
 
-    <!-- Shared JavaScript -->
+    <!-- JavaScript -->
     <script src="shared.js"></script>
-    <!-- QuaggaJS Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
-
     <script>
-        let isScanning = false;
-        let isBatchMode = false;
-        let stream = null;
-        let batchQueue = [];
+        // Simple scanner functionality
+        function startScanning() {
+            const statusText = document.querySelector('.status-text');
+            const startBtn = document.querySelector('.scanner-actions .action-btn-large');
 
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add header navigation
-            insertHeaderNavigation('scan');
-            document.body.classList.add('has-header');
+            statusText.textContent = 'Scanning... Position barcode in view';
+            startBtn.textContent = '📱 Scanning...';
+            startBtn.disabled = true;
 
-            setActiveNavItem('scan');
-
-            // Add enter key support for manual barcode entry
-            document.getElementById('manualBarcode').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    lookupManualBarcode();
-                }
-            });
-        });
-
-        function startScanner() {
-            const scanBtn = document.getElementById('scanBtn');
-            const batchBtn = document.getElementById('batchBtn');
-            const scannerContainer = document.getElementById('scannerContainer');
-            const scanMode = document.getElementById('scanMode');
-            const video = document.getElementById('video');
-
-            if (isScanning) return;
-
-            scanBtn.textContent = isBatchMode ? '🛑 Stop Batch' : '🛑 Stop Scan';
-            scanBtn.disabled = true;
-            batchBtn.disabled = true;
-            scannerContainer.style.display = 'block';
-            isScanning = true;
-
-            scanMode.textContent = isBatchMode ? 'Batch Mode - Scan multiple items' : 'Single Mode - Scan one item';
-
-            navigator.mediaDevices.getUserMedia({
-                video: { facingMode: 'environment' }
-            }).then(function(mediaStream) {
-                stream = mediaStream;
-                video.srcObject = stream;
-                video.play();
-
-                showLookupStatus('Camera connected, starting barcode scanner...', 'loading');
-
-                Quagga.init({
-                    inputStream: {
-                        name: "Live", type: "LiveStream", target: video,
-                        constraints: { width: 400, height: 300, facingMode: "environment" }
-                    },
-                    locator: { patchSize: "medium", halfSample: true },
-                    numOfWorkers: 2, frequency: 10,
-                    decoder: {
-                        readers: ["ean_reader", "ean_8_reader", "code_128_reader", "code_39_reader"],
-                        debug: { drawBoundingBox: true, showFrequency: false, drawScanline: true, showPattern: false }
-                    },
-                    locate: true
-                }, function(err) {
-                    if (err) {
-                        console.log('Quagga init error:', err);
-                        showLookupStatus('Scanner initialization failed: ' + err.message, 'error');
-
-                        if (stream) {
-                            stream.getTracks().forEach(track => track.stop());
-                        }
-                        stopScanner();
-                        return;
-                    }
-
-                    scanBtn.textContent = isBatchMode ? '🛑 Stop Batch' : '🛑 Stop Scan';
-                    scanBtn.disabled = false;
-                    showLookupStatus('Ready to scan! Point camera at barcode', 'success');
-
-                    Quagga.start();
-                });
-
-            }).catch(function(err) {
-                console.log('Camera access error:', err);
-                showLookupStatus('Camera access denied: ' + err.message, 'error');
-                stopScanner();
-            });
-
-            Quagga.onDetected(function(data) {
-                const code = data.codeResult.code;
-                const format = data.codeResult.format;
-
-                console.log('Barcode detected:', code, 'Format:', format);
-
-                if (!isValidBarcode(code, format)) {
-                    console.log('Invalid barcode detected, ignoring:', code);
-                    return;
-                }
-
-                if (window.lastScannedCode === code && Date.now() - window.lastScanTime < 2000) {
-                    return;
-                }
-
-                window.lastScannedCode = code;
-                window.lastScanTime = Date.now();
-
-                if (isBatchMode) {
-                    addToBatchQueue(code, format);
-                    showLookupStatus(`Added to batch: ${code} (${format})`, 'success');
-                } else {
-                    stopScanner();
-                    lookupProduct(code);
-                }
-            });
-        }
-
-        function stopScanner() {
-            if (isScanning) {
-                Quagga.stop();
-
-                if (stream) {
-                    stream.getTracks().forEach(track => track.stop());
-                    stream = null;
-                }
-
-                isScanning = false;
-            }
-
-            const scanBtn = document.getElementById('scanBtn');
-            const batchBtn = document.getElementById('batchBtn');
-            const scannerContainer = document.getElementById('scannerContainer');
-
-            scanBtn.textContent = '📱 Start Scanner';
-            scanBtn.disabled = false;
-            batchBtn.disabled = false;
-            scannerContainer.style.display = 'none';
-        }
-
-        function toggleBatchMode() {
-            if (isScanning && isBatchMode) {
-                stopScanner();
-            } else {
-                isBatchMode = true;
-                document.getElementById('batchQueue').style.display = 'block';
-                startScanner();
-            }
-        }
-
-        function addToBatchQueue(code, format) {
-            const existing = batchQueue.find(item => item.code === code);
-            if (!existing) {
-                const batchItem = {
-                    code: code,
-                    format: format,
-                    timestamp: Date.now()
-                };
-                batchQueue.push(batchItem);
-                updateBatchDisplay();
-            }
-        }
-
-        function updateBatchDisplay() {
-            const batchItems = document.getElementById('batchItems');
-            batchItems.innerHTML = '';
-
-            batchQueue.forEach((item, index) => {
-                const div = document.createElement('div');
-                div.className = 'batch-item';
-                div.innerHTML = `
-                    <span>${item.code} (${item.format})</span>
-                    <button onclick="removeBatchItem(${index})" class="btn btn-small">❌</button>
-                `;
-                batchItems.appendChild(div);
-            });
-        }
-
-        function removeBatchItem(index) {
-            batchQueue.splice(index, 1);
-            updateBatchDisplay();
-        }
-
-        function clearBatchQueue() {
-            batchQueue = [];
-            updateBatchDisplay();
-            document.getElementById('batchQueue').style.display = 'none';
-            isBatchMode = false;
-        }
-
-        function addAllToInventory() {
-            if (batchQueue.length === 0) return;
-
-            // Process each item in the batch queue
-            batchQueue.forEach(item => {
-                lookupProduct(item.code, false); // false = don't redirect to add page
-            });
-
-            showLookupStatus(`Processing ${batchQueue.length} items...`, 'loading');
-            clearBatchQueue();
-        }
-
-        function lookupManualBarcode() {
-            const input = document.getElementById('manualBarcode');
-            const barcode = input.value.trim();
-
-            if (!barcode) {
-                showLookupStatus('Please enter a barcode number', 'error');
-                return;
-            }
-
-            if (!isValidBarcode(barcode, 'manual')) {
-                showLookupStatus('Invalid barcode format', 'error');
-                return;
-            }
-
-            input.value = '';
-            lookupProduct(barcode);
-        }
-
-        function lookupProduct(barcode, redirectToAdd = true) {
-            showLookupStatus(`Looking up product: ${barcode}...`, 'loading');
-
-            // Store the barcode for the add page
-            localStorage.setItem('scannedBarcode', barcode);
-            localStorage.setItem('scanTimestamp', Date.now().toString());
-
-            // Simulate product lookup (in a real app, this would be an API call)
+            // Simulate scanning
             setTimeout(() => {
-                showLookupStatus(`Found product: ${barcode}. Redirecting to add item...`, 'success');
-
-                if (redirectToAdd) {
-                    setTimeout(() => {
-                        window.location.href = 'add.html?barcode=' + encodeURIComponent(barcode);
-                    }, 1500);
-                }
-            }, 1000);
-        }
-
-        function isValidBarcode(code, format) {
-            if (!code || code.length < 8) return false;
-
-            // Check for common barcode formats
-            const validFormats = ['ean_reader', 'ean_8_reader', 'code_128_reader', 'code_39_reader', 'manual'];
-            if (format && !validFormats.includes(format)) return false;
-
-            // Basic validation - only digits for EAN codes
-            if (format && (format.includes('ean') || format === 'manual')) {
-                return /^\d+$/.test(code);
-            }
-
-            return true;
-        }
-
-        function showLookupStatus(message, type) {
-            const status = document.getElementById('lookupStatus');
-            status.textContent = message;
-            status.className = `lookup-status ${type}`;
-
-            if (type === 'success' || type === 'error') {
-                setTimeout(() => {
-                    status.textContent = '';
-                    status.className = 'lookup-status';
-                }, 3000);
-            }
+                statusText.textContent = 'No barcode detected. Try again or add manually.';
+                startBtn.innerHTML = '<span class="action-icon">📱</span><span>Start Scanning</span>';
+                startBtn.disabled = false;
+            }, 3000);
         }
     </script>
 </body>
