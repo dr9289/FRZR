@@ -34,7 +34,7 @@
             font-weight: 600;
         }
 
-        /* REDESIGNED: Minimal header - 45% height reduction */
+        /* REDESIGNED: Minimal header with branding - 45% height reduction */
         .header {
             background: #ffffff;
             padding: 8px 24px;
@@ -45,8 +45,36 @@
             border-bottom: 1px solid #f0f0f0;
         }
 
+        .brand-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
         .logo {
             font-size: 24px;
+        }
+
+        .brand-text-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+
+        .brand-text {
+            font-size: 16px;
+            font-weight: 500;
+            color: #6C757D;
+            letter-spacing: -0.02em;
+            line-height: 1;
+        }
+
+        .brand-slogan {
+            font-size: 11px;
+            font-weight: 400;
+            color: #9CA3AF;
+            letter-spacing: 0.01em;
+            line-height: 1;
         }
 
         .profile-btn {
@@ -317,10 +345,16 @@
             <span>100%</span>
         </div>
 
-        <!-- REDESIGNED: Minimal header (44px vs 80px) -->
+        <!-- REDESIGNED: Minimal header with branding (44px vs 80px) -->
         <div class="header">
             <div class="improvement-annotation anno-header">45% SMALLER</div>
-            <div class="logo">🥬</div>
+            <div class="brand-container">
+                <div class="logo">🥬</div>
+                <div class="brand-text-group">
+                    <div class="brand-text">FreshKeep</div>
+                    <div class="brand-slogan">food tracker</div>
+                </div>
+            </div>
             <button class="profile-btn">👤</button>
         </div>
 
@@ -383,6 +417,7 @@
             <li><strong>Modern Standards:</strong> Follows 2025 minimalist design trends</li>
             <li><strong>Navigation:</strong> Reduced from 5 to 4 tabs, cleaner layout</li>
             <li><strong>Content Priority:</strong> Most urgent information (expiring items) featured</li>
+            <li><strong>Subtle Branding:</strong> App name + slogan integrated without visual clutter</li>
             <li><strong>Gesture Ready:</strong> Clean foundation for swipe gestures</li>
         </ul>
     </div>
